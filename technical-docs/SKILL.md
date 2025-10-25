@@ -5,20 +5,18 @@ description: Create technical documentation in markdown including READMEs, API d
 
 ## When to use this skill
 
-Use this skill for:
-- README files for repositories
-- API documentation
-- Technical specifications
-- Changelogs (Keep a Changelog format)
-- Architecture documentation
-- Configuration guides
+Use this skill for README files, API documentation, technical specifications, changelogs (Keep a Changelog format), architecture documentation, and configuration guides.
+
+## How to use this skill
+
+1. **Identify the document type** from the request
+2. **Load the appropriate template** from `references/templates.md`
+3. **Apply markdown conventions** - Language tags, proper hierarchy, tables
+4. **Validate structure** against quality checklist
 
 ## Key markdown conventions
 
-### Code blocks with language tags
-
-Always specify language for syntax highlighting:
-
+**Code blocks with language tags**:
 ````markdown
 ```python
 def example():
@@ -26,89 +24,17 @@ def example():
 ```
 ````
 
-### Headers for hierarchy
+**Header hierarchy**: H1 (one per doc), H2 (major sections), H3 (subsections)
 
-```markdown
-# H1 - Main title (one per document)
-## H2 - Major sections
-### H3 - Subsections
-```
-
-### Tables
-
-```markdown
-| Column 1 | Column 2 |
-|----------|----------|
-| Data     | Data     |
-```
+**Tables**: Use proper alignment for structured data
 
 ## Document templates
 
-### README structure
-
-```markdown
-# Project Name
-
-Brief description (1-2 sentences).
-
-## Installation
-
-```bash
-pip install package
-```
-
-## Usage
-
-```python
-from package import Module
-result = Module.process()
-```
-
-## Configuration
-
-| Parameter | Default | Description |
-|-----------|---------|-------------|
-| param1    | "value" | What it does |
-
-## API Reference
-
-### function_name(param1, param2)
-
-Description.
-
-**Parameters:**
-- `param1` (type): Description
-
-**Returns:**
-- type: Description
-
-**Example:**
-```python
-result = function_name("value", 42)
-```
-```
-
-### Changelog format
-
-```markdown
-# Changelog
-
-## [Unreleased]
-
-### Added
-- New feature
-
-### Changed
-- Modified feature
-
-### Fixed
-- Bug fix
-
-## [1.0.0] - 2025-01-15
-
-### Added
-- Initial release
-```
+See [references/templates.md](references/templates.md) for detailed templates:
+- README structure
+- Changelog format (Keep a Changelog)
+- API documentation
+- Technical specifications
 
 ## Quality checklist
 
@@ -117,19 +43,16 @@ result = function_name("value", 42)
 - Logical header hierarchy (no skipped levels)
 - Working, runnable code examples
 - Consistent formatting throughout
-- Scannable structure
 - One H1 per document
 
 ## Best practices
 
 1. One H1 as document title only
-2. Don't skip header levels (H2→H4)
-3. Use tables for structured data
-4. Relative links for internal docs
-5. Blank lines around code blocks
-6. Descriptive link text (not "click here")
+2. Use tables for structured data
+3. Relative links for internal docs
+4. Blank lines around code blocks
+5. Descriptive link text (not "click here")
 
 ## Keywords
 
 technical documentation, markdown docs, README, API documentation, changelog, technical spec, code documentation, developer docs
-

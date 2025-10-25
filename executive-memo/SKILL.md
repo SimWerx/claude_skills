@@ -5,12 +5,14 @@ description: Create executive-level business documents including strategic memos
 
 ## When to use this skill
 
-Use this skill for:
-- Strategic memos and proposals
-- Status reports and project updates
-- Decision documents
-- Technical briefs for non-technical stakeholders
-- Executive summaries
+Use this skill for strategic memos, status reports, decision documents, technical briefs for non-technical stakeholders, and executive summaries.
+
+## How to use this skill
+
+1. **Identify the document type** from the user request
+2. **Load the appropriate template** from `references/formats.md`
+3. **Apply core principles** - Answer-first, evidence-based, no embellishment
+4. **Structure output** using the loaded template
 
 ## Core principles
 
@@ -20,75 +22,13 @@ Use this skill for:
 4. **Context-aware tone** - Match strategic/operational/technical context
 5. **No embellishment** - No buzzwords (cutting-edge, innovative), no emojis, no marketing speak
 
-## Document formats
+## Document templates
 
-### Strategic memo
-
-```markdown
-# [Title]
-
-## Recommendation
-[Clear statement of position or decision]
-
-## Context
-[Background needed to understand]
-
-## Rationale
-[Evidence and reasoning]
-
-## Implications
-[What this means]
-
-## Next Steps (only if material value)
-[Concrete actions required]
-```
-
-### Status report
-
-```markdown
-# [Project] - Status Report
-**Date**: [Date]
-
-## Status
-[Green/Yellow/Red with brief explanation]
-
-## Progress
-- [Key accomplishment]
-- [Key accomplishment]
-
-## Current Focus
-[What's happening now]
-
-## Blockers
-[Issues requiring attention]
-
-## Upcoming
-[Next 2-3 key milestones]
-```
-
-### Decision document
-
-```markdown
-# [Decision Title]
-
-## Decision Required
-[What needs to be decided]
-
-## Options
-### Option A
-- **Pros**: [Benefits]
-- **Cons**: [Drawbacks]
-- **Impact**: [Resources, timeline, risk]
-
-### Option B
-[Same structure]
-
-## Recommendation
-[Recommended option with rationale]
-
-## Timeline
-[When decision needed and why]
-```
+See [references/formats.md](references/formats.md) for detailed templates:
+- Strategic memos
+- Status reports
+- Decision documents
+- Technical briefs
 
 ## Quality checklist
 
@@ -101,4 +41,3 @@ Use this skill for:
 ## Keywords
 
 executive memo, strategic brief, status report, decision document, project update, leadership communication, business writing
-
