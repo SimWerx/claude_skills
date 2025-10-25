@@ -121,32 +121,35 @@ python skill-creator/scripts/package_skill.py path/to/skill
 
 ```
 claude_skills/
-├── README.md                  # This file
-├── template-skill/            # Basic skill template
-├── skill-creator/             # Meta-skill for skill creation
+├── README.md                      # This file
+├── docs/                          # Reference documentation
+│   ├── skill-format-spec.md       # SKILL.md format specification
+│   └── skill-authoring-guide.md   # Best practices for creating skills
+├── template-skill/                # Basic skill template
+├── skill-creator/                 # Meta-skill for skill creation
 │   └── scripts/
-│       ├── init_skill.py      # Initialize new skill
-│       ├── package_skill.py   # Validate and package
-│       └── quick_validate.py  # Fast validation
-├── internal-comms/            # Anthropic's internal comms skill
-│   └── examples/              # 3P updates, newsletters, FAQs
-├── document-skills/           # Anthropic's production doc skills
+│       ├── init_skill.py          # Initialize new skill
+│       ├── package_skill.py       # Validate and package
+│       └── quick_validate.py      # Fast validation
+├── internal-comms/                # Anthropic's internal comms skill
+│   └── examples/                  # 3P updates, newsletters, FAQs
+├── document-skills/               # Anthropic's production doc skills
 │   ├── docx/
 │   ├── pdf/
 │   ├── pptx/
 │   └── xlsx/
-├── research-synthesis/        # Custom: Research synthesis
+├── research-synthesis/            # Custom: Research synthesis
 │   └── references/
-│       └── formats.md         # Output templates
-├── executive-memo/            # Custom: Business documents
+│       └── formats.md             # Output templates
+├── executive-memo/                # Custom: Business documents
 │   └── references/
-│       └── formats.md         # Document templates
-├── data-interrogation/        # Custom: Data analysis
+│       └── formats.md             # Document templates
+├── data-interrogation/            # Custom: Data analysis
 │   └── references/
-│       └── formats.md         # Analysis formats
-└── technical-docs/            # Custom: Technical documentation
+│       └── formats.md             # Analysis formats
+└── technical-docs/                # Custom: Technical documentation
     └── references/
-        └── templates.md       # Doc templates
+        └── templates.md           # Doc templates
 ```
 
 ## Roadmap
@@ -164,12 +167,18 @@ These will incorporate Liberty Dynamic memories:
 - Brand positioning (premium product, not cost-saving)
 - Location specifics (Denver HQ, timing precision)
 
+## Reference Documentation
+
+**docs/skill-format-spec.md** - Quick reference for valid SKILL.md structure, frontmatter requirements, and validation rules.
+
+**docs/skill-authoring-guide.md** - Comprehensive best practices for creating high-quality skills with progressive disclosure, workflows, and quality checklist.
+
 ## Contributing
 
 This is an internal working repository for SimWerx/Liberty Dynamic. New skills should:
-1. Follow Anthropic's best practices (see `skill-creator/SKILL.md`)
-2. Use progressive disclosure pattern
-3. Include clear triggers and workflows
+1. Follow patterns in `docs/skill-authoring-guide.md`
+2. Use progressive disclosure (lean SKILL.md, details in references/)
+3. Include "When to use" and "How to use" sections
 4. Be tested with real usage before committing
 
 ## License
