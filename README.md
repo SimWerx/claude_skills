@@ -1,10 +1,9 @@
-# SimWerx/Liberty Dynamic - Claude Skills
+# Claude Skills
 
-Internal productivity skills repository for CEO/TPM workflows, built on Anthropic's Skills framework.
+Professional productivity skills repository built on Anthropic's Skills framework.
 
-**Repository**: https://github.com/SimWerx/claude_skills  
-**Forked from**: anthropics/skills  
-**Status**: Internal use - Private skills development
+**Forked from**: anthropics/skills
+**License**: See LICENSE files in individual skill directories
 
 ## What are Skills?
 
@@ -31,7 +30,7 @@ For comprehensive documentation, see:
 - **pptx** - Create, edit, analyze PowerPoint presentations with layouts and charts
 - **xlsx** - Create, edit, analyze Excel spreadsheets with formulas and formatting
 
-### SimWerx Custom Skills (CEO/TPM Workflows)
+### Custom Productivity Skills
 
 **research-synthesis** - Transform research materials into executive summaries with proper citations, evidence hierarchy, and actionable insights. Progressive disclosure: Core principles in main file, output formats in `references/`.
 
@@ -51,11 +50,6 @@ For comprehensive documentation, see:
 4. Reference in conversations when needed
 
 ### In Claude Code (Cursor)
-
-Register this repository as a plugin marketplace:
-```bash
-/plugin marketplace add SimWerx/claude_skills
-/plugin install simwerx-custom-skills
 ```
 
 Or reference skills directly in project `.cursor/rules/` directory.
@@ -117,55 +111,79 @@ Package for distribution:
 python skill-creator/scripts/package_skill.py path/to/skill
 ```
 
+### AI-Powered Skill Generation (Recommended)
+
+For rapid prototyping and production-ready skills, use the **Skills Factory Generator** in Claude Code/Cursor:
+
+**Quick start**:
+1. Drag `SKILLS_FACTORY_GENERATOR_PROMPT.md` into Claude Code conversation
+2. Request: `"Generate a skill for analyzing customer feedback CSV files"`
+3. Claude creates complete skill files and ZIP automatically
+4. Upload ZIP to Claude.ai → Settings → Skills
+
+**What you get**:
+- Fully populated SKILL.md (not template placeholders)
+- Complete references/ with production-ready templates
+- Functional Python scripts (when necessary)
+- Realistic test data (10-20 lines)
+- Automatic ZIP packaging
+- Zero manual work required
+
+**Comparison**:
+
+| Tool | Output | Time Required | Manual Work |
+|------|--------|---------------|-------------|
+| `init_skill.py` | Template skeleton | Instant | 2-4 hours to complete |
+| **Skills Factory** | Production-ready skill | 30 seconds | None |
+
+**Example requests**:
+- `"Generate a skill for converting meeting notes to action items"`
+- `"Create 3 skills for financial services: quarterly analysis, risk assessment, compliance docs"`
+- `"Generate an advanced skill with Python script for processing invoice PDFs"`
+
+See [docs/skills-factory-guide.md](docs/skills-factory-guide.md) for comprehensive usage guide, examples, and best practices.
+
 ## Repository Structure
 
 ```
 claude_skills/
-├── README.md                      # This file
-├── docs/                          # Reference documentation
-│   ├── skill-format-spec.md       # SKILL.md format specification
-│   └── skill-authoring-guide.md   # Best practices for creating skills
-├── template-skill/                # Basic skill template
-├── skill-creator/                 # Meta-skill for skill creation
+├── README.md                              # This file
+├── CLAUDE.md                              # Claude Code operational guide
+├── SKILLS_FACTORY_GENERATOR_PROMPT.md    # AI-powered skill generator
+├── docs/                                  # Reference documentation
+│   ├── skill-format-spec.md               # SKILL.md format specification
+│   ├── skill-authoring-guide.md           # Best practices for creating skills
+│   └── skills-factory-guide.md            # AI-powered skill generation guide
+├── generated-skills/                      # Auto-generated skills (from Factory)
+│   └── [skill-name]/                      # Production-ready skills
+└── zips/                                  # ZIP files ready for Claude.ai upload
+│   └── [skill-name].zip
+├── template-skill/                        # Basic skill template
+├── skill-creator/                         # Meta-skill for skill creation
 │   └── scripts/
-│       ├── init_skill.py          # Initialize new skill
-│       ├── package_skill.py       # Validate and package
-│       └── quick_validate.py      # Fast validation
-├── internal-comms/                # Anthropic's internal comms skill
-│   └── examples/                  # 3P updates, newsletters, FAQs
-├── document-skills/               # Anthropic's production doc skills
+│       ├── init_skill.py                  # Initialize new skill
+│       ├── package_skill.py               # Validate and package
+│       └── quick_validate.py              # Fast validation
+├── internal-comms/                        # Anthropic's internal comms skill
+│   └── examples/                          # 3P updates, newsletters, FAQs
+├── document-skills/                       # Anthropic's production doc skills
 │   ├── docx/
 │   ├── pdf/
 │   ├── pptx/
 │   └── xlsx/
-├── research-synthesis/            # Custom: Research synthesis
+├── research-synthesis/                    # Custom: Research synthesis
 │   └── references/
-│       └── formats.md             # Output templates
-├── executive-memo/                # Custom: Business documents
+│       └── formats.md                     # Output templates
+├── executive-memo/                        # Custom: Business documents
 │   └── references/
-│       └── formats.md             # Document templates
-├── data-interrogation/            # Custom: Data analysis
+│       └── formats.md                     # Document templates
+├── data-interrogation/                    # Custom: Data analysis
 │   └── references/
-│       └── formats.md             # Analysis formats
-└── technical-docs/                # Custom: Technical documentation
+│       └── formats.md                     # Analysis formats
+└── technical-docs/                        # Custom: Technical documentation
     └── references/
-        └── templates.md           # Doc templates
+        └── templates.md                   # Doc templates
 ```
-
-## Roadmap
-
-### Planned Skills (Liberty Dynamic Specific)
-
-- **brand-compliance** - Liberty Dynamic terminology, voice, regulatory language
-- **product-docs** - EDD technical documentation with approved terminology
-- **presentation-audit** - Extract and analyze PPTX content for terminology violations
-- **sales-materials** - Generate sales content with brand compliance checking
-
-These will incorporate Liberty Dynamic memories:
-- Terminology preferences (fuel air event, EDD Initiator, concussive output)
-- Regulatory context (BATFE compliance, NFA regulations)
-- Brand positioning (premium product, not cost-saving)
-- Location specifics (Denver HQ, timing precision)
 
 ## Reference Documentation
 
@@ -173,28 +191,24 @@ These will incorporate Liberty Dynamic memories:
 
 **docs/skill-authoring-guide.md** - Comprehensive best practices for creating high-quality skills with progressive disclosure, workflows, and quality checklist.
 
+**docs/skills-factory-guide.md** - Complete guide to AI-powered skill generation using the Skills Factory Generator in Claude Code/Cursor. Includes examples, patterns, customization options, and troubleshooting.
+
 ## Contributing
 
-This is an internal working repository for SimWerx/Liberty Dynamic. New skills should:
+This repository welcomes contributions. New skills should:
 1. Follow patterns in `docs/skill-authoring-guide.md`
 2. Use progressive disclosure (lean SKILL.md, details in references/)
 3. Include "When to use" and "How to use" sections
 4. Be tested with real usage before committing
 
-## License
-
-- **Anthropic skills**: See individual LICENSE.txt files in skill directories
-- **Custom skills**: SimWerx/Liberty Dynamic internal use
-- **This repository**: Forked from anthropics/skills (Apache 2.0)
 
 ## References
 
 - [Anthropic Skills Repository](https://github.com/anthropics/skills)
 - [Skills Documentation](https://docs.claude.com/en/docs/agents-and-tools/agent-skills/overview)
 - [Best Practices Guide](https://docs.claude.com/en/docs/agents-and-tools/agent-skills/best-practices)
-- [SimWerx Fork](https://github.com/SimWerx/claude_skills)
 
 ---
 
-**Last Updated**: January 2025  
-**Maintained by**: SimWerx Team
+**Last Updated**: October 2024
+**Maintained by**: Community Contributors
