@@ -6,6 +6,11 @@
 generated-skills/
 zips/
 
+# research-archive/ is NOT gitignored
+# Research archives document reasoning (INPUT) and should be version controlled
+# Unlike generated-skills/ (OUTPUT), research explains WHY decisions were made
+# Enables team transparency, reproducibility, and temporal knowledge tracking
+
 # IDE files
 .vscode/
 .idea/

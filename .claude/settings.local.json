@@ -6,7 +6,8 @@
       "Bash(unzip:*)",
       "Bash(python3:*)",
       "Bash(cat:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Read(//Users/johnchapman/.claude/skills/background-research/references/**)"
     ],
     "deny": [],
     "ask": []

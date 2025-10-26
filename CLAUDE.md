@@ -66,6 +66,28 @@ This repository provides two methods for creating skills, with distinct use case
 
 **Recommendation**: Use Skills Factory Generator for creation, scripts for validation/packaging
 
+### Research-Enhanced Workflow (Automatic)
+
+When generating skills about frameworks, tools, or evolving best practices, the Skills Factory automatically invokes the `background-research` skill to:
+- Ground skills in current evidence (sources from 2024-2025)
+- Include source citations for credibility: "(Source: Publication, Year)"
+- Add temporal context ("as of October 2025")
+- Identify deprecated approaches
+- Ensure recommendations reflect current standards
+
+This happens transparently in **Step 2: Research & Contextualize** of the generation workflow. The factory auto-detects time-sensitive skills and invokes research before planning the skill structure.
+
+**Auto-detection logic**:
+- ✅ Invoke research: Frameworks, methodologies, tools, best practices
+- ❌ Skip research: Evergreen workflows, fixed specifications, user-provided complete specs
+
+**User control**:
+- `research_depth: skip` - Force skip (fast, no web searches)
+- `research_depth: standard` - 2-3 searches (default when auto-detected)
+- `research_depth: comprehensive` - 5+ searches (thorough investigation)
+
+See [SKILLS_FACTORY_GENERATOR_PROMPT.md](SKILLS_FACTORY_GENERATOR_PROMPT.md) Step 2 for complete heuristics and [background-research skill](generated-skills/background-research/) for methodology.
+
 ### Git Operations
 
 This repository uses standard git workflows. When committing:
@@ -103,7 +125,6 @@ This pattern ensures efficient token usage by loading only what's needed when it
 ### Two Skill Categories
 
 **Anthropic Reference Skills** (included for reference):
-- `template-skill` - Basic template for new skills
 - `skill-creator` - Meta-skill with init/validate/package scripts
 - `internal-comms` - Internal communications templates
 - `document-skills/` - Production DOCX, PDF, PPTX, XLSX skills
@@ -113,6 +134,39 @@ This pattern ensures efficient token usage by loading only what's needed when it
 - `executive-memo` - Strategic memos, status reports, decision docs
 - `data-interrogation` - CSV analysis → actionable insights
 - `technical-docs` - Technical markdown documentation (READMEs, API docs)
+
+### research-archive/ - Research Audit Trail
+
+Research outputs from the `background-research` skill are archived here with timestamps.
+
+**Purpose**:
+- **Auditability**: Verify sources and statistics used in skill generation
+- **Currency tracking**: Know when research was conducted to assess if skills need updating
+- **Re-use**: Reference existing research when generating related skills
+- **Team collaboration**: Share research artifacts without sharing entire chat history
+- **Fact-checking**: Validate claims against original sources
+
+**Naming convention**: `YYYY-MM-DD-HHMM-topic-kebab.md`
+- Date/time: When research was conducted (e.g., `2025-10-25-1430`)
+- Topic: Kebab-case version of research topic, max 50 chars
+- Example: `2025-10-25-1430-ai-engine-optimization.md`
+
+**Gitignored**: Yes (development artifacts, not source code)
+
+**Relationship to skills**:
+- Archive = source of truth (local development)
+- `references/research-findings.md` = copy included in ZIP (for uploaded skills)
+- SKILL.md HTML comment points to archive location
+
+**Usage patterns**:
+- Single research → single skill: One archive file referenced by one skill
+- Batch research → multiple skills: One archive file referenced by multiple skills
+- Same topic, different dates: Compare archives to see how domain evolved
+
+**Future enhancements**:
+- **Research reuse detection**: Before conducting new research, check for recent research on same topic (<30 days). Options: reuse findings (saves tokens), ask user to reuse or refresh, or always refresh for currency. Improves efficiency for iterative skill development.
+- **Auto-generated index**: Create `research-archive/index.md` with metadata table (date, topic, skill, confidence, sources). Enables quick discovery of existing research without scanning filenames.
+- **Monthly organization**: If archive grows to 100+ files, organize into monthly subdirectories (e.g., `research-archive/2025-10/`). Currently using flat structure (simpler for small scale).
 
 ## SKILL.md Format Requirements
 
@@ -322,7 +376,7 @@ Before shipping a skill:
 - [ ] Validates with `quick_validate.py`
 - [ ] Tested with real prompts
 - [ ] **Multi-model tested**: Validated on Haiku (fast), Sonnet (balanced), and Opus (most capable)
-- [ ] Works across deployment platforms (Claude.ai ZIP, Claude Code filesystem, API if applicable)
+- [ ] Works across deployment platforms (Claude.ai, Claude Desktop, Claude Code, API if applicable)
 
 ## Key Insights
 

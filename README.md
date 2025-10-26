@@ -16,7 +16,7 @@ For comprehensive documentation, see:
 
 ## Skills Deployment Options
 
-Skills work across three Claude platforms with different workflows:
+Skills work across four Claude platforms with different workflows:
 
 ### For Claude.ai (ZIP Upload Method)
 
@@ -28,6 +28,21 @@ Upload skills as ZIP files via Settings → Capabilities → Skills.
 - Works with our Skills Factory Generator + `package_skill.py`
 
 **Use this repository's tools**: See "Creating New Skills" and "AI-Powered Skill Generation" sections below.
+
+### For Claude Desktop (Native Application)
+
+Native Mac, Windows, and Linux desktop application for power users.
+
+**Deployment**: Settings → Capabilities → Skills
+- Same ZIP upload workflow as Claude.ai web interface
+- Skills persist locally on your machine
+- Individual user skills only (no team distribution)
+
+**When to use Claude Desktop vs Claude Code**:
+- **Claude Desktop** = GUI application for non-technical users and general productivity
+- **Claude Code** = CLI/IDE integration for developers and technical workflows
+
+**Use this repository's tools**: Same as Claude.ai - see "Creating New Skills" and "AI-Powered Skill Generation" sections below.
 
 ### For Claude Code (Personal & Project Skills)
 
@@ -62,13 +77,41 @@ git push
 
 Programmatic access via the `/v1/skills` endpoint (announced October 2025).
 
-- Reference by `skill_id` in API calls
-- Version control via API
-- Requires beta headers
+**Required headers**:
+- `skills-2025-10-02` - Skills API beta access
+- `code-execution-2025-08-25` - Only required for skills that include `scripts/` or executable code
 
-See [Skills API Quickstart](https://docs.anthropic.com/en/api/skills-guide) for details.
+**Features**:
+- Reference skills by `skill_id` in API calls
+- Version control via API
+- Supports both Anthropic-managed skills and custom skills
+- Programmatic deployment and updates
+
+**Usage example**:
+```python
+import anthropic
+
+client = anthropic.Anthropic(
+    api_key="your-api-key"
+)
+
+# Use skill in API call
+response = client.messages.create(
+    model="claude-3-5-sonnet-20241022",
+    max_tokens=1024,
+    skills=["skill_id_here"],
+    messages=[{"role": "user", "content": "Your message"}],
+    betas=["skills-2025-10-02"]
+)
+```
+
+See [Skills API Quickstart](https://docs.anthropic.com/en/api/skills-guide) for comprehensive documentation.
 
 ### Migration Between Platforms
+
+**ZIP → Claude Desktop**: Upload ZIP file directly
+- Settings → Capabilities → Skills → Upload
+- Same workflow as Claude.ai web interface
 
 **ZIP → Claude Code**: Unzip skills into `~/.claude/skills/` or `.claude/skills/`
 
@@ -81,7 +124,25 @@ unzip skill-name.zip -d .claude/skills/
 git add .claude/skills/skill-name/
 ```
 
-**This Repository Supports All Platforms**: Skills generated here work across Claude.ai, Claude Code, and API with appropriate deployment methods.
+**This Repository Supports All Platforms**: Skills generated here work across Claude.ai, Claude Desktop, Claude Code, and API with appropriate deployment methods.
+
+### Platform-Specific Features & Behaviors
+
+Different Claude platforms support different skill features. Understanding these differences helps you choose the right deployment method:
+
+| Feature | Claude.ai | Claude Desktop | Claude Code | API |
+|---------|-----------|----------------|-------------|-----|
+| **Deployment Method** | ZIP upload | ZIP upload | Filesystem | Programmatic |
+| **Team Sharing** | No | No | Yes (project skills) | Yes |
+| **Progressive Disclosure** | Yes | Yes | Yes | Yes |
+| **allowed-tools** | Ignored | Ignored | **Enforced** | Not applicable |
+| **Scripts Execution** | Limited | Limited | Full | Full (with header) |
+| **Plugin Distribution** | No | No | Yes | No |
+
+**Key differences**:
+- **allowed-tools**: Only enforced in Claude Code. Claude.ai and Claude Desktop ignore this frontmatter field and use standard permission model.
+- **Team Sharing**: Claude Code project skills (`.claude/skills/`) are shared via git. API allows programmatic distribution.
+- **Scripts**: Full script execution requires `code-execution-2025-08-25` beta header in API calls.
 
 ### About .claude/skills/example-project-skill/
 
@@ -158,6 +219,8 @@ This means you can fit far more capabilities into the same context window, or ac
 - **pdf** - Extract text/tables, fill forms, merge/split documents
 - **pptx** - Create, edit, analyze PowerPoint presentations with layouts and charts
 - **xlsx** - Create, edit, analyze Excel spreadsheets with formulas and formatting
+
+> **Note**: Document skills (DOCX, PDF, PPTX, XLSX) are point-in-time reference implementations from Anthropic and are not actively maintained. Use them as examples and learning resources rather than production dependencies. For production use, test thoroughly and adapt to your specific requirements.
 
 ### Custom Productivity Skills
 
@@ -297,6 +360,49 @@ For rapid prototyping and production-ready skills, use the **Skills Factory Gene
 - `"Generate an advanced skill with Python script for processing invoice PDFs"`
 
 See [docs/skills-factory-guide.md](docs/skills-factory-guide.md) for comprehensive usage guide, examples, and best practices.
+
+**Browse ready-to-generate skill ideas**: Check out [skill-ideas/](skill-ideas/) for pre-written skill requests you can generate in 30 seconds. Each file contains a complete skill specification ready for the Skills Factory Generator - just reference the file and Claude creates everything automatically.
+
+### Research-Enhanced Skill Generation
+
+The Skills Factory automatically conducts web research for time-sensitive skills (frameworks, tools, best practices) to ensure currency and credibility.
+
+**How it works**:
+1. Factory auto-detects research need (Step 2: frameworks/tools/methodologies → invoke research)
+2. Invokes `background-research` skill with current date
+3. Receives structured findings with source citations
+4. Transfers evidence to generated skill
+
+**Research findings are integrated into**:
+- **Core Principles**: Evidence-based rules with source citations "(Source: Publication, Year)"
+- **References**: Current frameworks and methodologies from research
+- **Keywords**: Contemporary terminology discovered in research
+- **Descriptions**: Temporal context ("as of October 2025")
+
+**Control research behavior**:
+- `research_depth: skip` - No web research (fast, for evergreen skills)
+- `research_depth: standard` - 2-3 searches (default for time-sensitive)
+- `research_depth: comprehensive` - 5+ searches (deep investigation)
+
+**Example**: When generating an AEO skill, the factory automatically researches "AI Engine Optimization October 2025", finds current statistics (57% AI Overviews presence), and includes source citations (CXL, BrightEdge, Ahrefs 2025) in Core Principles.
+
+**Research persistence**:
+
+When research is conducted, the output is saved to two locations:
+
+1. **research-archive/**: Timestamped archive for audit trail and fact-checking
+   - Format: `2025-10-25-1430-ai-engine-optimization.md`
+   - Gitignored (local development only)
+   - Single source of truth for verifying claims and tracking currency
+
+2. **references/research-findings.md**: Copy included in skill ZIP
+   - Uploaded to Claude.ai with skill
+   - Available as progressive disclosure context
+   - Users can say "review your research findings" in conversation
+
+This dual approach enables both local auditability (archive) and portable context (included in ZIP).
+
+See [background-research skill](generated-skills/background-research/) for complete methodology.
 
 ## Repository Structure
 
