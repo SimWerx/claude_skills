@@ -117,7 +117,7 @@ Use this skill for [specific scenarios, file types, contexts]. Examples: [concre
 ## How to use this skill
 
 1. **[Step 1]** - [Clear action]
-2. **[Step 2]** - [Clear action, reference to references/ if needed]
+2. **[Step 2]** - [Clear action with EMPHATIC reference to references/ if needed: "🚨 **REQUIRED READING**: Before [action], you MUST read [references/file.md]"]
 3. **[Step 3]** - [Clear action]
 4. **[Step 4]** - [Clear action]
 
@@ -323,7 +323,14 @@ date,product,revenue,units_sold,region
 - "When to use" triggers
 - "How to use" 4-step workflow
 - Core principles (3-5 bullets)
-- Links to references/ for details
+- Links to references/ for details using EMPHATIC language
+
+**Emphatic language for references** (CRITICAL):
+When directing Claude to read additional files, use strong, explicit directives:
+- ✅ "🚨 **REQUIRED READING**: Before generating X, you MUST read `references/file.md`"
+- ✅ "You **MUST** carefully review `Design Requirements.md` before proceeding"
+- ❌ "See references/file.md for more details"
+- ❌ "Review the requirements if needed"
 
 **references/ (50-200 lines each)**:
 - Detailed templates
@@ -539,12 +546,34 @@ Created files:
 - generated-skills/skill-name/assets/sample_data.csv
 - zips/skill-name.zip (ready for upload)
 
-To use:
-1. Upload zips/skill-name.zip to Claude.ai
-2. Go to Settings → Capabilities → Skills
-3. Click "Upload Skill" and select the ZIP
-4. Enable the skill in your conversation
-5. Test using prompts from sample_prompt.md
+Deployment Options:
+
+**For Claude.ai (ZIP Upload)**:
+1. Go to Claude.ai → Settings → Capabilities → Skills
+2. Click "Upload Skill" and select zips/skill-name.zip
+3. Enable the skill in your conversation
+4. Test using prompts from sample_prompt.md
+
+**For Claude Code - Personal** (just for you):
+```bash
+mkdir -p ~/.claude/skills/
+unzip zips/skill-name.zip -d ~/.claude/skills/
+# Restart Claude Code to load the skill
+```
+
+**For Claude Code - Project** (team-shared via git):
+```bash
+mkdir -p .claude/skills/
+unzip zips/skill-name.zip -d .claude/skills/
+git add .claude/skills/skill-name/
+git commit -m "Add skill-name skill"
+git push
+```
+
+**For Claude API**:
+- Upload via /v1/skills endpoint
+- Reference by skill_id in API requests
+- See Skills API documentation
 ```
 
 ### For Multiple Skills

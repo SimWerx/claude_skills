@@ -55,6 +55,53 @@ skill/
 
 **Pattern**: Main file points to details. Claude reads details only when needed.
 
+### Emphatic Language for References
+
+When directing Claude to read additional context, use strong, explicit directives to ensure reliable progressive disclosure:
+
+**Good examples**:
+```markdown
+🚨 **REQUIRED READING**: Before generating output, you MUST read `references/templates.md`
+
+To create thumbnails, you **MUST** carefully review the design requirements in `Design Requirements.md`
+
+**ABSOLUTELY CRITICAL**: Read `api-guidelines.md` before making API calls
+```
+
+**Bad examples**:
+```markdown
+See references/templates.md for more details
+
+Review the design requirements if needed
+
+You can check api-guidelines.md for additional information
+```
+
+**Conditional phrasing pattern**:
+```markdown
+Before doing X, you MUST read: `path/to/file.md`
+
+If you want to accomplish Y, then you **MUST** also read: `path/to/context.md`
+```
+
+**Why this matters**: Emphatic language ensures Claude loads critical context at the right moment, making progressive disclosure more reliable and preventing errors from missing important information.
+
+**Real example from youtube-thumbnail skill**:
+```markdown
+## 🚨 REQUIRED READING 🚨
+
+The following documents are **MANDATORY READING**. It's **ABSOLUTELY CRITICAL**
+you follow both the design requirements and prompting guidelines in order to
+generate high converting thumbnails. Failure to do so will result in a failed task.
+
+Carefully read both the design requirements and prompting guidelines before proceeding.
+
+### Design Requirements
+
+All thumbnails **MUST** follow these design requirements:
+`.claude/skills/youtube-thumbnail/Design Requirements.md`
+```
+
 ## Writing Style
 
 **Third-person descriptions**:
@@ -295,6 +342,68 @@ keyword, keyword, keyword
 - SKILL.md: 30-50 lines
 - References: 50-200 lines each
 - Total skill: As needed (references loaded on-demand)
+
+---
+
+## Platform-Specific Features
+
+### allowed-tools (Claude Code Only)
+
+Restrict which tools Claude can use when a skill is active:
+
+```yaml
+---
+name: code-reviewer
+description: Review code without making changes
+allowed-tools: Read, Grep, Glob
+---
+```
+
+**When specified**: Claude can ONLY use listed tools (no permission prompts)
+**When omitted**: Standard permission model applies
+
+**Use for**:
+- Read-only operations
+- Security-sensitive workflows
+- Scope-limited skills
+
+**Important**: Only works in Claude Code, ignored in Claude.ai
+
+### Deployment Paths
+
+**Claude.ai**: Upload ZIP via Settings → Skills
+**Claude Code Personal**: `~/.claude/skills/skill-name/`
+**Claude Code Project**: `.claude/skills/skill-name/` (git-shared)
+**Claude API**: `/v1/skills` endpoint
+
+See README.md for migration instructions between platforms.
+
+---
+
+## Staying Updated with Official Sources
+
+**Monitor these for updates**:
+
+1. **Anthropic Skills Repo**: https://github.com/anthropics/skills
+   - Watch for new patterns and examples
+   - Apache 2.0 licensed reference implementations
+
+2. **Official Documentation**: https://docs.claude.com/en/docs/agents-and-tools/agent-skills/
+   - Best practices page
+   - Claude Code agent skills guide
+   - Skills API documentation
+
+3. **Anthropic Engineering Blog**: https://www.anthropic.com/engineering
+   - Feature announcements
+   - Architecture deep-dives
+
+**Review quarterly** for:
+- New frontmatter fields (e.g., `allowed-tools` added Oct 2025)
+- Updated validation requirements
+- Multi-model testing recommendations
+- Breaking changes to skill format
+
+---
 
 That's the guide. Keep skills lean, tested, and iterated based on real usage.
 

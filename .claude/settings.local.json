@@ -4,7 +4,9 @@
       "Bash(zip:*)",
       "Bash(test:*)",
       "Bash(unzip:*)",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(cat:*)",
+      "Bash(find:*)"
     ],
     "deny": [],
     "ask": []

@@ -14,13 +14,142 @@ For comprehensive documentation, see:
 - [Best Practices](https://docs.claude.com/en/docs/agents-and-tools/agent-skills/best-practices)
 - [Creating Custom Skills](https://support.claude.com/en/articles/12512198-how-to-create-custom-skills)
 
+## Skills Deployment Options
+
+Skills work across three Claude platforms with different workflows:
+
+### For Claude.ai (ZIP Upload Method)
+
+Upload skills as ZIP files via Settings → Capabilities → Skills.
+
+**Characteristics**:
+- Individual user skills only (no organization-wide distribution)
+- Must upload separate ZIP for each skill
+- Works with our Skills Factory Generator + `package_skill.py`
+
+**Use this repository's tools**: See "Creating New Skills" and "AI-Powered Skill Generation" sections below.
+
+### For Claude Code (Personal & Project Skills)
+
+**Personal Skills** (`~/.claude/skills/`):
+- Available across **all your projects**
+- Store your individual workflows and preferences
+- Not shared with team members
+
+```bash
+# Create personal skill
+mkdir -p ~/.claude/skills/my-skill
+# Add SKILL.md with frontmatter
+```
+
+**Project Skills** (`.claude/skills/`):
+- **Shared with team via git** - checked into repository
+- Auto-discovered by teammates when they pull
+- Project-specific expertise and conventions
+
+```bash
+# Create project skill
+mkdir -p .claude/skills/team-skill
+# Add SKILL.md, commit to git
+git add .claude/skills/
+git commit -m "Add team skill for API integration"
+git push
+```
+
+**Plugin Distribution**: Skills can also be bundled in [Claude Code plugins](https://docs.claude.com/en/docs/claude-code/plugins) for community sharing via marketplace.
+
+### For Claude API
+
+Programmatic access via the `/v1/skills` endpoint (announced October 2025).
+
+- Reference by `skill_id` in API calls
+- Version control via API
+- Requires beta headers
+
+See [Skills API Quickstart](https://docs.anthropic.com/en/api/skills-guide) for details.
+
+### Migration Between Platforms
+
+**ZIP → Claude Code**: Unzip skills into `~/.claude/skills/` or `.claude/skills/`
+
+```bash
+# Personal
+unzip skill-name.zip -d ~/.claude/skills/
+
+# Project (team-shared)
+unzip skill-name.zip -d .claude/skills/
+git add .claude/skills/skill-name/
+```
+
+**This Repository Supports All Platforms**: Skills generated here work across Claude.ai, Claude Code, and API with appropriate deployment methods.
+
+### About .claude/skills/example-project-skill/
+
+This repository includes a working example of a Claude Code project skill.
+
+**Purpose**: Demonstrates the team-shared skills pattern
+**Location**: `.claude/skills/` (where Claude Code auto-discovers project skills)
+**Function**: Both an example to learn from AND a working skill when using this repo with Claude Code
+
+When you open this repository in Claude Code, it will automatically discover and load this skill, demonstrating how teams can share project-specific expertise via git. The skill itself explains the pattern and provides a template for creating your own team-shared skills.
+
+## Why Skills Over Alternatives?
+
+**Progressive Disclosure is the Core Value**
+
+Skills use a three-tier loading pattern that makes them uniquely efficient:
+1. **Metadata only** (always loaded) - Just skill name and description (~100 words)
+2. **SKILL.md** (loaded when triggered) - Navigation and workflows (<500 lines)
+3. **References** (loaded as needed) - Detailed templates, examples, schemas (unlimited)
+
+This means you can fit far more capabilities into the same context window, or achieve the same capabilities with much smaller context footprint.
+
+**Skills vs MCPs**
+
+| Aspect | Skills | MCPs |
+|--------|--------|------|
+| **Context loading** | Progressive (name → instructions → details) | Full schemas loaded upfront |
+| **Setup complexity** | Just markdown + optional scripts | Server infrastructure required |
+| **Execution** | Local, same process as agent | External server |
+| **Maintenance** | Simple to debug and iterate | Requires server monitoring |
+| **Best for** | Self-contained workflows, local tools | External APIs, shared infrastructure |
+
+**Skills vs Slash Commands**
+
+| Aspect | Skills | Slash Commands |
+|--------|--------|----------------|
+| **Triggering** | Agent decides when to use | User manually invokes |
+| **Autonomy** | Agent chooses inputs/context | User provides all inputs |
+| **Flexibility** | Dynamic, context-aware usage | Fixed, linear workflow |
+| **Best for** | Agent-driven automation | User-directed templates |
+
+**Skills vs Subagents**
+
+| Aspect | Skills | Subagents |
+|--------|--------|-----------|
+| **Context** | Inherits full conversation context | Separate, isolated context |
+| **Control** | Human-in-the-loop, direct steering | No user interaction once launched |
+| **Tool loading** | Progressive disclosure | Full tool schemas loaded |
+| **Best for** | Tasks needing conversation context | Isolated, parallel work |
+
+**Key Advantages**
+
+1. **Reduced Context Load** - Only metadata loaded initially; everything else progressively disclosed
+2. **Compounding Abilities** - Skills can leverage other skills with minimal overhead
+3. **Simplicity** - No infrastructure needed; just markdown files and optional scripts
+4. **Agent Autonomy** - Agents decide when and how to use skills
+5. **Human-in-Loop** - Direct interaction and steering possible
+
+*Source: Insights from [Anthropic's Skills engineering blog](https://www.anthropic.com/engineering/agent-skills) and community best practices*
+
 ## Repository Skills
 
 ### Anthropic Reference Skills (Included)
 
-**template-skill** - Basic template for creating new skills from scratch
-
-**skill-creator** - Comprehensive meta-skill for creating effective skills with scripts for initialization, validation, and packaging
+**skill-creator** - Utility scripts for skill validation and packaging
+- `quick_validate.py` - Verify SKILL.md structure and frontmatter
+- `package_skill.py` - Create ZIP files for Claude.ai upload
+- For creating new skills, use Skills Factory Generator (see AI-Powered Skill Generation below)
 
 **internal-comms** - Write internal communications (3P updates, newsletters, FAQs, status reports) with example templates for each format
 
@@ -49,10 +178,36 @@ For comprehensive documentation, see:
 3. Enable the skill
 4. Reference in conversations when needed
 
-### In Claude Code (Cursor)
+### In Claude Code
+
+**Personal Skills** (just for you):
+```bash
+# Copy any skill from this repo
+mkdir -p ~/.claude/skills/
+cp -r skill-name ~/.claude/skills/
+
+# Or unzip generated skills
+unzip zips/skill-name.zip -d ~/.claude/skills/
+
+# Restart Claude Code to load the skill
 ```
 
-Or reference skills directly in project `.cursor/rules/` directory.
+**Project Skills** (team-shared):
+```bash
+# Copy into your project (already done in this repo - see .claude/skills/example-project-skill/)
+mkdir -p .claude/skills/
+cp -r skill-name .claude/skills/
+
+# Or unzip generated skills
+unzip zips/skill-name.zip -d .claude/skills/
+
+# Commit to share with team
+git add .claude/skills/
+git commit -m "Add skill-name skill for team"
+git push
+```
+
+**Quick Test**: This repository includes an example project skill at [.claude/skills/example-project-skill/](.claude/skills/example-project-skill/SKILL.md) demonstrating the team-shared pattern.
 
 ### Via Claude API
 
@@ -150,16 +305,22 @@ claude_skills/
 ├── README.md                              # This file
 ├── CLAUDE.md                              # Claude Code operational guide
 ├── SKILLS_FACTORY_GENERATOR_PROMPT.md    # AI-powered skill generator
+├── .claude/skills/                        # Example project skills
+│   └── example-project-skill/             # Team-shared skill demo
 ├── docs/                                  # Reference documentation
 │   ├── skill-format-spec.md               # SKILL.md format specification
 │   ├── skill-authoring-guide.md           # Best practices for creating skills
-│   └── skills-factory-guide.md            # AI-powered skill generation guide
-├── generated-skills/                      # Auto-generated skills (from Factory)
+│   ├── skills-factory-guide.md            # AI-powered skill generation guide
+│   ├── agent_skills.md                    # Official Claude docs reference
+│   └── skill_blog.md                      # Anthropic blog insights reference
+├── skill-ideas/                           # Seed ideas for Skills Factory
+│   ├── README.md                          # How to use skill ideas
+│   └── *.md files                         # Natural language skill requests
+├── generated-skills/                      # Auto-generated skills (gitignored)
 │   └── [skill-name]/                      # Production-ready skills
-└── zips/                                  # ZIP files ready for Claude.ai upload
-│   └── [skill-name].zip
-├── template-skill/                        # Basic skill template
-├── skill-creator/                         # Meta-skill for skill creation
+├── zips/                                  # ZIP files (gitignored)
+│   └── [skill-name].zip                   # Ready for Claude.ai upload
+├── skill-creator/                         # Validation and packaging scripts
 │   └── scripts/
 │       ├── init_skill.py                  # Initialize new skill
 │       ├── package_skill.py               # Validate and package
@@ -193,6 +354,10 @@ claude_skills/
 
 **docs/skills-factory-guide.md** - Complete guide to AI-powered skill generation using the Skills Factory Generator in Claude Code/Cursor. Includes examples, patterns, customization options, and troubleshooting.
 
+**docs/agent_skills.md** - Official Claude documentation reference copy for Agent Skills in Claude Code. Synced October 2025.
+
+**docs/skill_blog.md** - Anthropic engineering blog insights on Agent Skills. Source of emphatic language patterns and progressive disclosure best practices.
+
 ## Contributing
 
 This repository welcomes contributions. New skills should:
@@ -210,5 +375,6 @@ This repository welcomes contributions. New skills should:
 
 ---
 
-**Last Updated**: October 2024
+**Last Updated**: October 2025
 **Maintained by**: Community Contributors
+**Synced with**: Anthropic Skills (Oct 2025) - Multi-platform support, allowed-tools, Skills API
