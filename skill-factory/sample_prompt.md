@@ -35,3 +35,4 @@ Package them all as separate ZIPs.
 **Research-enhanced:**
 "Generate a skill for AI engine optimization (AEO) best practices. Do the research to make sure it reflects current 2025 standards."
 
+
