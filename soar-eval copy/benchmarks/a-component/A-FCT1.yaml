@@ -1,0 +1,47 @@
+# Benchmark: A-FCT1 — Vitals Extraction Accuracy
+# Parent Rubric: A-FCT (Fact Extraction)
+# Source: vitals-extraction-incorrect.yaml
+
+code: A-FCT1
+parent_rubric: A-FCT
+label: Vitals Extraction Incorrect
+
+concept: >
+  One or more core vital signs (BP, HR, RR, SpO2, EtCO2, temperature) or clinical measurements
+  (pain scale, blood glucose) are extracted incorrectly into Medic Copilot's structured output
+  compared to the values present in the ASR/narrative or ground truth.
+
+weight: 0.40
+threshold: 0.90
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "All vitals extracted correctly"
+    0.90: "Excellent (90%+ correct)"
+    0.80: "Good (80-90% correct)"
+    0.70: "Fair (70-80% correct)"
+    0.0: "Failed - vitals systematically incorrect"
+
+inclusion_criteria: >
+  Apply when the narrative or ground truth clearly contains a vital or clinical measurement
+  such as pain scale or blood glucose. Flag if the structured output omits it, assigns a
+  different numeric value, or confuses units such that the recorded vital is clinically
+  different from what was spoken.
+
+exclusion_criteria: >
+  Do not use for minor rounding differences that do not change interpretation (e.g., 97 vs 98),
+  or when the narrative itself is ambiguous or missing the vital.
+
+examples:
+  - "Narrative: 'blood pressure one fifty four over ninety two' but `draatt_json` records 115/92."
+  - "EtCO2 of 42 mmHg in the narrative but output leaves EtCO2 field empty."
+  - "Pain scale 8/10 in narrative but output leaves pain_score field empty."
+  - "Blood glucose 342 mg/dL in narrative but glucose not extracted to structured output."
+
+evaluator_type: hybrid
+llm_prompt_file: "evaluators/llm-judge/vitals_extraction_prompt.md"
+

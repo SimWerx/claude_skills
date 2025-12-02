@@ -1,0 +1,39 @@
+# Rubric: A-REF — Refusal Documentation
+# Evaluates completeness of patient refusal documentation
+
+code: A-REF
+label: Refusal Documentation
+description: >
+  Evaluates documentation of patient refusal scenarios including explanation
+  of risks and benefits, patient capacity assessment, and refusal signature
+  or witness documentation. Critical because refusals are the highest
+  medicolegal risk area in EMS - lawsuits often hinge on what was told to
+  the patient who refused care or transport.
+
+weight: 0.125
+aggregation_method: WEIGHTED_AVERAGE
+passing_threshold: 0.95
+
+evaluation_guidelines:
+  focus_areas:
+    - "Were risks of refusal explained and documented?"
+    - "Is the patient's reason for refusal captured?"
+    - "Is refusal signature or witness documentation present?"
+    - "Was patient capacity assessment documented?"
+  acceptable_deviations:
+    - "Minor wording differences in risk explanation if content is preserved"
+    - "Paraphrased patient reasoning that preserves intent"
+  critical_requirements:
+    - "Risk explanation MUST be documented if it was stated in narrative"
+    - "Patient acknowledgment of risks MUST be captured"
+    - "Signature or witness info MUST appear if documented in narrative"
+    - "Capacity assessment MUST be documented when narrative supports patient competence"
+  evidence_requirements: >
+    Refusal documentation check: (1) risks explained and acknowledged,
+    (2) patient reasoning, (3) signature/witness status.
+
+benchmarks:
+  - A-REF1  # Risks not explained/documented
+  - A-REF2  # Signature/witness missing
+  - A-REF3  # Base contact omitted
+

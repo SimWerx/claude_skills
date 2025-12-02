@@ -1,0 +1,47 @@
+# Benchmark: A-TMP4 — Explicit Timing Consistency
+# Parent Rubric: A-TMP (Temporal Ordering)
+# Note: Previous content (Trend Direction) migrated to A-TMP5
+
+code: A-TMP4
+parent_rubric: A-TMP
+label: Explicit Timing Consistency
+
+concept: >
+  Explicit times and intervals stated in the narrative (departure time, arrival time,
+  ROSC time, pronouncement time, transport duration) are extracted into structured
+  output with correct sequential consistency and must not contradict each other.
+
+weight: 0.20
+threshold: 0.85
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "All explicit times correctly extracted and consistent"
+    0.90: "Excellent (90%+ times correct)"
+    0.85: "Good (85-90% times correct)"
+    0.75: "Fair (75-85% times correct)"
+    0.0: "Failed - timing inconsistencies or extraction errors"
+
+inclusion_criteria: >
+  Apply when the narrative provides specific timestamps or durations.
+  Flag if the structured output omits them, records incorrect values, or produces
+  logically inconsistent times (e.g., arrival before departure, ROSC before CPR initiation).
+
+exclusion_criteria: >
+  Do not use when narrative provides only approximate or vague timing ("a few minutes
+  later", "shortly after"). Also exclude minor discrepancies that do not affect clinical
+  interpretation (e.g., 14:32 vs 14:33). For general event ordering without explicit
+  times, see A-TMP1; for protocol sequences, see A-TMP3.
+
+examples:
+  - "Narrative: 'Departed scene at 14:30, arrived hospital at 14:45'. Output records departure as 14:50 — arrival before departure is logically impossible."
+  - "Narrative: 'ROSC achieved at 15:22 after 18 minutes of CPR'. Output records ROSC at 15:05, inconsistent with stated 18-minute duration."
+  - "Narrative: 'Pronounced at 16:45 after base contact at 16:42'. Output records pronouncement at 16:40 — before physician contact."
+  - "Narrative: 'On scene for approximately 22 minutes'. Output records on-scene time as 8 minutes despite multiple interventions."
+
+evaluator_type: hybrid
+llm_prompt_file: "evaluators/llm-judge/timing_consistency_prompt.md"

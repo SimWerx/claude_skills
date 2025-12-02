@@ -1,0 +1,42 @@
+# Benchmark: A-FMT1 — DRAATT JSON Format Validity
+# Parent Rubric: A-FMT (Format Validity)
+# Source: draatt-json-format-invalid.yaml
+
+code: A-FMT1
+parent_rubric: A-FMT
+label: DRAATT JSON Format Invalid
+
+concept: >
+  Medic Copilot's structured DRAATT output is missing, not valid JSON, structurally malformed,
+  or contains extraneous narrative text such that downstream systems cannot reliably parse it.
+
+weight: 0.50
+threshold: 1.0
+criticality: hard_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "Valid JSON, schema compliant"
+    0.95: "Valid JSON with minor schema deviations"
+    0.50: "Parseable but malformed structure"
+    0.0: "Failed - not valid JSON or missing"
+
+inclusion_criteria: >
+  Apply when a trace should produce structured DRAATT output. Flag if
+  `trace.output.draatt_json` is absent or not a JSON object, fails basic structure
+  checks (e.g., missing core keys for the template in use), or includes non-JSON prose
+  outside the expected schema.
+
+exclusion_criteria: >
+  Do not use when the JSON is structurally valid but specific clinical fields are incomplete
+  or wrong (use a more specific completeness or fact-extraction axial code instead).
+
+examples:
+  - "Trace where `draatt_json` is a string that embeds JSON followed by extra explanatory text."
+  - "`draatt_json` missing both `chief_complaint` and `vitals` for a full call, despite other fields being present."
+
+evaluator_type: code
+

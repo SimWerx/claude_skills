@@ -1,0 +1,58 @@
+# Benchmark: A-REF1 — Refusal Risks Not Documented
+# Parent Rubric: A-REF (Refusal Documentation)
+
+code: A-REF1
+parent_rubric: A-REF
+label: Refusal Risks Not Documented
+
+concept: >
+  Medic Copilot output for a refusal case does not include that risks of
+  refusal were explained, the patient's reasons for refusal, and/or patient
+  capacity assessment. If the narrative states "Advised patient of risks
+  including death without treatment, patient still refuses" and the output
+  simply says "Patient refused transport" with no detail about risk discussion
+  or capacity, that is a failure. Capacity documentation is critical for
+  medicolegal protection.
+
+weight: 0.60
+threshold: 1.0
+criticality: hard_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "Risk explanation fully documented"
+    0.80: "Partial risk documentation"
+    0.50: "Refusal noted but no risk discussion"
+    0.0: "Failed - risk explanation omitted entirely"
+
+inclusion_criteria: >
+  Apply when the narrative describes a patient refusal and includes statements
+  about risks being explained (e.g., "advised of risks," "explained potential
+  complications," "informed patient could die"), capacity assessment (e.g.,
+  "patient alert and oriented," "patient demonstrates understanding," "GCS 15"),
+  or base station physician consultation. Flag if the output does not reflect
+  the risk discussion when stated, does not capture capacity assessment when
+  the narrative supports the patient was competent to refuse, does not capture
+  base station consultation when mentioned (see A-REF3), or does not capture
+  the patient's stated reason for refusal when documented.
+
+exclusion_criteria: >
+  Do not apply to non-refusal cases. Do not flag if the narrative itself does
+  not mention risk explanation (the medic may not have documented it). Only
+  flag when risk discussion is clearly stated and omitted from output.
+
+examples:
+  - "Narrative: 'Explained risks of refusing transport including death, patient understands and refuses' but output says only 'Patient refused transport.'"
+  - "Narrative: 'Patient advised of cardiac risks, signed AMA' but output lacks any mention of risk discussion."
+  - "Narrative: 'Contacted base, Dr. Smith approved refusal' - base consultation should be captured (see A-REF3 for details)."
+  - "Narrative: 'Patient refuses transport, states needs to pick up kids from school' - patient's stated reason should be documented."
+  - "Narrative: 'Patient is alert and oriented, GCS 15, demonstrates understanding of risks and consequences, refuses transport' but output lacks capacity assessment documentation - capacity must be captured when narrative supports it."
+  - "High-risk post-naloxone refusal: 'Administered 2mg Narcan IM, patient regained consciousness within 2 minutes. Now GCS 15, alert and oriented x4. Explained risk of re-sedation and respiratory arrest as Narcan wears off, patient understands but refuses transport stating has NA meeting. Contacted base, Dr. Martinez agrees with release given patient capacity.' Output must capture: (1) Narcan administration, (2) capacity assessment (GCS 15, A&Ox4), (3) specific re-sedation risks explained, (4) patient reason for refusal, (5) base consultation with physician name."
+  - "High-risk post-glucose refusal: 'BGL 38, gave oral glucose and D10 IV, BGL now 124. Patient alert, oriented, GCS 15. Explained risk of recurrent hypoglycemia, patient refuses transport to go eat lunch. Signed refusal form.' Output must capture: (1) initial and repeat BGL, (2) treatment given, (3) capacity status, (4) recurrent hypoglycemia risk explained, (5) patient reason."
+
+evaluator_type: hybrid
+llm_prompt_file: "evaluators/llm-judge/refusal_explanation_prompt.md"
+

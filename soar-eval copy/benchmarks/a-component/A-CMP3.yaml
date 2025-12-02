@@ -1,0 +1,43 @@
+# Benchmark: A-CMP3 — Arrival Section Incomplete
+# Parent Rubric: A-CMP (Completeness)
+
+code: A-CMP3
+parent_rubric: A-CMP
+label: Arrival Section Incomplete
+
+concept: >
+  Medic Copilot's output omits critical Arrival details that the narrative provides, such as
+  patient position/location on arrival, scene context, or arrival time. This benchmark catches
+  missing content in the arrival section of DRAATT.
+
+weight: 0.15
+threshold: 0.80
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "All arrival section fields present"
+    0.90: "Excellent (90%+ fields present)"
+    0.80: "Good (80-90% fields present)"
+    0.70: "Fair (70-80% fields present)"
+    0.0: "Failed - arrival section incomplete"
+
+inclusion_criteria: >
+  Apply when the narrative describes how the patient was found and initial scene observations
+  (e.g., "arrived at 08:46 to find patient lying on the bedroom floor, scene secure with police
+  on scene"). Flag if the output's arrival documentation lacks one or more of those details
+  (arrival timestamp, patient location/position, scene safety findings, immediate patient presentation).
+
+exclusion_criteria: >
+  Do not apply when the scenario has no on-scene component (e.g., interfacility transfers where an
+  arrival narrative is not expected). Also exclude cases where the template legitimately merges
+  arrival info into another section or the narrative itself is missing these details.
+
+examples:
+  - "Narrative: 'Arrived on scene at 14:30, found patient seated in a recliner complaining of chest pain, scene calm.' Output: no mention of patient's found position or the scene environment in the arrival section."
+  - "Narrative notes 'patient found unresponsive on bathroom floor, agonal respirations' but the output arrival section fails to mention patient's initial condition or location."
+
+evaluator_type: code

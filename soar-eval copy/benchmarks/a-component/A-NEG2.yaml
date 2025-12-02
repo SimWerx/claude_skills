@@ -1,0 +1,46 @@
+# Benchmark: A-NEG2 — Complex Negation Handling
+# Parent Rubric: A-NEG (Negation Handling)
+# Source: negation-complex-misinterpreted.yaml
+
+code: A-NEG2
+parent_rubric: A-NEG
+label: Complex Negation Misinterpretation
+
+concept: >
+  More complex negation patterns (double negatives, implicit negation, hedged language,
+  contrast words like "but/however") are mishandled such that Medic Copilot encodes the
+  wrong clinical polarity or fails to recognize an implied absence/presence.
+
+weight: 0.25
+threshold: 0.85
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "All complex negations correctly resolved"
+    0.85: "Excellent (85%+ correct)"
+    0.70: "Good (70-85% correct)"
+    0.60: "Fair (60-70% correct)"
+    0.0: "Failed - complex negations systematically mishandled"
+
+inclusion_criteria: >
+  Apply when the narrative contains constructions like 'not denying chest pain', 'no other
+  complaints were elicited', or other indirect negatives. Flag if the output interprets these
+  as positive findings or leaves them unknown in conflict with labeled ground truth.
+
+exclusion_criteria: >
+  Do not use for straightforward 'denies X' phrases (use simple-negation code), or when the
+  ground truth label on polarity is itself ambiguous.
+
+examples:
+  - "Text: 'patient is not denying chest pain' but output records chest_pain as absent."
+  - "'no additional neurological complaints were elicited' yet neurologic negatives are missing from the negative symptom structure."
+  - "Text: 'denies chest pain but has some tightness' - the exception after 'but' is missed."
+  - "Text: 'patient isn't sure if they have a headache' but output marks headache as definitively absent."
+
+evaluator_type: llm_judge
+llm_prompt_file: "evaluators/llm-judge/negation_double_prompt.md"
+

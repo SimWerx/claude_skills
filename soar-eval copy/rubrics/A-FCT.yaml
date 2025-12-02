@@ -1,0 +1,37 @@
+# Rubric: A-FCT — Fact Extraction
+# Evaluates accuracy of clinical fact extraction from narrative
+
+code: A-FCT
+label: Fact Extraction
+description: >
+  Measures accuracy of extracting clinical facts from narrative into structured
+  fields. Includes vital signs, medications, procedures, and diagnostic impressions.
+  Errors here directly impact clinical decision support.
+
+weight: 0.125
+aggregation_method: WEIGHTED_AVERAGE
+passing_threshold: 0.85
+
+evaluation_guidelines:
+  focus_areas:
+    - "Are vital signs extracted with correct values and units?"
+    - "Are medications captured with dose, route, and timing?"
+    - "Does the structured impression match the clinical picture?"
+  acceptable_deviations:
+    - "Minor rounding that does not change clinical interpretation"
+    - "Equivalent unit conversions (e.g., 98.6F vs 37C)"
+    - "Synonym substitution for diagnoses (STEMI vs acute inferior STEMI)"
+  critical_requirements:
+    - "Vital sign values must match narrative exactly"
+    - "Medication doses must be clinically accurate"
+    - "Impression must be consistent with documented findings"
+  evidence_requirements: >
+    Fact extraction validation showing: (1) source spans,
+    (2) extracted values, (3) comparison to ground truth.
+
+benchmarks:
+  - A-FCT1  # Vitals extraction accuracy
+  - A-FCT2  # Medication extraction accuracy
+  - A-FCT3  # Procedure extraction accuracy
+  - A-FCT4  # Impression/diagnosis match
+

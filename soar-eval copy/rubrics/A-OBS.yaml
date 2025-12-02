@@ -1,0 +1,36 @@
+# Rubric: A-OBS — Obstetric & Neonatal Documentation
+# Evaluates completeness of OB/neonatal-specific documentation
+
+code: A-OBS
+label: Obstetric and Neonatal Documentation
+description: >
+  Evaluates documentation of obstetric and neonatal emergencies including
+  APGAR scores for newborns, delivery times, gestational age, and pregnancy
+  complications. Critical because APGAR scores are standard handoff data
+  for neonatal teams and gestational age guides treatment decisions.
+
+weight: 0.125
+aggregation_method: WEIGHTED_AVERAGE
+passing_threshold: 0.90
+
+evaluation_guidelines:
+  focus_areas:
+    - "Are APGAR scores captured for field deliveries?"
+    - "Is delivery time documented when a birth occurred?"
+    - "Is gestational age documented when stated?"
+    - "Are pregnancy complications (bleeding, preeclampsia) preserved?"
+  acceptable_deviations:
+    - "APGAR at 1 min only if 5 min not yet reached"
+    - "Gestational age expressed as weeks or trimester if consistent"
+  critical_requirements:
+    - "APGAR scores MUST be captured if stated in narrative"
+    - "Delivery time MUST appear if baby was born in field"
+    - "Gestational age MUST be documented if provided"
+  evidence_requirements: >
+    OB/neonatal documentation check: (1) APGAR scores,
+    (2) delivery time, (3) gestational age and complications.
+
+benchmarks:
+  - A-OBS1  # APGAR/neonatal info missing
+  - A-OBS2  # Pregnancy details omitted
+

@@ -1,0 +1,101 @@
+{
+  "_comment": "Maps benchmark codes to user escalation prompts",
+  "_version": "1.0.0",
+  
+  "A-NEG1": {
+    "prompts": ["negation-double-negative"],
+    "rationale": "Simple negation misinterpretation requires user clarification of present/absent"
+  },
+  "A-NEG2": {
+    "prompts": ["negation-double-negative"],
+    "rationale": "Complex negation also uses negation clarification prompt"
+  },
+  
+  "A-FCT1": {
+    "prompts": ["units-etco2-percent", "units-dose-missing"],
+    "rationale": "Vital sign extraction errors may involve unit confusion"
+  },
+  "A-FCT4": {
+    "prompts": ["contradictions-laterality", "source-attribution"],
+    "rationale": "Impression mismatch may involve laterality or source conflicts"
+  },
+  
+  "A-TMP1": {
+    "prompts": ["time-ambiguous-hhmm"],
+    "rationale": "Timestamp extraction requires time clarification"
+  },
+  "A-TMP2": {
+    "prompts": ["structure-timeline-clarify"],
+    "rationale": "Event sequence errors require timeline verification"
+  },
+  "A-TMP3": {
+    "prompts": ["structure-timeline-clarify"],
+    "rationale": "Protocol step misordering requires sequence clarification"
+  },
+  
+  "A-CMP1": {
+    "prompts": ["gaps-dose-route"],
+    "rationale": "Dispatch section gaps may involve incomplete medication info"
+  },
+  "A-CMP5": {
+    "prompts": ["gaps-dose-route", "gaps-second-vitals"],
+    "rationale": "Treatment section gaps involve medication or vitals documentation"
+  },
+  
+  "A-SFT1": {
+    "prompts": ["units-dose-missing"],
+    "rationale": "Unsafe dose detection may require dose/route clarification"
+  },
+  "A-SFT2": {
+    "prompts": ["meds-brand-generic"],
+    "rationale": "Contraindication detection may require medication clarification"
+  },
+  "A-SFT4": {
+    "prompts": ["gaps-second-vitals"],
+    "rationale": "Missing repeat vitals requires vitals clarification"
+  },
+  
+  "A-CAR1": {
+    "prompts": ["arrest-sequence-consistency"],
+    "rationale": "ROSC/termination documentation requires arrest sequence verification"
+  },
+  "A-CAR2": {
+    "prompts": ["arrest-sequence-consistency"],
+    "rationale": "CPR details require arrest sequence verification"
+  },
+  
+  "A-STR2": {
+    "prompts": ["time-ambiguous-hhmm", "structure-timeline-clarify"],
+    "rationale": "Last known well requires precise time clarification"
+  },
+  
+  "A-REF1": {
+    "prompts": ["disposition-conflict"],
+    "rationale": "Refusal documentation may conflict with transport disposition"
+  },
+  
+  "A-PED1": {
+    "prompts": ["units-dose-missing"],
+    "rationale": "Pediatric dosing errors require weight-based dose clarification"
+  },
+  
+  "A-UNC1": {
+    "prompts": [],
+    "rationale": "Hallucination requires agent re-extraction, not user prompt"
+  },
+  "A-UNC2": {
+    "prompts": ["gaps-dose-route", "gaps-second-vitals"],
+    "rationale": "Silent omission may require data gap clarification"
+  },
+  
+  "A-EVD1": {
+    "prompts": ["source-attribution"],
+    "rationale": "Missing evidence span may require source clarification"
+  },
+  
+  "A-FMT1": {
+    "prompts": [],
+    "rationale": "JSON structure errors are mechanical, no user prompt needed"
+  }
+}
+

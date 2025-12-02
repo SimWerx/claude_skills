@@ -1,0 +1,48 @@
+# Benchmark: A-TMP1 — Temporal Ordering Accuracy
+# Parent Rubric: A-TMP (Temporal Ordering)
+# Source: temporal-ordering-incorrect.yaml
+
+code: A-TMP1
+parent_rubric: A-TMP
+label: Temporal Ordering Incorrect
+
+concept: >
+  The sequence of key events in Medic Copilot's output (onset, arrival, interventions,
+  reassessments, transport) does not match the ordering implied by the ASR narrative or
+  ground truth.
+
+weight: 0.20
+threshold: 0.85
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "All events in correct chronological order"
+    0.85: "Excellent (85%+ pairs correct)"
+    0.70: "Good (70-85% pairs correct)"
+    0.60: "Fair (60-70% pairs correct)"
+    0.0: "Failed - systematic ordering errors"
+
+inclusion_criteria: >
+  Apply when the scenario contains time-sensitive steps with clear sequencing requirements.
+  Flag if interventions are placed before prerequisites (e.g., nitroglycerin before first BP
+  or 12-lead confirmation of STEMI), transport is documented before any on-scene assessment,
+  or other clearly time-sensitive steps are rearranged relative to the case description.
+
+exclusion_criteria: >
+  Do not use when the relative ordering is preserved but timestamps are approximate, or when
+  ordering is genuinely ambiguous in the source material.
+
+examples:
+  - "Output timeline shows transport departure before any documented vitals or exam despite a detailed on-scene assessment in the narrative."
+  - "RSI documented as intubation first, then sedative and paralytic."
+  - "Protocol ordering: STEMI workflow shows nitroglycerin given before 12-lead confirmation of ST elevation - NTG requires ECG verification first."
+  - "Protocol ordering: Stroke timeline shows tPA discussion before LKW documented - eligibility determination requires LKW first."
+  - "Protocol ordering: Cardiac arrest shows epinephrine before initial rhythm identification - drug selection depends on rhythm."
+
+evaluator_type: llm_judge
+llm_prompt_file: "evaluators/llm-judge/temporal_order_prompt.md"
+

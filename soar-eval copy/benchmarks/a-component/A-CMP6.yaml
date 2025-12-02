@@ -1,0 +1,45 @@
+# Benchmark: A-CMP6 — Transport/Handoff Completeness
+# Parent Rubric: A-CMP (Completeness)
+# Source: transport-handoff-details-incomplete.yaml
+
+code: A-CMP6
+parent_rubric: A-CMP
+label: Transport Handoff Details Incomplete
+
+concept: >
+  Transport, delivery, or refusal details (mode, delays/incidents, receiving staff, condition
+  on arrival, equipment/belongings disposition) are under-documented in Medic Copilot's output
+  relative to what a complete DRAATT Transport/Refusal section should contain.
+
+weight: 0.167
+threshold: 0.80
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "All transport/handoff fields complete"
+    0.80: "Good (80%+ fields present)"
+    0.70: "Fair (70-80% fields present)"
+    0.60: "Poor (60-70% fields present)"
+    0.0: "Failed - transport details missing"
+
+inclusion_criteria: >
+  Apply when a patient is transported or refuses transport. Flag if the output is missing one
+  or more of: transport mode, any mention of en-route delays/incidents, receiving staff/role,
+  patient condition on arrival, or what happened to key equipment/belongings at handoff.
+
+exclusion_criteria: >
+  Do not use when all required elements are present but concise, or when the scenario ends
+  before transport (e.g., obvious death left on scene) and no transport is expected. Do not
+  use for DOA/field pronouncement cases (use A-CMP5). For detailed refusal documentation
+  (risks explained, capacity, signature), see A-REF rubric benchmarks.
+
+examples:
+  - "Transport narrative lists destination but not who received the patient or what their condition was on arrival."
+  - "Refusal record with no documented explanation of risks accepted by the patient."
+
+evaluator_type: code
+

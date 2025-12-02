@@ -271,5 +271,5 @@ High - Based on 5 authoritative sources from 2024-2025 showing strong consensus 
 
 For questions about research archiving, see:
 - [CLAUDE.md](../CLAUDE.md) - Repository conventions and architecture
-- [SKILLS_FACTORY_GENERATOR_PROMPT.md](../SKILLS_FACTORY_GENERATOR_PROMPT.md) - How research is automatically archived
+- [skill-factory/](../skill-factory/) - How research is automatically archived during skill generation
 - [background-research skill](../generated-skills/background-research/) - Research methodology and output format

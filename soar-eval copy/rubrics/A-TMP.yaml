@@ -1,0 +1,38 @@
+# Rubric: A-TMP — Temporal Ordering
+# Evaluates correct sequencing and trending of clinical events
+
+code: A-TMP
+label: Temporal Ordering
+description: >
+  Measures accuracy of chronological event sequencing and clinical trend
+  interpretation. Incorrect ordering can misrepresent protocol compliance
+  and treatment response. Trend errors affect clinical judgment.
+
+weight: 0.125
+aggregation_method: WEIGHTED_AVERAGE
+passing_threshold: 0.80
+
+evaluation_guidelines:
+  focus_areas:
+    - "Are clinical events in correct chronological order?"
+    - "Are pre/post intervention trends accurately captured?"
+    - "Are timestamps preserved when explicitly stated?"
+  acceptable_deviations:
+    - "Approximate timestamps when source is vague"
+    - "Grouping simultaneous events"
+    - "Minor reordering within same clinical phase"
+  critical_requirements:
+    - "Interventions must not precede their prerequisites"
+    - "Transport must not precede on-scene assessment"
+    - "Trends must reflect actual direction (improved vs worsened)"
+  evidence_requirements: >
+    Temporal analysis showing: (1) extracted event timeline,
+    (2) pre/post value pairs, (3) trend direction validation.
+
+benchmarks:
+  - A-TMP1  # Event sequence accuracy
+  - A-TMP2  # Pre/post value capture
+  - A-TMP3  # Protocol step ordering
+  - A-TMP4  # Explicit timing consistency
+  - A-TMP5  # Trend direction accuracy
+

@@ -1,0 +1,49 @@
+# Benchmark: A-TRM2 — Critical Trauma Intervention Omitted
+# Parent Rubric: A-TRM (Trauma Documentation)
+
+code: A-TRM2
+parent_rubric: A-TRM
+label: Critical Trauma Intervention Omitted
+
+concept: >
+  Medic Copilot fails to document a major trauma intervention that was
+  performed according to the narrative. Examples include tourniquet
+  application, wound packing, needle decompression, and pelvic binder
+  placement. These life-saving procedures must appear in the output.
+
+weight: 0.50
+threshold: 0.95
+criticality: hard_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "All critical interventions documented"
+    0.95: "Excellent - life-saving procedures captured"
+    0.80: "Good - most interventions present"
+    0.0: "Failed - critical intervention omitted"
+
+inclusion_criteria: >
+  Apply when the narrative describes a major trauma intervention such as
+  tourniquet application (with time if stated), wound packing, needle
+  decompression, pelvic binder, or chest seal. Flag if the output does not
+  include these in the Treatment section.
+
+exclusion_criteria: >
+  Do not apply to non-trauma cases. Do not apply if the narrative does
+  not mention these specific interventions. Minor wording differences
+  are acceptable if the procedure is clearly documented.
+
+examples:
+  - "Narrative: 'Tourniquet applied to left leg at 12:00' but output has no mention of tourniquet."
+  - "Narrative: 'Needle decompression right chest for tension pneumo' but output says only 'chest injury treated.'"
+  - "Pelvic binder: 'Suspected pelvic fracture, SAM pelvic sling applied' - pelvic binder/sling must be documented as critical hemorrhage control intervention."
+  - "Cricothyrotomy: 'Unable to intubate, surgical airway performed at 1432' - cricothyrotomy is a critical intervention; time and procedure must be captured."
+  - "Tourniquet time: 'CAT tourniquet applied 1215, high and tight on right thigh' - tourniquet time is critical for hospital handoff and must be preserved."
+  - "Wound packing: 'Packed junctional wound with hemostatic gauze' - hemorrhage control interventions must be documented."
+
+evaluator_type: hybrid
+llm_prompt_file: "evaluators/llm-judge/trauma_intervention_prompt.md"
+

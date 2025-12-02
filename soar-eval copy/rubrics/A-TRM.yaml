@@ -1,0 +1,38 @@
+# Rubric: A-TRM — Trauma Documentation
+# Evaluates completeness of trauma-specific documentation
+
+code: A-TRM
+label: Trauma Documentation
+description: >
+  Evaluates documentation of trauma-specific assessments and interventions
+  including Glasgow Coma Scale (GCS), mechanism of injury, and critical
+  trauma procedures (tourniquet, needle decompression, pelvic binder).
+  Critical because missing GCS affects trauma triage and missing
+  life-saving interventions can compromise continuity of care.
+
+weight: 0.125
+aggregation_method: WEIGHTED_AVERAGE
+passing_threshold: 0.90
+
+evaluation_guidelines:
+  focus_areas:
+    - "Is GCS or mental status documented for trauma patients?"
+    - "Are critical trauma interventions (tourniquet, decompression) captured?"
+    - "Is mechanism of injury documented when stated?"
+    - "Are neuro exam findings preserved for head injuries?"
+  acceptable_deviations:
+    - "GCS expressed as total or components (E4V4M5 vs GCS 13)"
+    - "Minor wording differences in mechanism description"
+  critical_requirements:
+    - "GCS MUST be documented if stated in narrative"
+    - "Life-saving interventions MUST appear in Treatment section"
+    - "Tourniquet time MUST be captured if documented"
+  evidence_requirements: >
+    Trauma documentation check: (1) GCS/neuro status,
+    (2) critical interventions, (3) mechanism if stated.
+
+benchmarks:
+  - A-TRM1  # GCS/neuro assessment missing
+  - A-TRM2  # Critical trauma intervention omitted
+  - A-TRM3  # Trauma alert not documented
+

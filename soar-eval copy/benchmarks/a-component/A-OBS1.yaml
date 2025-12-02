@@ -1,0 +1,52 @@
+# Benchmark: A-OBS1 — APGAR/Neonatal Info Missing
+# Parent Rubric: A-OBS (Obstetric & Neonatal Documentation)
+
+code: A-OBS1
+parent_rubric: A-OBS
+label: APGAR or Neonatal Status Missing
+
+concept: >
+  Medic Copilot fails to document newborn status after a field delivery.
+  If the narrative provides APGAR scores or describes the newborn's
+  condition ("baby boy, crying, APGAR 8 and 9"), the output must include
+  this information. Also applies to neonatal resuscitation steps if performed.
+  For multiple gestations (twins, triplets), each neonate must be documented
+  separately with distinct APGAR scores and status.
+
+weight: 0.50
+threshold: 0.95
+criticality: hard_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "APGAR and neonatal status fully documented"
+    0.95: "Excellent - key neonatal data present"
+    0.80: "Good - partial neonatal info captured"
+    0.0: "Failed - APGAR or neonatal status omitted"
+
+inclusion_criteria: >
+  Apply when the narrative describes a field delivery with APGAR scores,
+  newborn condition, birth time, or neonatal resuscitation (stimulation,
+  oxygen, suctioning). Flag if the output does not capture this information,
+  or for twin deliveries if both neonates are not documented with individual
+  APGAR scores when provided.
+
+exclusion_criteria: >
+  Do not apply to non-delivery cases. Do not apply to non-delivery pediatric
+  assessments (those are owned by A-PED2). Do not flag if the narrative does
+  not mention APGAR or neonatal status. If only APGAR at 1 minute is
+  documented (5 min not yet reached), that is acceptable.
+
+examples:
+  - "Narrative: 'Baby delivered, APGAR 8 and 9, crying vigorous' but output has no APGAR or neonatal status."
+  - "Narrative: 'Stimulated newborn, dried and warmed, O2 blow-by' but output says only 'delivery occurred.'"
+  - "Birth time: 'Baby delivered at 14:32' must include delivery time in output."
+  - "Twin delivery: 'Baby A APGAR 8/9, Baby B APGAR 7/8' - both neonates must be captured individually."
+  - "Twin with different status: 'First twin vigorous, APGAR 9/9; second twin required stimulation, APGAR 6/8' - output missing second neonate is a failure."
+
+evaluator_type: hybrid
+llm_prompt_file: "evaluators/llm-judge/neonatal_apgar_prompt.md"
+

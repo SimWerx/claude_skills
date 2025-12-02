@@ -1,0 +1,20 @@
+# User Prompt: Spoken Number Clarification
+# Linked benchmarks: (general extraction support)
+
+prompts:
+  - id: numeric-style-parse
+    
+    prompt_neutral: "You spoke '{spoken}'. Confirm numeric value?"
+    prompt_medic_copilot: "Medic Copilot detected spoken number '{spoken}'. Confirm numeric value?"
+    
+    response_type: numeric_value
+    
+    severity: info
+    
+    placeholders:
+      spoken: "Spoken number/word from transcript"
+    
+    examples:
+      - "two oh three systolic"
+      - "one twenty over eighty"
+      - "ninety-eight point six"

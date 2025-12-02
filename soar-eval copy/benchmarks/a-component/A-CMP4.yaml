@@ -1,0 +1,44 @@
+# Benchmark: A-CMP4 — Assessment Section Incomplete
+# Parent Rubric: A-CMP (Completeness)
+
+code: A-CMP4
+parent_rubric: A-CMP
+label: Assessment Section Incomplete
+
+concept: >
+  Medic Copilot's output is missing significant Assessment findings that were documented in
+  the narrative. This benchmark targets omissions in the physical exam and primary/secondary
+  survey details within the assessment section.
+
+weight: 0.15
+threshold: 0.80
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "All assessment section fields present"
+    0.90: "Excellent (90%+ fields present)"
+    0.80: "Good (80-90% fields present)"
+    0.70: "Fair (70-80% fields present)"
+    0.0: "Failed - assessment section incomplete"
+
+inclusion_criteria: >
+  Apply when the narrative provides a thorough patient assessment (e.g., vital signs, Glasgow
+  Coma Scale, head-to-toe exam findings across systems). Flag if the output fails to capture
+  one or more critical components, for instance if the transcript includes a neurological exam
+  and GCS but the output assessment lacks any neuro status or GCS field.
+
+exclusion_criteria: >
+  Do not use if the scenario's narrative itself is limited (e.g., focused exam only) and those
+  details are not present to extract. Also exclude if the missing content pertains to a
+  different rubric (e.g., omission of treatment details belongs in completeness of treatment,
+  not assessment).
+
+examples:
+  - "The narrative lists vital signs and a 12-system exam (HEENT, chest, abdomen, etc.), but the output's assessment section contains only vitals and omits entire system exams (e.g., no neurological or no abdominal findings recorded)."
+  - "Narrative: 'GCS 15, pupils equal and reactive, lungs clear bilaterally, no neurologic deficits'. Output: no GCS documented and no mention of neuro exam findings in assessment."
+
+evaluator_type: code

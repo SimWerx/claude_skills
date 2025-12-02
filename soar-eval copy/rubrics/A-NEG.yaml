@@ -1,0 +1,37 @@
+# Rubric: A-NEG — Negation Handling
+# Evaluates correct interpretation of negated clinical findings
+# SME REVIEW: Consider raising passing_threshold from 0.85 to 0.90 given medicolegal risk
+
+code: A-NEG
+label: Negation Handling
+description: >
+  Measures accuracy in interpreting negated clinical findings. Simple negation
+  (denies X, no Y) and complex patterns (double negatives, implicit negation,
+  hedged language) must be correctly encoded to avoid dangerous polarity errors.
+
+weight: 0.125
+aggregation_method: WEIGHTED_AVERAGE
+passing_threshold: 0.90
+
+evaluation_guidelines:
+  focus_areas:
+    - "Are simple negation phrases (denies X, no Y) correctly interpreted?"
+    - "Are complex negation patterns (double negatives, implicit) handled?"
+    - "Are internal contradictions flagged or resolved?"
+  acceptable_deviations:
+    - "Minor wording differences that preserve clinical meaning"
+    - "Grouping related negatives into a single statement"
+  critical_requirements:
+    - "Simple negation must never flip polarity"
+    - "Double negatives must resolve to correct clinical state"
+    - "Contradictions must be flagged, not silently ignored"
+  evidence_requirements: >
+    Negation analysis showing: (1) identified negation phrases,
+    (2) resolved polarity, (3) contradiction detection.
+
+benchmarks:
+  - A-NEG1  # Simple negation (denies X, no Y)
+  - A-NEG2  # Complex negation - double negatives
+  - A-NEG3  # Complex negation - implicit/hedged
+  - A-NEG4  # Contradiction detection
+

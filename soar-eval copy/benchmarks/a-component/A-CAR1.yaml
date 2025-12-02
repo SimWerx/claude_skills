@@ -1,0 +1,46 @@
+# Benchmark: A-CAR1 — ROSC/Termination Not Documented
+# Parent Rubric: A-CAR (Cardiac Arrest Documentation)
+
+code: A-CAR1
+parent_rubric: A-CAR
+label: ROSC or Termination Not Documented
+
+concept: >
+  Medic Copilot fails to record the outcome of a cardiac arrest when the
+  narrative clearly indicates whether the patient achieved ROSC (return of
+  spontaneous circulation) or was pronounced/terminated in the field.
+
+weight: 0.60
+threshold: 0.95
+criticality: hard_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "Arrest outcome clearly documented"
+    0.95: "Excellent - ROSC or termination captured"
+    0.50: "Partial - outcome implied but not explicit"
+    0.0: "Failed - arrest outcome missing"
+
+inclusion_criteria: >
+  Apply when the narrative describes a cardiac arrest and states an outcome:
+  ROSC with timestamp, field pronouncement, or termination of resuscitation.
+  Flag if the output does not clearly reflect this outcome.
+
+exclusion_criteria: >
+  Do not apply to non-arrest cases. Do not apply when the narrative itself
+  is ambiguous about outcome (e.g., ongoing CPR during transport with no
+  stated outcome).
+
+examples:
+  - "Narrative: 'Pulses regained at 08:32, ROSC achieved' but output has no ROSC documentation."
+  - "Narrative: 'No ROSC after 25 minutes, termination called by medical control' but output lacks pronouncement."
+  - "ROSC time required: 'ROSC at 08:32' must include timestamp in output, not just 'ROSC achieved' without time."
+  - "Termination time required: 'Resuscitation terminated at 14:47 per Dr. Martinez' - termination time must be captured, not just 'terminated.'"
+  - "Field termination with base contact: 'After 30 minutes of resuscitation with no ROSC, contacted base. Dr. Chen authorized field termination at 0923.' - outcome (no ROSC), base contact, physician name, and termination time all required."
+
+evaluator_type: hybrid
+llm_prompt_file: "evaluators/llm-judge/cardiac_arrest_outcome_prompt.md"
+

@@ -8,85 +8,69 @@ This is a **skills repository** for extending Claude's capabilities with special
 
 **Forked from**: anthropics/skills
 **Purpose**: Professional productivity workflows and business skills
+**Aligned with**: Anthropic Agent Skills Spec v1.0 (October 16, 2025)
 
-## Commands
+## Skill Creation
 
-### Skill Creation and Validation
+### Primary Method: Skill Factory (AI-Powered)
 
-```bash
-# Create a new skill from template
-python skill-creator/scripts/init_skill.py my-new-skill --path ./
-
-# Validate a skill's structure and frontmatter
-python skill-creator/scripts/quick_validate.py path/to/skill
-
-# Package a skill for distribution (validates first)
-python skill-creator/scripts/package_skill.py path/to/skill
-```
-
-## Skill Creation Workflow
-
-This repository provides two methods for creating skills, with distinct use cases:
-
-### Primary Method: Skills Factory Generator (AI-Powered)
-
-**Use for**: Creating new production-ready skills from scratch
+**Use for**: Creating production-ready skills from natural language descriptions
 
 **How it works**:
-1. Drag `SKILLS_FACTORY_GENERATOR_PROMPT.md` into Claude Code conversation
+1. Load the `skill-factory` skill
 2. Describe the skill you need in natural language
 3. Claude generates complete skill automatically:
    - SKILL.md with full content (not placeholders)
    - sample_prompt.md with test examples
    - references/ with detailed templates
    - assets/ with sample data
-   - ZIP file ready for deployment
 
 **Advantages**:
 - Complete, production-ready output in 30 seconds
 - No manual template filling required
-- Automatic validation and packaging
+- Automatic validation
 - Best practices built-in
 
-**See**: [SKILLS_FACTORY_GENERATOR_PROMPT.md](SKILLS_FACTORY_GENERATOR_PROMPT.md)
+**Location**: `skill-factory/SKILL.md`
 
-### Utility Scripts: skill-creator/ (Validation & Packaging Only)
+**Usage**:
+```
+Load the skill-factory skill and help me create a new skill for [your use case].
+```
 
-**Use for**: Validating and packaging existing skills
+### Utility Scripts
 
-**Available scripts**:
-- `quick_validate.py` - Verify SKILL.md structure, frontmatter, naming
-- `package_skill.py` - Create ZIP files for Claude.ai upload (validates first)
-- `init_skill.py` - Legacy template generator (creates empty scaffolds)
+**Validation and packaging** for deployment to Claude.ai/Claude Desktop:
 
-**When to use scripts directly**:
-- Validating manually-created skills
-- Packaging skills for distribution
-- Quick structure checks during development
+```bash
+# Validate a skill's structure and frontmatter
+python scripts/quick_validate.py path/to/skill
 
-**Recommendation**: Use Skills Factory Generator for creation, scripts for validation/packaging
+# Package a skill into ZIP for upload (validates first)
+python scripts/package_skill.py path/to/skill
+```
+
+Output ZIPs are saved to `zips/` for upload to Claude.ai → Settings → Skills.
 
 ### Research-Enhanced Workflow (Automatic)
 
-When generating skills about frameworks, tools, or evolving best practices, the Skills Factory automatically invokes the `background-research` skill to:
+When generating skills about frameworks, tools, or evolving best practices, the Skill Factory automatically invokes the `background-research` skill to:
 - Ground skills in current evidence (sources from 2024-2025)
 - Include source citations for credibility: "(Source: Publication, Year)"
-- Add temporal context ("as of October 2025")
+- Add temporal context ("as of December 2025")
 - Identify deprecated approaches
 - Ensure recommendations reflect current standards
 
-This happens transparently in **Step 2: Research & Contextualize** of the generation workflow. The factory auto-detects time-sensitive skills and invokes research before planning the skill structure.
-
 **Auto-detection logic**:
-- ✅ Invoke research: Frameworks, methodologies, tools, best practices
-- ❌ Skip research: Evergreen workflows, fixed specifications, user-provided complete specs
+- Invoke research: Frameworks, methodologies, tools, best practices
+- Skip research: Evergreen workflows, fixed specifications, user-provided complete specs
 
 **User control**:
 - `research_depth: skip` - Force skip (fast, no web searches)
 - `research_depth: standard` - 2-3 searches (default when auto-detected)
 - `research_depth: comprehensive` - 5+ searches (thorough investigation)
 
-See [SKILLS_FACTORY_GENERATOR_PROMPT.md](SKILLS_FACTORY_GENERATOR_PROMPT.md) Step 2 for complete heuristics and [background-research skill](generated-skills/background-research/) for methodology.
+See `skill-factory/references/generation-workflow.md` for complete heuristics and [background-research skill](generated-skills/background-research/) for methodology.
 
 ### Git Operations
 
@@ -103,10 +87,10 @@ Every skill follows this standard architecture:
 
 ```
 skill-name/
-├── SKILL.md (required)          # Lean navigation file (30-50 lines)
+├── SKILL.md (required)          # Under 500 lines, concise navigation
 │   ├── YAML frontmatter         # name + description
 │   ├── When to use this skill   # Specific triggers
-│   ├── How to use this skill    # 4-step workflow
+│   ├── How to use this skill    # Workflow steps
 │   ├── Core principles          # 3-5 key rules
 │   └── Links to references/     # Pointers to details
 ├── scripts/ (optional)          # Executable code (Python/Bash)
@@ -122,18 +106,21 @@ skill-name/
 
 This pattern ensures efficient token usage by loading only what's needed when it's needed.
 
-### Two Skill Categories
+### Skill Categories
 
-**Anthropic Reference Skills** (included for reference):
-- `skill-creator` - Meta-skill with init/validate/package scripts
+**Core Infrastructure Skills**:
+- `skill-factory` - AI-powered skill generator with progressive disclosure
+- `background-research` - Web research for temporal grounding
+
+**Example Skills** (`examples/`):
 - `internal-comms` - Internal communications templates
 - `document-skills/` - Production DOCX, PDF, PPTX, XLSX skills
+- `data-interrogation` - CSV analysis patterns
+- `executive-memo` - Strategic document templates
+- `technical-docs` - Technical markdown documentation
 
-**Custom Productivity Skills**:
+**Custom Productivity Skills** (root level):
 - `research-synthesis` - Research → executive summaries with citations
-- `executive-memo` - Strategic memos, status reports, decision docs
-- `data-interrogation` - CSV analysis → actionable insights
-- `technical-docs` - Technical markdown documentation (READMEs, API docs)
 
 ### research-archive/ - Research Audit Trail
 
@@ -218,9 +205,9 @@ When `allowed-tools` is specified, Claude can ONLY use those tools while the ski
 
 ### File Size Targets
 
-- SKILL.md: 30-50 lines (overview only)
-- References: 50-200 lines each (detailed content)
-- Total skill: As needed (references loaded on-demand)
+- SKILL.md: Under 500 lines for optimal performance (keep concise, use progressive disclosure)
+- References: As needed (detailed content, loaded on-demand)
+- Total skill: Unlimited (references loaded only when needed)
 
 ## Writing Style (Critical)
 
@@ -285,11 +272,11 @@ This emphatic language ensures Claude loads critical context at the right time, 
 
 1. **Test without skill** - Document specific failures
 2. **Plan resources** - Decide what goes in scripts/, references/, assets/
-3. **Initialize**: `python skill-creator/scripts/init_skill.py my-skill --path ./`
-4. **Edit SKILL.md** - Complete TODO items, keep under 50 lines
-5. **Customize resources** - Add scripts/references/assets or delete example files
-6. **Validate**: `python skill-creator/scripts/quick_validate.py my-skill`
-7. **Iterate** - Test with real usage, refine based on behavior
+3. **Generate with Skill Factory**: Load `skill-factory` and describe the skill
+4. **Review SKILL.md** - Verify content, keep under 500 lines (use progressive disclosure)
+5. **Customize resources** - Add scripts/references/assets as needed
+6. **Test** - Use skill on real tasks, verify outputs
+7. **Iterate** - Refine based on behavior
 
 ## Common Patterns
 
@@ -324,34 +311,13 @@ For multi-step tasks, provide clear sequences:
 - ❌ Don't explain basics Claude already knows
 - ❌ Don't nest references within references (keep one level deep)
 - ❌ Don't include marketing language or emojis
-- ❌ Don't make SKILL.md longer than 50 lines (move details to references/)
-
-## Key Skill-Creator Scripts
-
-### [init_skill.py](skill-creator/scripts/init_skill.py)
-Creates new skill scaffold with:
-- SKILL.md template with TODO placeholders
-- Example directories: scripts/, references/, assets/
-- Example files showing proper structure
-
-### [quick_validate.py](skill-creator/scripts/quick_validate.py)
-Fast validation checking:
-- SKILL.md exists
-- Valid YAML frontmatter (name + description)
-- Naming conventions (hyphen-case, lowercase)
-- No angle brackets in description
-- Returns exit code 0 (valid) or 1 (invalid)
-
-### [package_skill.py](skill-creator/scripts/package_skill.py)
-Validates and packages skill into distributable ZIP:
-- Runs validation first
-- Creates ZIP maintaining directory structure
-- Output: `skill-name.zip`
+- ❌ Don't make SKILL.md longer than 500 lines (move detailed content to references/)
 
 ## Reference Documentation
 
 - [docs/skill-format-spec.md](docs/skill-format-spec.md) - SKILL.md structure and validation rules
 - [docs/skill-authoring-guide.md](docs/skill-authoring-guide.md) - Comprehensive best practices
+- [skill-factory/SKILL.md](skill-factory/SKILL.md) - AI-powered skill generation
 
 ## Repository-Specific Conventions
 
@@ -365,7 +331,7 @@ Validates and packages skill into distributable ZIP:
 
 Before shipping a skill:
 - [ ] Description is specific with triggers
-- [ ] SKILL.md under 50 lines
+- [ ] SKILL.md under 500 lines (concise, with details in references/)
 - [ ] "When to use" section included
 - [ ] "How to use" workflow (4 steps)
 - [ ] Core principles (3-5 bullets)
@@ -373,7 +339,6 @@ Before shipping a skill:
 - [ ] References files for details
 - [ ] No marketing language
 - [ ] Third-person, imperative voice
-- [ ] Validates with `quick_validate.py`
 - [ ] Tested with real prompts
 - [ ] **Multi-model tested**: Validated on Haiku (fast), Sonnet (balanced), and Opus (most capable)
 - [ ] Works across deployment platforms (Claude.ai, Claude Desktop, Claude Code, API if applicable)
@@ -394,7 +359,8 @@ This repository tracks official Anthropic guidance to ensure compatibility with 
 
 **1. Anthropic's Official Skills Repository**
 - URL: https://github.com/anthropics/skills
-- Status: 13.7k+ stars, actively maintained (as of October 2025)
+- Status: 19k+ stars, actively maintained (as of December 2025)
+- Spec: v1.0 (October 16, 2025)
 - License: Apache 2.0 (can fork and adapt)
 - Contents: Reference skills, document manipulation examples
 - **Action**: Watch repo for commits, review quarterly for new patterns
@@ -430,7 +396,7 @@ This repository tracks official Anthropic guidance to ensure compatibility with 
 
 **When Updating This Repo**:
 1. Compare official examples against our templates
-2. Update SKILLS_FACTORY_GENERATOR_PROMPT.md with new patterns
+2. Update `skill-factory/` with new patterns
 3. Refresh docs/skill-authoring-guide.md with latest best practices
 4. Test generated skills against new requirements
 5. Update Quality Checklist with new criteria

@@ -1,0 +1,44 @@
+# Benchmark: A-CMP2 — Response Section Incomplete
+# Parent Rubric: A-CMP (Completeness)
+
+code: A-CMP2
+parent_rubric: A-CMP
+label: Response Section Incomplete
+
+concept: >
+  Medic Copilot's output fails to include key Response section details (unit response and crew
+  information) that were present in the narrative. This covers missing response mode (e.g.,
+  emergent vs non-emergent), crew identifiers, or notable delays/hazards en route.
+
+weight: 0.15
+threshold: 0.80
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "All response section fields present"
+    0.90: "Excellent (90%+ fields present)"
+    0.80: "Good (80-90% fields present)"
+    0.70: "Fair (70-80% fields present)"
+    0.0: "Failed - response section incomplete"
+
+inclusion_criteria: >
+  Apply when the narrative clearly describes response details (dispatch mode, units responding,
+  crew names, any response delays or scene hazards). Flag if the structured output's response
+  section omits one or more of these elements, for example if the transcript states "Medic 5
+  responded code 3 with two paramedics, no delays" and draatt_json lacks the response mode or
+  crew info.
+
+exclusion_criteria: >
+  Do not apply if the scenario template intentionally omits a separate response section (e.g.,
+  certain overlays or abbreviated templates). Also exclude cases where the narrative itself
+  provides no response details - no penalty for absence of information not dictated.
+
+examples:
+  - "Dispatched emergent, Medic 42 and Engine 15 responding, no traffic delays - but the output does not list the responding units or indicates an incorrect mode."
+  - "Narrative describes a scene hazard ('downed power lines on approach delayed arrival by 5 minutes') not captured in the output's response section."
+
+evaluator_type: code

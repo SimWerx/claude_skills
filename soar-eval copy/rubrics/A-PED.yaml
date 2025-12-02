@@ -1,0 +1,39 @@
+# Rubric: A-PED — Pediatric Documentation
+# Evaluates accuracy of pediatric-specific documentation
+
+code: A-PED
+label: Pediatric Documentation
+description: >
+  Evaluates accuracy of pediatric-specific documentation including weight-based
+  medication dosing calculations, age-appropriate assessments, and Broselow
+  tape/weight documentation. Critical because all pediatric medications are
+  dosed by weight; a 10-fold error can be fatal. Note: APGAR scores for newborn
+  deliveries are primarily owned by A-OBS1 (obstetric context); A-PED focuses
+  on pediatric patient assessments where the patient is the child, not the
+  delivering mother.
+
+weight: 0.125
+aggregation_method: WEIGHTED_AVERAGE
+passing_threshold: 0.90
+
+evaluation_guidelines:
+  focus_areas:
+    - "Are weight-based medication doses calculated correctly?"
+    - "Is patient weight or Broselow color documented when stated?"
+    - "Are age-appropriate assessment findings included?"
+    - "Are pediatric-specific exam findings (cap refill, fontanelle) captured?"
+  acceptable_deviations:
+    - "Minor weight rounding that doesn't affect dose calculation"
+    - "Broselow color vs exact weight when either provides dosing guidance"
+  critical_requirements:
+    - "Weight-based dose calculations must not have decimal errors"
+    - "Patient weight or Broselow color must appear in output if documented in transcript"
+    - "Broselow-derived weight estimates must be captured when tape color is stated"
+  evidence_requirements: >
+    Pediatric documentation check: (1) dose calculation accuracy,
+    (2) weight/Broselow capture, (3) age-appropriate assessments.
+
+benchmarks:
+  - A-PED1  # Pediatric dosing error
+  - A-PED2  # Pediatric assessment completeness
+

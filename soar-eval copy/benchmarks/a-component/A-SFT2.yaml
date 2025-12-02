@@ -1,0 +1,45 @@
+# Benchmark: A-SFT2 — Contraindication Detection
+# Parent Rubric: A-SFT (Safety Flags)
+# Source: allergy-contraindication-ignored.yaml
+
+code: A-SFT2
+parent_rubric: A-SFT
+label: Allergy Contraindication Ignored
+
+concept: >
+  Medic Copilot fails to flag a treatment or medication that ground truth marks as
+  contraindicated by a recorded allergy or medical history in the same trace.
+
+weight: 0.25
+threshold: 1.0
+criticality: hard_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "All contraindications detected and flagged"
+    0.95: "Excellent - no missed contraindications"
+    0.80: "Good - minor contraindication oversight"
+    0.0: "Failed - contraindicated treatment not flagged"
+
+inclusion_criteria: >
+  Apply when ground truth marks a test case as containing a contraindication (e.g., allergy
+  to a medication, PDE-5 inhibitor use with nitroglycerin). Flag if Medic Copilot's output
+  fails to flag the conflict or document a rationale for override.
+
+exclusion_criteria: >
+  Do not use when no relevant contraindications are present in the trace, or when the
+  contraindicated treatment is correctly withheld and documented as such.
+
+examples:
+  - "Allergy list includes 'penicillin' but the medications block shows penicillin given IV with no acknowledgement of the allergy."
+  - "History of severe aspirin allergy documented, yet aspirin is recorded as administered for chest pain with no comment."
+  - "Patient history notes 'takes Viagra' but nitroglycerin is documented as given without mention of the PDE-5 inhibitor contraindication."
+  - "BP 88/60 documented but nitroglycerin given without flagging the SBP <90 mmHg contraindication."
+  - "Acceptable: 'NTG given despite patient taking sildenafil, per base order from Dr. Jones' - override with documented rationale should not be flagged as a safety failure."
+
+evaluator_type: hybrid
+llm_prompt_file: "evaluators/llm-judge/contraindication_detection_prompt.md"
+

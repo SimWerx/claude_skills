@@ -1,0 +1,49 @@
+# Benchmark: A-ALL1 — Allergy Not Documented
+# Parent Rubric: A-CMP (Completeness)
+
+code: A-ALL1
+parent_rubric: A-CMP
+label: Allergy Not Documented
+
+concept: >
+  Medic Copilot output does not include a stated allergy from the narrative,
+  even when no medication conflict occurred. If the narrative states "Known
+  allergy: sulfa drugs" or "patient allergic to penicillin" and the output
+  allergies section is empty or missing that allergy, that is a failure.
+
+weight: 0.10
+threshold: 0.90
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "All stated allergies documented"
+    0.90: "Excellent (90%+ allergies captured)"
+    0.80: "Good (80-90% allergies captured)"
+    0.50: "Partial - some allergies missing"
+    0.0: "Failed - stated allergies omitted entirely"
+
+inclusion_criteria: >
+  Apply when the narrative explicitly states one or more allergies (e.g.,
+  "allergic to...", "known allergy:", "NKDA" for no known drug allergies). Flag if
+  the output does not include these allergies in its structured fields.
+
+exclusion_criteria: >
+  Do not apply when the narrative does not mention allergies. Do not flag
+  if the narrative says "no known allergies" or "NKDA" and output correctly
+  reflects no allergies. Acceptable representations include explicit "NKDA",
+  "no known drug allergies", or a blank/empty allergy field—all are
+  semantically equivalent and should pass. Minor spelling variations are
+  acceptable if the allergy is recognizable (e.g., "Penicillin" vs "penicillin").
+
+examples:
+  - "Narrative: 'Known allergy: sulfa drugs' but output allergies section is empty."
+  - "Narrative: 'Patient states allergy to penicillin and codeine' but output only shows penicillin."
+  - "Narrative: 'NKDA' correctly reflected as no allergies in output - this is NOT a failure."
+
+evaluator_type: hybrid
+llm_prompt_file: "evaluators/llm-judge/allergy_extraction_prompt.md"
+

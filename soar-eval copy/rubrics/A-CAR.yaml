@@ -1,0 +1,36 @@
+# Rubric: A-CAR — Cardiac Arrest Documentation
+# Evaluates completeness of out-of-hospital cardiac arrest documentation
+
+code: A-CAR
+label: Cardiac Arrest Documentation
+description: >
+  Evaluates documentation of out-of-hospital cardiac arrest events including
+  ROSC or termination outcome, initial rhythm, defibrillation details, and
+  resuscitation medications. Critical for clinical handoff, QA review, and
+  Utstein-style outcome reporting.
+
+weight: 0.125
+aggregation_method: WEIGHTED_AVERAGE
+passing_threshold: 0.90
+
+evaluation_guidelines:
+  focus_areas:
+    - "Is ROSC time or termination/pronouncement documented?"
+    - "Is initial cardiac rhythm captured?"
+    - "Are defibrillation events and counts recorded?"
+    - "Are resuscitation medications (epinephrine, amiodarone) documented?"
+  acceptable_deviations:
+    - "Exact shock times may vary slightly if count is correct"
+    - "Drug doses may be grouped if all administrations captured"
+  critical_requirements:
+    - "ROSC or termination outcome MUST be documented if it occurred"
+    - "Initial rhythm must be stated if present in narrative"
+    - "Defibrillation must be noted if shocks were delivered"
+  evidence_requirements: >
+    Cardiac arrest documentation check: (1) outcome (ROSC/death),
+    (2) rhythm identification, (3) intervention timeline.
+
+benchmarks:
+  - A-CAR1  # ROSC/termination documentation
+  - A-CAR2  # CPR/arrest event details
+

@@ -1,0 +1,50 @@
+# Benchmark: A-OBS2 — Pregnancy Details Omitted
+# Parent Rubric: A-OBS (Obstetric & Neonatal Documentation)
+
+code: A-OBS2
+parent_rubric: A-OBS
+label: Pregnancy Details Omitted
+
+concept: >
+  Medic Copilot omits critical maternal details in an obstetric case,
+  such as gestational age, gravida/para status, multiple gestation, or
+  complications like bleeding or hypertension. These details set context
+  for OB emergencies and guide treatment decisions.
+
+weight: 0.50
+threshold: 0.90
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "All pregnancy details documented"
+    0.90: "Excellent - key maternal data present"
+    0.80: "Good - most pregnancy info captured"
+    0.0: "Failed - critical pregnancy details omitted"
+
+inclusion_criteria: >
+  Apply when the narrative contains gestational age (weeks), gravida/para
+  status, multiple gestation (twins), pregnancy complications (bleeding,
+  preeclampsia, premature labor), or post-partum maternal status (estimated
+  blood loss, placenta delivery status). Flag if the output does not preserve
+  this information.
+
+exclusion_criteria: >
+  Do not apply to non-OB cases. Do not flag if the narrative does not
+  mention these specific details. Approximate gestational age ("third
+  trimester" vs "36 weeks") is acceptable if clinically equivalent.
+
+examples:
+  - "Narrative: '35 weeks pregnant, G3P2, possible preeclampsia' but output says only 'pregnant patient.'"
+  - "Narrative: 'Twin pregnancy at 32 weeks with vaginal bleeding' but output lacks gestational age and twin status."
+  - "Post-partum: 'Placenta delivered intact, EBL approximately 500 mL' - maternal status details should be captured."
+  - "Placenta status: 'Placenta not yet delivered, cord clamped and cut' - placenta delivery status is critical for post-partum assessment."
+  - "EBL documentation: 'Estimated blood loss 800 mL, fundal massage performed' - EBL and hemorrhage interventions must be captured when stated."
+  - "Twin pregnancy details: 'Dichorionic diamniotic twins at 34 weeks, Twin A vertex, Twin B breech' - twin-specific positioning and status should be preserved."
+
+evaluator_type: hybrid
+llm_prompt_file: "evaluators/llm-judge/pregnancy_details_prompt.md"
+

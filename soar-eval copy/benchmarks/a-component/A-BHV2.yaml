@@ -1,0 +1,49 @@
+# Benchmark: A-BHV2 — Capacity/Consent Assessment Missing
+# Parent Rubric: A-BHV (Behavioral/Psychiatric Documentation)
+
+code: A-BHV2
+parent_rubric: A-BHV
+label: Capacity or Consent Assessment Missing
+
+concept: >
+  Medic Copilot does not record the assessment of decision-making capacity
+  or consent status in a behavioral case when such context was provided.
+  This includes documentation of psychiatric holds (5150), patient
+  competence, or implied consent situations.
+
+weight: 0.50
+threshold: 0.90
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "Capacity/consent status fully documented"
+    0.90: "Excellent - key assessment captured"
+    0.80: "Good - partial capacity info present"
+    0.0: "Failed - capacity assessment omitted"
+
+inclusion_criteria: >
+  Apply when the narrative contains capacity assessment ("patient deemed
+  incompetent," "lacks decision-making capacity"), psychiatric hold status
+  ("5150 hold," "involuntary transport"), or consent documentation for
+  behavioral patients. Flag if the output does not record this information.
+
+exclusion_criteria: >
+  Do not apply to non-behavioral cases. Do not flag if the narrative does
+  not mention capacity or consent. Standard consent in cooperative patients
+  does not require explicit documentation unless stated.
+
+examples:
+  - "Narrative: 'Patient on 5150 hold, transported involuntarily' but output has no mention of hold status."
+  - "Narrative: 'Patient deemed incompetent due to psychosis, unable to refuse care' but output lacks capacity assessment."
+  - "Implied consent: 'Patient intoxicated, unable to provide informed consent, transported under implied consent' - implied consent status must be documented."
+  - "Implied consent: 'Patient actively psychotic, lacks capacity to refuse, transported per medical necessity' - incapacity and transport justification should be captured."
+  - "Hold authorizer: '5150 hold placed by Officer Jones badge #4521' - when hold authorizer is documented, this information should be preserved."
+  - "Capacity with legal hold: 'Patient on M-1 hold per Dr. Smith, lacks capacity due to active suicidal ideation' - hold status, authorizer, and capacity determination all required."
+
+evaluator_type: hybrid
+llm_prompt_file: "evaluators/llm-judge/capacity_consent_prompt.md"
+

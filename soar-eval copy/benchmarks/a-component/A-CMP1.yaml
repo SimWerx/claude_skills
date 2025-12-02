@@ -1,0 +1,50 @@
+# Benchmark: A-CMP1 — Core DRAATT Section Completeness
+# Parent Rubric: A-CMP (Completeness)
+# Source: core-draatt-sections-missing.yaml
+
+code: A-CMP1
+parent_rubric: A-CMP
+label: Core DRAATT Sections Missing
+
+concept: >
+  Required DRAATT sections for the call type (e.g., dispatch, response, arrival, assessment,
+  treatment, transport/refusal) are not documented at all in Medic Copilot's structured output.
+
+weight: 0.167
+threshold: 0.85
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "All required sections present"
+    0.85: "Excellent (85%+ sections present)"
+    0.70: "Good (70-85% sections present)"
+    0.60: "Fair (60-70% sections present)"
+    0.0: "Failed - core sections missing"
+
+inclusion_criteria: >
+  Apply when the template or scenario type requires a core DRAATT section. Flag if that section
+  is completely absent from `draatt_json` (no fields, no empty stubs), or clearly conflated
+  into another section so that section-level completeness cannot be trusted.
+
+exclusion_criteria: >
+  Do not use when a section is present but internally incomplete (use more specific assessment,
+  treatment, or transport axial codes), or when the scenario legitimately omits that section
+  by design (e.g., RSI overlay omitting dispatch/arrival).
+
+examples:
+  - "Full-draatt trace where no Response or Transport fields exist anywhere in `draatt_json`."
+  - "Airport-transfer trace where Transfer/Transport information is documented only in free text with no structured section."
+  - "Section conflation: Assessment and Treatment content merged into a single unstructured block, preventing section-level completeness validation."
+  - "Section conflation: Dispatch and Response sections combined so that response delays cannot be distinguished from dispatch timing."
+
+evaluator_type: code
+
+notes: >
+  This benchmark covers all six DRAATT section completeness checks. Individual section
+  weights should be distributed as: Dispatch (A-CMP1), Response (A-CMP2), Arrival (A-CMP3),
+  Assessment (A-CMP4), Treatment (A-CMP5), Transport (A-CMP6).
+

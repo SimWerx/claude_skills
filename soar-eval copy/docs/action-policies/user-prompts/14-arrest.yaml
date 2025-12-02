@@ -1,0 +1,20 @@
+# User Prompt: Cardiac Arrest Sequence Clarification
+# Linked benchmarks: A-CAR1, A-CAR2 (see benchmark-to-prompt-map.json)
+
+prompts:
+  - id: arrest-sequence-consistency
+    
+    # Static prompt - arrest sequence always same question
+    prompt_neutral: "Defib/rhythm sequence appears inconsistent. Confirm rhythm before and after shock?"
+    prompt_medic_copilot: "Medic Copilot detected defib/rhythm inconsistency. Confirm rhythm before and after shock?"
+    
+    response_type: text_short
+    
+    severity: warn
+    
+    placeholders: null  # Static prompt
+    
+    examples:
+      - "Defibrillated at 150 J; rhythm asystole both before and after"
+      - "Shocked VFib, no post-shock rhythm documented"
+      - "Multiple shocks, rhythm changes unclear"

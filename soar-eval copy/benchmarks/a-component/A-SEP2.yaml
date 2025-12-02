@@ -1,0 +1,48 @@
+# Benchmark: A-SEP2 — Sepsis Key Elements Missing
+# Parent Rubric: A-SEP (Sepsis/Shock Documentation)
+
+code: A-SEP2
+parent_rubric: A-SEP
+label: Sepsis Key Elements Missing
+
+concept: >
+  Medic Copilot fails to document key sepsis assessment elements when present
+  in the narrative: lactate values, suspected infection source, hemodynamic
+  parameters (MAP, fluid responsiveness), or vasopressor administration. These
+  elements guide treatment escalation and are critical for ED handoff.
+
+weight: 0.50
+threshold: 0.90
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "All sepsis key elements captured"
+    0.90: "Excellent - key sepsis data present"
+    0.80: "Good - most elements documented"
+    0.0: "Failed - critical sepsis elements omitted"
+
+inclusion_criteria: >
+  Apply when the narrative contains sepsis-specific assessment data: lactate
+  values, suspected infection source (UTI, pneumonia, cellulitis, abdominal),
+  shock indices (MAP, shock index), fluid challenge response, or vasopressor
+  use. Flag if this information is missing from the output or if vital trends
+  suggesting septic shock are not reflected.
+
+exclusion_criteria: >
+  Do not apply to non-sepsis cases. Do not flag information not stated in
+  the narrative. Minor unit differences (mmol/L vs mg/dL) are acceptable if
+  the numeric value is correct.
+
+examples:
+  - "Narrative: 'Lactate 4.2, suspected UTI source' but output has no lactate value or suspected source."
+  - "Narrative: 'MAP 58, started norepinephrine drip' but output omits vasopressor documentation."
+  - "Narrative: 'qSOFA 2, gave 2L fluid bolus, patient remained hypotensive' - fluid response must be captured."
+  - "Narrative: 'Temp 103.2, HR 124, BP 84/52, suspected pneumonia' - vital pattern and suspected source must be preserved."
+
+evaluator_type: hybrid
+llm_prompt_file: "evaluators/llm-judge/sepsis_elements_prompt.md"
+

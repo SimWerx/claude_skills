@@ -1,0 +1,45 @@
+# Benchmark: A-UNC1 — Hallucination on Missing Data
+# Parent Rubric: A-UNC (Uncertainty Handling)
+
+code: A-UNC1
+parent_rubric: A-UNC
+label: Hallucinated Data for Missing Input
+
+concept: >
+  Medic Copilot fills in a value for a field when the narrative provides no evidence
+  for that information. This is fabrication — inventing data that was never stated
+  in the transcript. Zero tolerance for this failure mode as it creates false
+  documentation that could affect patient care decisions.
+
+weight: 0.60
+threshold: 1.0
+criticality: hard_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "No hallucinated values — all output fields supported by narrative"
+    0.0: "Failed — one or more values fabricated without narrative support"
+
+inclusion_criteria: >
+  Apply when the structured output contains a specific value (not null, not "unknown")
+  for a field. Flag if the narrative/ASR text provides no evidence for that value and
+  the AI has invented information to fill a gap. Common targets: allergies, secondary
+  vital signs, patient demographics, medication details not stated.
+
+exclusion_criteria: >
+  Do not apply when the value is legitimately inferred from explicit narrative context,
+  when the field is appropriately populated with "unknown" or null, or when the issue is
+  misinterpretation of stated data rather than fabrication (use A-FCT or A-NEG instead).
+
+examples:
+  - "Narrative never mentions allergies, but output populates allergies: 'NKDA' — fabricated assumption."
+  - "No second set of vitals in narrative, yet output includes full reassessment_vitals object with invented values."
+  - "Patient weight not stated in transcript, but output records weight: 80 — hallucinated value."
+  - "Narrative provides no medication history, but output lists home_medications: ['metformin', 'lisinopril']."
+
+evaluator_type: hybrid
+llm_prompt_file: "evaluators/llm-judge/hallucination_missing_prompt.md"
+

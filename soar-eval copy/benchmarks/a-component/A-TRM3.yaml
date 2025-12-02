@@ -1,0 +1,49 @@
+# Benchmark: A-TRM3 — Trauma Alert Not Documented
+# Parent Rubric: A-TRM (Trauma Documentation)
+
+code: A-TRM3
+parent_rubric: A-TRM
+label: Trauma Alert Not Documented
+
+concept: >
+  Medic Copilot output does not document that a trauma alert was called when
+  the narrative explicitly states it. If the narrative says "Trauma alert
+  activated, ETA 5 minutes" or "Called trauma alert to receiving facility"
+  and the output omits this, that is a failure. Parallels A-STR2 for stroke
+  alert documentation.
+
+weight: 0.25
+threshold: 0.95
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "Trauma alert fully documented"
+    0.80: "Partial - trauma destination noted but alert not explicit"
+    0.50: "Minimal - trauma center mentioned without alert status"
+    0.0: "Failed - trauma alert omitted entirely"
+
+inclusion_criteria: >
+  Apply when the narrative explicitly states a trauma alert was called or
+  activated (e.g., "trauma alert," "level 1 trauma," "trauma team activated,"
+  "notified trauma center"). Flag if the output does not reflect this alert status.
+
+exclusion_criteria: >
+  Do not apply when no trauma alert is mentioned in the narrative. Do not
+  flag if the patient was transported to a trauma center without an explicit
+  alert being called - only flag when the alert itself is documented and
+  omitted from output.
+
+examples:
+  - "Narrative: 'Trauma alert activated, ETA 5 minutes' but output has no mention of trauma alert."
+  - "Narrative: 'Called level 1 trauma to Memorial, trauma team notified' but output says only 'Transported to Memorial.'"
+  - "Narrative: 'Notified receiving facility of incoming trauma alert' but output omits alert notification."
+  - "Trauma alert level: 'Level 1 trauma activated due to hemodynamic instability' - alert level (1 vs 2) should be captured when specified."
+  - "Trauma alert with criteria: 'Trauma alert called: penetrating torso injury, GCS 12, SBP 88' - alert criteria mentioned should be documented alongside alert status."
+
+evaluator_type: hybrid
+llm_prompt_file: "evaluators/llm-judge/trauma_alert_prompt.md"
+

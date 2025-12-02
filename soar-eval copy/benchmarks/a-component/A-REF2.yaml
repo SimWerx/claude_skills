@@ -1,0 +1,46 @@
+# Benchmark: A-REF2 — Refusal Signature/Witness Missing
+# Parent Rubric: A-REF (Refusal Documentation)
+
+code: A-REF2
+parent_rubric: A-REF
+label: Refusal Signature or Witness Missing
+
+concept: >
+  Medic Copilot fails to record the presence or absence of a refusal signature
+  or witness when the narrative states this information. Many narratives include
+  "Patient signed refusal form" or "patient refused to sign, witness John Doe"
+  and this must be captured in the output.
+
+weight: 0.40
+threshold: 0.95
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "Signature/witness status fully documented"
+    0.85: "Good - key signature info present"
+    0.70: "Fair - partial signature documentation"
+    0.0: "Failed - signature/witness info omitted"
+
+inclusion_criteria: >
+  Apply when the narrative explicitly mentions signature status ("signed AMA,"
+  "refused to sign," "witness present") or identifies a witness by name. Flag if
+  the output does not include this information.
+
+exclusion_criteria: >
+  Do not apply if the narrative does not mention signature or witness status.
+  Do not flag minor formatting differences if the essential information
+  (signed/not signed, witness name if given) is preserved.
+
+examples:
+  - "Narrative: 'Patient signed refusal form, witnessed by spouse' but output has no mention of signature or witness."
+  - "Narrative: 'Patient refused to sign, firefighter Jones witnessed refusal' but output omits witness documentation."
+  - "High-risk post-intervention: 'Post-Narcan patient signed AMA form, witnessed by partner on scene and PD Officer Davis badge #4521' - signature status and both witnesses must be captured given medicolegal importance of post-reversal refusals."
+  - "Post-hypoglycemia refusal: 'Patient refused to sign refusal form, stated doesn't want paperwork. Witnessed by daughter present on scene, Mary Smith.' - refusal to sign and witness identity must be documented."
+
+evaluator_type: hybrid
+llm_prompt_file: "evaluators/llm-judge/refusal_signature_prompt.md"
+

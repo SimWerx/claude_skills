@@ -1,0 +1,44 @@
+# Benchmark: A-NEG4 — Internal Contradiction Detection
+# Parent Rubric: A-NEG (Negation Handling)
+# Source: internal-contradiction-unresolved.yaml
+
+code: A-NEG4
+parent_rubric: A-NEG
+label: Internal Contradiction Unresolved
+
+concept: >
+  Medic Copilot outputs mutually incompatible clinical findings for the same time frame
+  (e.g., exam, vitals, impression) without resolving or flagging them as a contradiction.
+
+weight: 0.25
+threshold: 0.85
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "All contradictions detected and flagged"
+    0.85: "Excellent (85%+ detected)"
+    0.70: "Good (70-85% detected)"
+    0.60: "Fair (60-70% detected)"
+    0.0: "Failed - contradictions not detected"
+
+inclusion_criteria: >
+  Apply when the trace contains clearly conflicting states that cannot both be true at the
+  same time (e.g., diaphoretic vs dry skin, ROSC vs persistent asystole). Flag if there is no
+  explanation, correction, or contradiction marker in the output. Also flag single-sentence
+  contradictions using contrast words like "but" or "however" (e.g., "AOx4 but confused").
+
+exclusion_criteria: >
+  Do not use for legitimate temporal changes (e.g., hypotensive then normotensive after
+  fluids), or for small wording inconsistencies that a reasonable reader could reconcile.
+
+examples:
+  - "Same timepoint: 'lethargic and diaphoretic' vs 'skin warm and dry' in different sections, with no correction."
+  - "Vitals table shows HR 0 while impression describes a stable sinus rhythm."
+
+evaluator_type: llm_judge
+llm_prompt_file: "evaluators/llm-judge/contradiction_prompt.md"
+

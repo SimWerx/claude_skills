@@ -1,0 +1,38 @@
+# Rubric: A-SEP — Sepsis/Shock Documentation
+# Evaluates completeness of sepsis and shock-specific documentation
+
+code: A-SEP
+label: Sepsis and Shock Documentation
+description: >
+  Evaluates documentation of sepsis and shock-specific assessment findings
+  including sepsis alert activation, lactate values, suspected infection source,
+  and hemodynamic status. Critical because sepsis is time-sensitive with the
+  "golden hour" concept - early recognition and treatment significantly impacts
+  mortality. Vasopressor use and fluid resuscitation decisions depend on
+  accurate documentation.
+
+weight: 0.10
+aggregation_method: WEIGHTED_AVERAGE
+passing_threshold: 0.90
+
+evaluation_guidelines:
+  focus_areas:
+    - "Is sepsis alert activation documented when it occurred?"
+    - "Are lactate values captured when measured?"
+    - "Is suspected infection source documented when identified?"
+    - "Are vital trend patterns (MAP, HR, temp) indicating shock preserved?"
+  acceptable_deviations:
+    - "Lactate expressed as mmol/L or mg/dL if value is correct"
+    - "Sepsis criteria documented without explicit 'sepsis alert' if clinically equivalent"
+  critical_requirements:
+    - "Sepsis alert activation MUST be documented if it occurred"
+    - "Lactate values MUST be captured if measured in field"
+    - "Vasopressor use MUST be documented if administered"
+  evidence_requirements: >
+    Sepsis/shock documentation check: (1) alert activation status,
+    (2) lactate and key labs, (3) suspected source, (4) hemodynamic support.
+
+benchmarks:
+  - A-SEP1  # Sepsis alert activation
+  - A-SEP2  # Key sepsis elements (lactate, source, trends)
+

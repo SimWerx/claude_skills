@@ -1,0 +1,44 @@
+# Benchmark: A-CMP6-airport — Airport Transfer Field Completeness
+# Parent Rubric: A-CMP (Completeness)
+# Source: airport-transfer-fields-incomplete.yaml
+
+code: A-CMP6-airport
+parent_rubric: A-CMP
+label: Airport Transfer Fields Incomplete
+
+concept: >
+  In aeromedical ground-transfer scenarios, key transfer fields (air transport agency, tail
+  number, destination, diagnosis, reason for transfer, diagnosis source, or flight crew vs
+  SMFR roles) are missing or too vague in Medic Copilot's output.
+
+weight: 0.167
+threshold: 0.85
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "All airport transfer fields complete"
+    0.85: "Excellent (85%+ fields present)"
+    0.70: "Good (70-85% fields present)"
+    0.60: "Fair (60-70% fields present)"
+    0.0: "Failed - critical transfer fields missing"
+
+inclusion_criteria: >
+  Apply when the call is clearly an airport/flight transfer. Flag if the structured output
+  omits any of: named air transport agency, aircraft tail number, destination facility,
+  specific diagnosis, specific clinical reason for transfer, explicit diagnosis source, or
+  whether the flight crew vs ground crew carried primary responsibility for care.
+
+exclusion_criteria: >
+  Do not use for standard ground transports with no aeromedical component, or when all fields
+  are present but the narrative simply adds extra contextual detail.
+
+examples:
+  - "Airport-transfer trace that documents diagnosis and destination but never records aircraft tail number."
+  - "Output says 'transferred for higher level of care' with no specific reason despite more detailed rationale in the source narrative."
+
+evaluator_type: code
+

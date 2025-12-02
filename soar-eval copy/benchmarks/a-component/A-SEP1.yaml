@@ -1,0 +1,49 @@
+# Benchmark: A-SEP1 — Sepsis Alert Activation
+# Parent Rubric: A-SEP (Sepsis/Shock Documentation)
+
+code: A-SEP1
+parent_rubric: A-SEP
+label: Sepsis Alert Not Documented
+
+concept: >
+  Medic Copilot fails to document sepsis alert activation when it occurred.
+  If the narrative states "activated sepsis alert" or "called sepsis code to
+  receiving facility" and the output does not reflect this notification, that
+  is a failure. Alert timing and receiving facility acknowledgment are critical
+  for time-to-treatment metrics.
+
+weight: 0.50
+threshold: 0.95
+criticality: hard_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "Sepsis alert activation fully documented"
+    0.95: "Excellent - alert status captured"
+    0.80: "Good - partial alert documentation"
+    0.0: "Failed - sepsis alert omitted"
+
+inclusion_criteria: >
+  Apply when the narrative describes activating a sepsis alert, sepsis code,
+  or notifying the receiving facility of suspected sepsis (e.g., "activated
+  sepsis alert," "called sepsis notification to ED," "qSOFA of 3, notified
+  hospital"). Flag if the output does not capture this notification or its
+  timing when stated.
+
+exclusion_criteria: >
+  Do not apply to non-sepsis cases. Do not apply when sepsis is suspected
+  but no formal alert was activated. Do not flag if the narrative does not
+  mention alert activation. Clinical suspicion without alert is acceptable
+  if narrative reflects the same.
+
+examples:
+  - "Narrative: 'Activated sepsis alert to Memorial ED, ETA 10 minutes' but output lacks any mention of sepsis alert."
+  - "Narrative: 'qSOFA 3, called sepsis code' but output says only 'suspected infection.'"
+  - "Narrative: 'Sepsis protocol initiated, notified receiving hospital at 14:32' - alert timing must be captured."
+
+evaluator_type: hybrid
+llm_prompt_file: "evaluators/llm-judge/sepsis_alert_prompt.md"
+

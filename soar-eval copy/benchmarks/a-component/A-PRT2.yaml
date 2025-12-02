@@ -1,0 +1,43 @@
+# Benchmark: A-PRT2 — STEMI Care Protocol
+# Parent Rubric: A-PRT (Protocol Tracking)
+# Source: stemi-care-incomplete.yaml
+
+code: A-PRT2
+parent_rubric: A-PRT
+label: STEMI Care Incomplete
+
+concept: >
+  In a STEMI/ACS scenario, Medic Copilot fails to extract stated protocol steps or flag
+  gaps that ground truth marks as missing (aspirin, 12-lead, STEMI alert, nitroglycerin).
+
+weight: 0.50
+threshold: 0.85
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "All STEMI protocol steps documented"
+    0.85: "Excellent (85%+ steps documented)"
+    0.70: "Good (70-85% steps documented)"
+    0.60: "Fair (60-70% steps documented)"
+    0.0: "Failed - critical STEMI steps missing"
+
+inclusion_criteria: >
+  Apply when ground truth marks a test case as STEMI/ACS with expected protocol elements.
+  Flag if Medic Copilot's output fails to extract stated interventions or flag gaps.
+
+exclusion_criteria: >
+  Do not use for non-cardiac cases, when the missing step is appropriately contraindicated
+  and this is clearly documented (e.g., aspirin withheld for true allergy), or when local
+  protocols legitimately differ on which steps are mandatory.
+
+examples:
+  - "Inferior STEMI case where IV and nitroglycerin are documented but no aspirin and no STEMI alert or cath lab activation appear in the output."
+  - "12-lead with clear ST elevation recorded in evidence, but the structured protocol branch does not reflect the STEMI pathway or any escalation."
+
+evaluator_type: hybrid
+llm_prompt_file: "evaluators/llm-judge/stemi_care_prompt.md"
+

@@ -1,0 +1,20 @@
+# User Prompt: Acronym Clarification
+# Linked benchmarks: (general extraction support)
+
+prompts:
+  - id: acronyms-clarify
+    
+    prompt_neutral: "'{acronym}' may be ambiguous. Please confirm full term."
+    prompt_medic_copilot: "Medic Copilot detected ambiguous acronym '{acronym}'. Please confirm full term."
+    
+    response_type: text_short
+    
+    severity: info
+    
+    placeholders:
+      acronym: "Ambiguous acronym from transcript"
+    
+    examples:
+      - "EtCO2 heard as 'ET two'"
+      - "SOB vs S.O.B."
+      - "CP could be chest pain or cerebral palsy"

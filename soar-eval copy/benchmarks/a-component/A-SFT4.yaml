@@ -1,0 +1,47 @@
+# Benchmark: A-SFT4 — Post-Intervention Reassessment
+# Parent Rubric: A-SFT (Safety Flags)
+# Source: missing-repeat-vitals-after-high-risk-intervention.yaml
+
+code: A-SFT4
+parent_rubric: A-SFT
+label: Missing Repeat Vitals After High-Risk Intervention
+
+concept: >
+  After a high-risk intervention (nitroglycerin, opioids, sedatives, paralytics, intubation,
+  cardioversion, physical restraints), Medic Copilot fails to extract stated reassessment
+  vitals or flag missing reassessments that ground truth marks as gaps.
+
+weight: 0.25
+threshold: 1.0
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "All required reassessments documented"
+    0.90: "Excellent (90%+ reassessments present)"
+    0.80: "Good (80-90% reassessments present)"
+    0.70: "Fair (70-80% reassessments present)"
+    0.0: "Failed - reassessments missing after high-risk interventions"
+
+inclusion_criteria: >
+  Apply when ground truth marks a test case as having a high-risk intervention with
+  missing reassessment. Flag if Medic Copilot fails to extract stated follow-up vitals or
+  flag the gap.
+
+exclusion_criteria: >
+  Do not use when repeat vitals were truly not obtained and that is clearly documented as a
+  limitation, or when timelines are approximate but a reasonable reassessment is present.
+
+examples:
+  - "Nitroglycerin given for chest pain with only a single initial vitals set documented and no follow-up pain or BP."
+  - "RSI medications given with no post-intubation EtCO2 or SpO2 documented anywhere."
+  - "Morphine 4mg IV given for pain but no reassessment of pain score or vitals afterward."
+  - "Cardioversion performed but no post-procedure rhythm or BP documented."
+  - "Physical restraints applied but no documented reassessment of circulation, respiratory status, or patient condition."
+
+evaluator_type: hybrid
+llm_prompt_file: "evaluators/llm-judge/repeat_vitals_prompt.md"
+

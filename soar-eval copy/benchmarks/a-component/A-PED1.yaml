@@ -1,0 +1,46 @@
+# Benchmark: A-PED1 — Pediatric Dosing Error
+# Parent Rubric: A-PED (Pediatric Documentation)
+
+code: A-PED1
+parent_rubric: A-PED
+label: Pediatric Dosing Calculation Error
+
+concept: >
+  Medic Copilot's weight-based dosing calculation produces an incorrect result
+  compared to ground truth (e.g., 0.01 mg/kg × 20 kg should be 0.2 mg, not 0.01 mg
+  or 2.0 mg).
+
+weight: 0.60
+threshold: 0.95
+criticality: hard_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "All pediatric doses correctly calculated"
+    0.95: "Excellent - no dosing calculation errors"
+    0.80: "Minor rounding differences only"
+    0.0: "Failed - pediatric dose calculation error"
+
+inclusion_criteria: >
+  Apply when ground truth marks a pediatric test case with known-correct
+  weight-based dose. Flag if Medic Copilot's calculated dose differs from
+  ground truth.
+
+exclusion_criteria: >
+  Do not apply to adult patients. Do not flag when dose is absent (use
+  completeness codes). Do not flag trivial rounding differences that don't
+  change clinical dose range (e.g., 0.195 mg vs 0.2 mg is acceptable).
+  Correct weight unit conversions are acceptable (e.g., 44 lbs = 20 kg).
+
+examples:
+  - "Narrative: 'Epinephrine 0.01 mg/kg for 20 kg child (~0.2 mg)' but output records 0.01 mg or 2.0 mg."
+  - "Broselow tape indicates 15 kg, medication dose given matches adult dose range."
+  - "ACCEPTABLE: Child weighs 44 lbs (20 kg), dose calculated using 20 kg is correct conversion."
+  - "ACCEPTABLE: Calculated dose 0.195 mg rounded to 0.2 mg - trivial rounding is not an error."
+
+evaluator_type: hybrid
+llm_prompt_file: "evaluators/llm-judge/pediatric_dosing_prompt.md"
+

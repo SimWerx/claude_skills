@@ -1,0 +1,36 @@
+# User Prompt: Data Gap Clarification
+# Linked benchmarks: A-CMP1, A-CMP5, A-SFT4, A-UNC2 (see benchmark-to-prompt-map.json)
+
+prompts:
+  - id: gaps-second-vitals
+    
+    # Static prompt - always the same question
+    prompt_neutral: "Second vitals set missing or unclear. Were repeat vitals obtained?"
+    prompt_medic_copilot: "Medic Copilot detected missing second vitals. Were repeat vitals obtained?"
+    
+    response_type: text_short
+    
+    severity: info
+    
+    placeholders: null  # Static prompt
+    
+    examples:
+      - "Only one set of vitals documented"
+      - "Initial vitals present, no reassessment after treatment"
+
+  - id: gaps-dose-route
+    
+    prompt_neutral: "'{medication}' — dose, route, or time unclear. Please confirm."
+    prompt_medic_copilot: "Medic Copilot detected incomplete documentation for '{medication}'. Please confirm dose, route, and time."
+    
+    response_type: text_short
+    
+    severity: info
+    
+    placeholders:
+      medication: "Drug name with incomplete documentation"
+    
+    examples:
+      - "Morphine given, no dose documented"
+      - "Zofran 4, route not specified"
+      - "Medication time missing"

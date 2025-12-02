@@ -1,0 +1,32 @@
+# Rubric: A-UNC — Uncertainty Handling
+# Evaluates how AI handles absent or unknown data
+
+code: A-UNC
+label: Uncertainty Handling
+description: >
+  Evaluates how Medic Copilot handles absent or unknown data. Targets two failure
+  modes: hallucinating values for missing input (fabrication) and silently omitting
+  critical fields without acknowledgment (undisclosed gaps).
+
+weight: 0.125
+aggregation_method: WEIGHTED_AVERAGE
+passing_threshold: 0.95
+
+evaluation_guidelines:
+  focus_areas:
+    - "Does output fabricate values not stated in narrative?"
+    - "Are critical missing fields flagged or acknowledged?"
+  acceptable_deviations:
+    - "Appropriate use of 'unknown' or null for absent data"
+    - "Minor optional fields left blank without flag"
+  critical_requirements:
+    - "Never invent values for unstated information"
+    - "Flag critical absent fields in high-liability scenarios"
+  evidence_requirements: >
+    Uncertainty handling check: (1) no fabricated values, (2) critical
+    absent fields acknowledged or flagged.
+
+benchmarks:
+  - A-UNC1  # Hallucination on missing data
+  - A-UNC2  # Silent omission of critical field
+

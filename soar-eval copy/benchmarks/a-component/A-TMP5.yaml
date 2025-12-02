@@ -1,0 +1,47 @@
+# Benchmark: A-TMP5 — Trend Direction Misinterpreted
+# Parent Rubric: A-TMP (Temporal Ordering)
+# Note: Migrated from A-TMP4 to make room for Explicit Timing Consistency
+
+code: A-TMP5
+parent_rubric: A-TMP
+label: Trend Direction Misinterpreted
+
+concept: >
+  Medic Copilot misrepresents the overall trend of the patient's condition. Despite correct
+  ordering of events, the output's description of improvement vs. deterioration is opposite
+  to what the narrative data indicates (or the output fails to note a significant trend).
+
+weight: 0.20
+threshold: 0.85
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "All patient trends correctly interpreted"
+    0.90: "Excellent (90%+ trends correct)"
+    0.85: "Good (85-90% trends correct)"
+    0.75: "Fair (75-85% trends correct)"
+    0.0: "Failed - trend direction errors present"
+
+inclusion_criteria: >
+  Apply when multiple data points over time clearly show the patient improving or worsening.
+  Flag if the output misrepresents the trend direction, implies stability when vitals show
+  decline, fails to reflect improvement after intervention, or ignores a documented trend
+  altogether.
+
+exclusion_criteria: >
+  Do not use for single pre/post comparisons already covered by A-TMP2 (that benchmark handles
+  discrete paired trend errors). Also exclude cases where changes are minimal or ambiguous
+  such that a trend is not clinically apparent (e.g., vitals fluctuate within normal range
+  without a clear direction).
+
+examples:
+  - "Narrative: 'BP 90/50 -> 70/40, HR 120 -> 140, patient increasingly pale and lethargic'. Output summary says 'patient remained hemodynamically stable' or fails to mention the deterioration. The AI incorrectly portrays a worsening shock trend as stability."
+  - "Narrative: 'Pain 9/10 down to 5/10 after morphine, patient less distressed'. Output does not indicate any improvement (or worse, labels pain as 'worsened'), missing the positive trend in patient response."
+
+evaluator_type: llm_judge
+llm_prompt_file: "evaluators/llm-judge/trend_direction_prompt.md"
+

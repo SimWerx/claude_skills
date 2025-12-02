@@ -1,0 +1,49 @@
+# Benchmark: A-TMP3 — Protocol Step Misordering
+# Parent Rubric: A-TMP (Temporal Ordering)
+
+code: A-TMP3
+parent_rubric: A-TMP
+label: Protocol Step Misordering
+
+concept: >
+  Medic Copilot's output preserves events chronologically but violates protocol-specific
+  time/order logic. This catches cases where time-sensitive protocol steps are documented
+  out of order or without regard to timing constraints (e.g., ignoring an eligibility
+  timeframe).
+
+weight: 0.20
+threshold: 0.85
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "All protocol sequences correctly ordered"
+    0.90: "Excellent (90%+ protocol steps correct)"
+    0.85: "Good (85-90% protocol steps correct)"
+    0.75: "Fair (75-85% protocol steps correct)"
+    0.0: "Failed - protocol sequence errors present"
+
+inclusion_criteria: >
+  Apply when the scenario involves a time-critical protocol or ordered steps. Flag if the
+  output's sequencing contradicts protocol rules, such as documenting stroke alert despite
+  LKW beyond thrombolytic window, listing interventions in reversed or impossible order
+  (e.g., intubation before sedative), or failing to mark termination when downtime exceeds
+  protocol criteria.
+
+exclusion_criteria: >
+  Do not apply when the narrative does not clearly provide the timing context or sequence trigger
+  (we only flag misordering when ground truth makes it evident). Also exclude minor reordering
+  that doesn't break protocol logic (e.g., documenting two simultaneous interventions in
+  either order is acceptable as long as causality isn't broken).
+
+examples:
+  - "Stroke Example: Narrative: 'Last known well 07:00 (now 13:30)'. Medic Copilot output still lists 'Stroke alert called, preparing for tPA' without any note of the elapsed 6.5 hours. The AI failed to respect the thrombolysis time exclusion indicated by the narrative timeline."
+  - "RSI Example: Narrative: 'Patient sedated with etomidate, then paralyzed with rocuronium, then intubated'. Output documents intubation before sedative or omits the sedative entirely - paralytic should never precede sedation."
+  - "Cardiac Arrest Example: Narrative: 'Found in VF, shocked immediately, then CPR and epinephrine'. Output documents epinephrine before defibrillation, reversing the VF protocol where early defibrillation takes priority."
+  - "Stroke Alert Timing: Narrative: 'Obtained stroke scale score of 4, then called stroke alert'. Output documents stroke alert before any neurological assessment was performed."
+
+evaluator_type: hybrid
+llm_prompt_file: "evaluators/llm-judge/protocol_misordering_prompt.md"

@@ -1,0 +1,22 @@
+# User Prompt: Timeline Structure Clarification
+# Linked benchmarks: A-TMP2, A-TMP3, A-STR2 (see benchmark-to-prompt-map.json)
+
+prompts:
+  - id: structure-timeline-clarify
+    
+    prompt_neutral: "Timeline appears inconsistent. Dispatch: {dispatch}, On scene: {on_scene}, Event: {event}. Please confirm or correct."
+    prompt_medic_copilot: "Medic Copilot detected timeline inconsistency. Dispatch: {dispatch}, On scene: {on_scene}, Event: {event}. Please confirm or correct."
+    
+    response_type: text_short
+    
+    severity: info
+    
+    placeholders:
+      dispatch: "Dispatch time"
+      on_scene: "On-scene arrival time"
+      event: "Event description and time"
+    
+    examples:
+      - "Arrived 09:50; departed scene 09:45"
+      - "Last known well after symptom onset"
+      - "Treatment given before arrival on scene"

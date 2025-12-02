@@ -1,0 +1,39 @@
+# User Prompt: Unit/Dose Clarification
+# Linked benchmarks: A-FCT1, A-SFT1, A-PED1 (see benchmark-to-prompt-map.json)
+
+prompts:
+  - id: units-vital-wrong-unit
+    
+    prompt_neutral: "'{vital}' recorded as {wrong_unit}. Confirm correct value and unit?"
+    prompt_medic_copilot: "Medic Copilot detected '{vital}' recorded as {wrong_unit}. Confirm correct value and unit?"
+    
+    response_type: text_short
+    
+    severity: warn
+    
+    placeholders:
+      vital: "Vital sign type (EtCO2, SpO2, etc.)"
+      wrong_unit: "Incorrectly recorded unit (%, mmHg, etc.)"
+    
+    examples:
+      - "EtCO2 35 %"
+      - "SpO2 98 mmHg"
+      - "end tidal 40 percent"
+
+  - id: units-dose-missing
+    
+    prompt_neutral: "'{medication} {value}' noted without unit. Confirm unit and route?"
+    prompt_medic_copilot: "Medic Copilot detected '{medication} {value}' without unit. Confirm unit and route?"
+    
+    response_type: text_short
+    
+    severity: warn
+    
+    placeholders:
+      medication: "Drug name"
+      value: "Numeric dose value"
+    
+    examples:
+      - "Fentanyl 125 given"
+      - "morphine 4 IV"
+      - "epi 1 to 10000"

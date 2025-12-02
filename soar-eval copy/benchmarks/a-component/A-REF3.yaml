@@ -1,0 +1,49 @@
+# Benchmark: A-REF3 — Base Contact Omitted
+# Parent Rubric: A-REF (Refusal Documentation)
+
+code: A-REF3
+parent_rubric: A-REF
+label: Base Contact Omitted
+
+concept: >
+  Medic Copilot output does not include physician name or advice when the
+  narrative states that base station was contacted. If the narrative says
+  "Contacted base: spoke with Dr. Adams who agrees with field termination"
+  and the output omits Dr. Adams or the consultation details, that is a failure.
+  Per Denver 0032, physician name is required if base was contacted for refusal.
+
+weight: 0.20
+threshold: 0.95
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "Base contact fully documented with physician name"
+    0.80: "Partial - base contact noted but physician name missing"
+    0.50: "Minimal - only vague mention of consultation"
+    0.0: "Failed - base contact omitted entirely"
+
+inclusion_criteria: >
+  Apply when the narrative describes contacting base station, medical control,
+  or online physician (e.g., "contacted base," "called medical control,"
+  "spoke with Dr. [name]"). Flag if the output does not reflect that this
+  consultation occurred or does not include physician name when stated.
+
+exclusion_criteria: >
+  Do not apply when no base contact is mentioned in the narrative. Do not
+  flag if the narrative mentions contacting base but does not name the
+  physician - only flag if the consultation itself is omitted.
+
+examples:
+  - "Narrative: 'Contacted base: spoke with Dr. Adams who agrees with field termination' but output omits Dr. Adams."
+  - "Narrative: 'Called medical control, Dr. Smith advised refusal acceptable' but output says only 'Patient refused.'"
+  - "Narrative: 'Contacted base for refusal authorization' but output has no mention of base contact."
+  - "High-risk post-naloxone: 'Given high-risk nature of post-Narcan refusal, contacted medical control per protocol. Dr. Chen at Denver Health advised acceptable to release given documented capacity and patient understanding of re-sedation risk. Patient to call 911 if drowsy.' - physician name, advice, and discharge instructions must all be captured."
+  - "Post-hypoglycemia base contact: 'Contacted base for diabetic refusal guidance, Dr. Williams advised ensure patient eats and has glucometer, acceptable to release.' - base physician name and specific guidance must be preserved."
+
+evaluator_type: hybrid
+llm_prompt_file: "evaluators/llm-judge/base_contact_prompt.md"
+

@@ -1,0 +1,36 @@
+# Rubric: A-BHV — Behavioral/Psychiatric Documentation
+# Evaluates completeness of behavioral emergency documentation
+
+code: A-BHV
+label: Behavioral and Psychiatric Documentation
+description: >
+  Evaluates documentation of behavioral emergencies including restraint use,
+  chemical sedation, and patient capacity assessment. Critical because
+  restraint use is high-liability and requires thorough documentation,
+  and capacity assessment is legally required for treatment decisions.
+
+weight: 0.125
+aggregation_method: WEIGHTED_AVERAGE
+passing_threshold: 0.90
+
+evaluation_guidelines:
+  focus_areas:
+    - "Is restraint use (physical or chemical) documented?"
+    - "Are sedation medications captured with doses?"
+    - "Is decision-making capacity assessment documented?"
+    - "Are psychiatric holds (5150) or consent status noted?"
+  acceptable_deviations:
+    - "Restraint type described differently if intent is clear"
+    - "Capacity assessment implied by competent refusal language"
+  critical_requirements:
+    - "Restraint use MUST be documented if it occurred"
+    - "Chemical sedation MUST appear in Treatment with dose"
+    - "Capacity/competence assessment MUST be captured if stated"
+  evidence_requirements: >
+    Behavioral documentation check: (1) restraint/sedation use,
+    (2) capacity assessment, (3) consent or hold status.
+
+benchmarks:
+  - A-BHV1  # Restraint/sedation not documented
+  - A-BHV2  # Capacity/consent assessment missing
+

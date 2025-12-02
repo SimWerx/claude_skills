@@ -1,0 +1,55 @@
+# Benchmark: A-TRM1 — GCS/Neuro Assessment Missing
+# Parent Rubric: A-TRM (Trauma Documentation)
+
+code: A-TRM1
+parent_rubric: A-TRM
+label: GCS or Neuro Assessment Missing
+
+concept: >
+  Medic Copilot does not record a Glasgow Coma Scale, mental status, mechanism
+  of injury (MOI), or named injuries that were documented for a trauma patient.
+  Many EMS narratives include "GCS 13" or a breakdown (E4 V4 M5), plus MOI
+  details (MVC, fall from height, GSW) and injury descriptions (femur fracture,
+  head laceration, rib fractures). If provided and the AI omits clinically
+  significant injuries, that is a failure. Focus on major injuries; minor
+  abrasions may be summarized.
+
+weight: 0.50
+threshold: 0.90
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "GCS/neuro status fully documented"
+    0.90: "Excellent - key neuro findings present"
+    0.80: "Good - partial GCS or descriptors captured"
+    0.0: "Failed - GCS or neuro assessment omitted"
+
+inclusion_criteria: >
+  Apply when the narrative contains a GCS score (numeric or components),
+  describes level of consciousness for a trauma patient (e.g., "confused,
+  eyes opening to voice, localizes pain"), documents mechanism of injury
+  (e.g., "MVC rollover," "fall from 20 feet," "GSW to abdomen"), or names
+  specific injuries (fractures, lacerations, contusions). Flag if the output
+  does not include this information or if clinically significant named injuries
+  are missing from the output.
+
+exclusion_criteria: >
+  Do not apply to non-trauma cases. Do not flag if the narrative does not
+  contain GCS or neuro status. Minor format differences (GCS 13 vs E4V4M5)
+  are acceptable if clinically equivalent. Minor injuries (small abrasions,
+  superficial scratches) may be omitted if major injuries are captured.
+
+examples:
+  - "Narrative: 'GCS 13, E4 V4 M5, head lac from fall' but output has no GCS or mental status."
+  - "Narrative: 'Patient confused, localizes to pain' but output says only 'trauma patient.'"
+  - "Narrative: 'MVC rollover at highway speed, ejected from vehicle' but output lacks mechanism of injury detail."
+  - "Multi-injury: 'Open femur fracture, rib fractures 4-7 on left, head laceration' - all three injury categories must be captured, not just the femur."
+  - "Injury completeness: 'GSW to right chest and left thigh, pneumothorax suspected' - both wound locations and suspected pneumothorax must appear."
+
+evaluator_type: hybrid
+llm_prompt_file: "evaluators/llm-judge/trauma_gcs_prompt.md"
+

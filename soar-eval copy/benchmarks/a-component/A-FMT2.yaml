@@ -1,0 +1,45 @@
+# Benchmark: A-FMT2 — Schema Compliance Error
+# Parent Rubric: A-FMT (Format Validity)
+
+code: A-FMT2
+parent_rubric: A-FMT
+label: Schema Compliance Error
+
+concept: >
+  The structured DRAATT output is schema-valid JSON (passes A-FMT1) but violates field-level
+  format specifications. This includes using values or keys outside the allowed schema (e.g.,
+  wrong data types, non-standard enumerations, or extra fields not defined).
+
+weight: 0.30
+threshold: 0.95
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "Perfect schema compliance"
+    0.98: "Excellent (98%+ compliant)"
+    0.95: "Very good (95-98% compliant)"
+    0.90: "Good (90-95% compliant)"
+    0.0: "Failed - schema violations present"
+
+inclusion_criteria: >
+  Apply when the output JSON contains all required structure yet still has format issues.
+  Flag if the output uses invalid enumerations, has type mismatches (numeric as string),
+  includes extraneous keys not in the schema, or is missing required sub-fields within an
+  included section.
+
+exclusion_criteria: >
+  Do not apply if the only issues are top-level JSON parsing failures or completely missing
+  sections (those are handled by A-FMT1). Also exclude trivial format deviations that do not
+  break schema interpretation (e.g., acceptable nulls for optional fields, or additional
+  context fields that are explicitly allowed as extensions).
+
+examples:
+  - "Output JSON uses 'transport_mode': 'by ambulance' when the schema expects a coded value (e.g., 'transport_mode': 'ground' or a boolean for lights/sirens)."
+  - "The draatt_json includes 'patientAge': 45 where the schema expects 'patient_age' (wrong key name), or includes an undeclared field like 'weather': 'clear' that is not in the standard schema."
+  - "A numeric field is provided with units embedded ('temperature': '98.6 F'), violating the expected numeric format."
+
+evaluator_type: code

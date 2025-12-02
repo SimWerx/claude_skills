@@ -1,0 +1,46 @@
+# Benchmark: A-NEG1 — Simple Negation Handling
+# Parent Rubric: A-NEG (Negation Handling)
+# Source: negation-simple-misinterpreted.yaml
+
+code: A-NEG1
+parent_rubric: A-NEG
+label: Simple Negation Misinterpretation
+
+concept: >
+  Straightforward denials or negated symptoms in the narrative (e.g., 'denies chest pain',
+  'no shortness of breath', 'negative for fever', 'without nausea') are encoded incorrectly
+  in Medic Copilot's structured fields.
+
+weight: 0.25
+threshold: 0.90
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "All simple negations correctly interpreted"
+    0.90: "Excellent (90%+ correct)"
+    0.80: "Good (80-90% correct)"
+    0.70: "Fair (70-80% correct)"
+    0.0: "Failed - negations systematically misinterpreted"
+
+inclusion_criteria: >
+  Apply when clear single-layer negation appears in ASR/narrative or ground truth. Flag if
+  the output records the corresponding symptom or condition as present rather than absent,
+  or leaves it unknown despite an explicit denial.
+
+exclusion_criteria: >
+  Do not use for complex or double-negative phrasing (use the complex-negation axial code),
+  or when extraction failure is not related to negation (e.g., symptom never parsed at all).
+
+examples:
+  - "Narrative: 'patient denies chest pain or SOB,' but DRAATT JSON marks chest_pain: true."
+  - "Negative symptom list in ground truth includes 'fever' but output leaves fever unset."
+  - "Narrative: 'negative for abdominal pain' but output marks abdominal_pain: true."
+  - "Narrative: 'without nausea or vomiting' but output records nausea as present."
+
+evaluator_type: hybrid
+llm_prompt_file: "evaluators/llm-judge/negation_simple_prompt.md"
+

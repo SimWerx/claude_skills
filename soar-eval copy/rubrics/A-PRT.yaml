@@ -1,0 +1,35 @@
+# Rubric: A-PRT — Protocol Tracking
+# Evaluates adherence to clinical protocol documentation requirements
+
+code: A-PRT
+label: Protocol Tracking
+description: >
+  Measures documentation of protocol-specific requirements for high-acuity
+  scenarios (STEMI, RSI, DOA). These protocols have mandatory documentation
+  elements that must be captured for quality assurance and medical-legal purposes.
+
+weight: 0.125
+aggregation_method: WEIGHTED_AVERAGE
+passing_threshold: 0.85
+
+evaluation_guidelines:
+  focus_areas:
+    - "Are all critical RSI procedure fields present?"
+    - "Is post-intubation sedation documented when mentioned?"
+    - "Are STEMI care protocol steps (ASA, 12-lead, alert) present?"
+    - "Are DOA pronouncement fields complete?"
+  acceptable_deviations:
+    - "Protocol variations within accepted regional standards"
+    - "Contraindicated steps appropriately withheld with documentation"
+  critical_requirements:
+    - "Protocol-mandated steps must be documented or contraindication noted"
+    - "RSI must include sedative, paralytic, and confirmation"
+    - "DOA must include all four pronouncement elements"
+  evidence_requirements: >
+    Protocol compliance check showing: (1) expected steps per protocol,
+    (2) documented steps, (3) omissions with rationale.
+
+benchmarks:
+  - A-PRT1  # Protocol step documentation
+  - A-PRT2  # Protocol reassessment requirements
+

@@ -1,0 +1,42 @@
+# Rubric: A-CMP — Completeness
+# Evaluates presence of required documentation sections and fields
+
+code: A-CMP
+label: Completeness
+description: >
+  Measures completeness of required documentation sections for each template
+  type. DRAATT sections (Dispatch, Response, Arrival, Assessment, Treatment,
+  Transport) must be populated when content exists in source narrative.
+
+weight: 0.125
+aggregation_method: WEIGHTED_AVERAGE
+passing_threshold: 0.85
+
+evaluation_guidelines:
+  focus_areas:
+    - "Are all required DRAATT sections present?"
+    - "Are template-specific fields populated?"
+    - "Are transport/handoff details complete?"
+  acceptable_deviations:
+    - "Sections legitimately omitted by design (e.g., RSI overlay)"
+    - "Concise but complete section content"
+    - "Combined sections when clinically appropriate"
+    - "Coroner/ME notification may be absent if not required by local protocol"
+  critical_requirements:
+    - "Core sections for template type must exist"
+    - "Template-specific critical fields must be populated"
+    - "Transport/refusal disposition must be documented"
+  evidence_requirements: >
+    Section coverage map showing: (1) required sections per template,
+    (2) populated vs missing sections, (3) field-level completeness.
+
+benchmarks:
+  - A-CMP1  # Core DRAATT sections missing
+  - A-CMP2  # Response section incomplete
+  - A-CMP3  # Arrival section incomplete
+  - A-CMP4  # Assessment section incomplete
+  - A-CMP5  # DOA pronouncement fields
+  - A-CMP6  # Transport/handoff completeness
+  - A-CMP6-airport  # Airport transfer completeness
+  - A-ALL1  # Allergy not documented
+

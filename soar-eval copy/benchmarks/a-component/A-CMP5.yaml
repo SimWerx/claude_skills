@@ -1,0 +1,46 @@
+# Benchmark: A-CMP5 — DOA Pronouncement Field Completeness
+# Parent Rubric: A-CMP (Completeness)
+# Source: doa-pronouncement-fields-incomplete.yaml
+
+code: A-CMP5
+parent_rubric: A-CMP
+label: DOA Pronouncement Fields Incomplete
+
+concept: >
+  In an obvious-death (DOA) case, Medic Copilot's output omits one or more critical
+  pronouncement details (method, physician, time, agency) needed for a complete DOA record.
+
+weight: 0.167
+threshold: 1.0
+criticality: hard_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "All four pronouncement fields complete"
+    0.75: "Three of four fields present"
+    0.50: "Two of four fields present"
+    0.25: "One of four fields present"
+    0.0: "Failed - pronouncement fields missing"
+
+inclusion_criteria: >
+  Apply when the scenario involves an obvious death and the trace output documents a pronouncement.
+  Flag if the output fails to include all of: pronouncement method (standing order vs base call),
+  pronouncing physician or authority (physician name for base contact cases, or protocol reference
+  for standing order cases), pronouncement time, and pronouncement agency or equivalent wording.
+
+exclusion_criteria: >
+  Do not use for non-DOA cases, or when all four elements are present but minor wording or
+  formatting differences exist without loss of information.
+
+examples:
+  - "DOA trace where the narrative says 'pronounced at 06:31 by Dr. Chen' but no agency or 'standing order per protocol' is recorded anywhere."
+  - "`draatt_json` has pronouncement_time and physician but leaves pronouncement_method null."
+  - "Standing order case: 'Pronounced per standing order 0051' - method is standing order; authority field satisfied by protocol reference (no real-time physician involved)."
+  - "DOA nuance: 'Base contact Dr. Adams authorized field termination at 14:22' - method is base order (not standing order), physician is Dr. Adams, time is 14:22."
+  - "Field termination with base contact: 'Contacted medical control, Dr. Smith agreed with field pronouncement at 0845, coroner notified' - all four fields present and must be captured."
+
+evaluator_type: code
+

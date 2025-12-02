@@ -1,0 +1,56 @@
+# Benchmark: A-BHV1 — Restraint/Sedation Not Documented
+# Parent Rubric: A-BHV (Behavioral/Psychiatric Documentation)
+
+code: A-BHV1
+parent_rubric: A-BHV
+label: Restraint or Sedation Not Documented
+
+concept: >
+  Medic Copilot fails to document that restraints were applied or sedatives
+  given in a combative patient scenario. Both physical restraints (soft,
+  4-point, hard) and chemical sedation are distinct interventions and should
+  be captured separately when documented. If the narrative states "patient
+  was combative, secured with soft restraints" or "received 5 mg Versed
+  for agitation," the output must include this information. When narrative
+  includes IMC-RASS scores or documents de-escalation attempts prior to
+  restraint/sedation, these details should also be captured.
+
+weight: 0.50
+threshold: 1.0
+criticality: hard_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "Restraint/sedation fully documented"
+    0.95: "Excellent - key intervention captured"
+    0.80: "Good - restraint noted but details missing"
+    0.0: "Failed - restraint or sedation omitted"
+
+inclusion_criteria: >
+  Apply when the narrative describes physical restraints (soft restraints,
+  4-point, secured to stretcher) or chemical sedation (Versed, Ativan,
+  ketamine, Haldol for agitation). Flag if the output does not document these
+  interventions in Treatment, or if post-restraint monitoring documented in
+  the narrative (e.g., "restraints checked q15, circulation intact") is not
+  captured per CMS requirements. Also flag if IMC-RASS scores or de-escalation
+  attempts are stated in the narrative but missing from the output.
+
+exclusion_criteria: >
+  Do not apply to non-behavioral cases. Do not flag routine stretcher
+  straps (standard transport). Only flag when restraints were applied
+  specifically for combative behavior or chemical sedation was given.
+
+examples:
+  - "Narrative: 'Patient combative, secured with soft restraints to stretcher' but output has no mention of restraints."
+  - "Narrative: 'Versed 5 mg IM for agitation' but output does not include this medication."
+  - "Both types: 'Soft restraints applied, Versed 5 mg given' - both physical and chemical interventions must be documented."
+  - "Monitoring: 'Restraints checked q15 min, circulation intact' - post-restraint monitoring should be captured if narrated."
+  - "RASS score: 'RASS +2, patient threatening staff' - RASS score should be captured when stated."
+  - "De-escalation: 'Verbal de-escalation attempted x2 without success, then soft restraints applied' - de-escalation attempts should be captured."
+
+evaluator_type: hybrid
+llm_prompt_file: "evaluators/llm-judge/restraint_sedation_prompt.md"
+

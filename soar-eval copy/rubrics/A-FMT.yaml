@@ -1,0 +1,37 @@
+# Rubric: A-FMT — Format Validity
+# Evaluates structural validity of output format
+
+code: A-FMT
+label: Format Validity
+description: >
+  Measures structural validity of the DRAATT JSON output. Invalid format
+  prevents downstream parsing and renders other evaluations impossible.
+  This is a prerequisite check before clinical content evaluation.
+
+weight: 0.125
+aggregation_method: MINIMUM  # Format must be valid to proceed
+passing_threshold: 0.95
+
+evaluation_guidelines:
+  focus_areas:
+    - "Is the output valid JSON?"
+    - "Are required schema keys present?"
+    - "Is the output free of extraneous non-JSON content?"
+  acceptable_deviations:
+    - "Optional fields may be null or omitted"
+    - "Additional context fields beyond schema"
+  critical_requirements:
+    - "Output must parse as valid JSON"
+    - "Core schema keys must be present"
+    - "No embedded prose outside JSON structure"
+  special_instructions: >
+    Format validation is a gate check. If format fails, other rubrics
+    cannot be reliably evaluated. Use MINIMUM aggregation.
+  evidence_requirements: >
+    Format validation showing: (1) JSON parse result,
+    (2) schema key presence, (3) structural anomalies.
+
+benchmarks:
+  - A-FMT1  # JSON validity
+  - A-FMT2  # Schema compliance
+

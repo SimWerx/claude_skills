@@ -1,0 +1,20 @@
+# User Prompt: RSI Documentation Clarification
+# Linked benchmarks: A-PRT1 (see benchmark-to-prompt-map.json)
+
+prompts:
+  - id: rsi-core-details
+    
+    # Static prompt - RSI always requires the same fields
+    prompt_neutral: "RSI noted. Confirm sedative, paralytic, ETT size/depth, and confirmation method."
+    prompt_medic_copilot: "Medic Copilot detected incomplete RSI documentation. Please confirm sedative, paralytic, ETT size/depth, and confirmation method."
+    
+    response_type: text_short
+    
+    severity: warn
+    
+    placeholders: null  # Static prompt
+    
+    examples:
+      - "RSI performed; etomidate given; no paralytic documented"
+      - "Intubated, tube size not specified"
+      - "ETT placed, confirmation method unclear"

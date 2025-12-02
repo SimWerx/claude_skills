@@ -1,0 +1,50 @@
+# Benchmark: A-FCT4 — Impression/Diagnosis Match
+# Parent Rubric: A-FCT (Fact Extraction)
+# Source: impression-or-diagnosis-mismatch.yaml
+
+code: A-FCT4
+parent_rubric: A-FCT
+label: Impression or Diagnosis Mismatch
+
+concept: >
+  Medic Copilot's final impression/diagnosis does not match the ground-truth diagnosis for
+  the scenario, given the available findings and protocol expectations.
+
+weight: 0.20
+threshold: 0.85
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "Impression matches ground truth exactly"
+    0.85: "Excellent - minor wording differences only"
+    0.70: "Good - clinically equivalent impression"
+    0.50: "Fair - related but imprecise impression"
+    0.0: "Failed - incompatible or wrong impression"
+
+inclusion_criteria: >
+  Apply when ground truth labels the case as a specific condition (e.g., STEMI, sepsis, COPD
+  exacerbation). Flag if the structured impression field or diagnosis block selects a different
+  or incompatible condition without any justified alternative explanation.
+
+exclusion_criteria: >
+  Do not use when multiple impressions are clinically reasonable and the chosen impression
+  is within that set, or when the only disagreement is in wording detail (e.g., 'acute
+  inferior STEMI' vs 'STEMI'). Clinically equivalent synonyms should not be flagged
+  (e.g., 'MI' vs 'heart attack', 'STEMI' vs 'acute MI', 'ACS' vs 'STEMI' when borderline).
+
+examples:
+  - "STEMI ground-truth case where the output impression is 'non-cardiac chest pain'."
+  - "Sepsis scenario labeled as 'anxiety' in the structured diagnosis field."
+  - "ACCEPTABLE: Ground truth 'STEMI' and output says 'acute MI' - these are synonyms."
+  - "ACCEPTABLE: Ground truth 'heart attack' and output says 'MI' - clinically equivalent."
+  - "ACCEPTABLE: Ground truth 'ACS' and output says 'possible STEMI' - clinically within the same diagnostic family when presentation is borderline."
+  - "UNACCEPTABLE: Ground truth 'COPD exacerbation' and output says 'asthma attack' - while both are respiratory, they are distinct conditions with different treatment implications."
+  - "UNACCEPTABLE: Ground truth 'hypoglycemia' and output says 'altered mental status' - impression is too vague when specific diagnosis is documented."
+
+evaluator_type: llm_judge
+llm_prompt_file: "evaluators/llm-judge/impression_mismatch_prompt.md"
+

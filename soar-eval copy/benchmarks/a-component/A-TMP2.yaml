@@ -1,0 +1,44 @@
+# Benchmark: A-TMP2 — Pre/Post Trend Accuracy
+# Parent Rubric: A-TMP (Temporal Ordering)
+# Source: pre-post-trend-misinterpreted.yaml
+
+code: A-TMP2
+parent_rubric: A-TMP
+label: Pre/Post Trend Misinterpreted
+
+concept: >
+  Pre/post comparisons or trends (e.g., pain score, vitals, neurologic status) are recorded
+  incorrectly, reversed, or omitted in Medic Copilot's output relative to ground truth.
+
+weight: 0.20
+threshold: 0.85
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "All trends correctly captured"
+    0.85: "Excellent (85%+ trends correct)"
+    0.70: "Good (70-85% trends correct)"
+    0.60: "Fair (60-70% trends correct)"
+    0.0: "Failed - trends systematically wrong"
+
+inclusion_criteria: >
+  Apply when there are clear before-and-after values in the narrative or labels. Flag if
+  the structured output swaps them (improvement recorded as worsening), fails to show any
+  change, or fabricates a trend unsupported by evidence.
+
+exclusion_criteria: >
+  Do not use when pre/post values are truly missing from the source narrative, or when small
+  numerical differences do not alter the qualitative trend.
+
+examples:
+  - "'pain 8/10 improved to 4/10 after fentanyl' but output records pain_trend as 'worsened'."
+  - "EtCO2 values present both pre- and post-intubation, but only the initial value is recorded and no trend field is set."
+  - "Pediatric HR 180 improving to 160 after fluid bolus, but output records only initial HR or marks trend as 'worsened'."
+
+evaluator_type: hybrid
+llm_prompt_file: "evaluators/llm-judge/trend_prompt.md"
+

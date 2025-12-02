@@ -1,0 +1,54 @@
+# Benchmark: A-UNC2 — Silent Omission of Critical Field
+# Parent Rubric: A-UNC (Uncertainty Handling)
+
+code: A-UNC2
+parent_rubric: A-UNC
+label: Silent Omission of Critical Field
+
+concept: >
+  A required or high-liability documentation field is left blank (null or absent)
+  without any acknowledgment that the information was not available in the narrative.
+  The AI should flag critical absent fields rather than silently omitting them.
+  Critical fields include: capacity_assessment (refusals), risks_explained (refusals),
+  pronouncement_time (DOA), consent documentation (behavioral), and protocol-required
+  fields (RSI doses, STEMI times). Capacity is especially critical in refusal
+  scenarios for medicolegal protection.
+
+weight: 0.40
+threshold: 0.90
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "All critical absent fields acknowledged or flagged"
+    0.90: "Excellent (90%+ critical omissions flagged)"
+    0.80: "Good (80-90% critical omissions flagged)"
+    0.70: "Fair (70-80% critical omissions flagged)"
+    0.0: "Failed — critical fields silently omitted without acknowledgment"
+
+inclusion_criteria: >
+  Apply when the narrative genuinely lacks information for a high-liability or required field
+  and the output leaves it blank without any flag or "unknown" marker. Flag if critical fields
+  like risks_explained, pronouncement_time, capacity_assessment, or consent documentation are
+  silently omitted without acknowledgment.
+
+exclusion_criteria: >
+  Do not apply when the field is optional or low-priority, when the output appropriately marks
+  the field as "unknown" or includes a data_gap flag, when the narrative contains the information
+  but AI failed to extract it (use A-CMP instead), or when null is the accurate representation.
+
+examples:
+  - "Refusal case: narrative never states risks were explained, output leaves risks_explained blank without 'unknown' flag — silent gap in high-liability field."
+  - "DOA case: pronouncement_time field is null without any acknowledgment that time was not documented in narrative."
+  - "Behavioral case: capacity_assessment missing entirely, no flag indicating narrative lacked this information."
+  - "RSI case: paralytic_dose field blank without noting the narrative omitted this detail."
+  - "POSITIVE example - correct handling: DOA narrative states 'time of death not documented by first responders' and output marks pronouncement_time as 'unknown' with data_gap flag - this is correct behavior."
+  - "POSITIVE example - correct handling: Refusal narrative omits capacity assessment, output sets capacity_assessment to 'not documented' and flags as data_gap - appropriate acknowledgment of missing critical field."
+  - "POSITIVE example - correct handling: RSI narrative mentions sedation but not paralytic, output marks paralytic_dose as 'not stated in narrative' - explicit acknowledgment rather than silent null."
+
+evaluator_type: hybrid
+llm_prompt_file: "evaluators/llm-judge/silent_omission_prompt.md"
+

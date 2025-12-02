@@ -25,9 +25,9 @@ Upload skills as ZIP files via Settings → Capabilities → Skills.
 **Characteristics**:
 - Individual user skills only (no organization-wide distribution)
 - Must upload separate ZIP for each skill
-- Works with our Skills Factory Generator + `package_skill.py`
+- Works with our Skill Factory
 
-**Use this repository's tools**: See "Creating New Skills" and "AI-Powered Skill Generation" sections below.
+**Use this repository's tools**: See "Creating New Skills" section below.
 
 ### For Claude Desktop (Native Application)
 
@@ -42,7 +42,7 @@ Native Mac, Windows, and Linux desktop application for power users.
 - **Claude Desktop** = GUI application for non-technical users and general productivity
 - **Claude Code** = CLI/IDE integration for developers and technical workflows
 
-**Use this repository's tools**: Same as Claude.ai - see "Creating New Skills" and "AI-Powered Skill Generation" sections below.
+**Use this repository's tools**: Same as Claude.ai - see "Creating New Skills" section below.
 
 ### For Claude Code (Personal & Project Skills)
 
@@ -205,12 +205,18 @@ This means you can fit far more capabilities into the same context window, or ac
 
 ## Repository Skills
 
-### Anthropic Reference Skills (Included)
+### Core Infrastructure Skills
 
-**skill-creator** - Utility scripts for skill validation and packaging
-- `quick_validate.py` - Verify SKILL.md structure and frontmatter
-- `package_skill.py` - Create ZIP files for Claude.ai upload
-- For creating new skills, use Skills Factory Generator (see AI-Powered Skill Generation below)
+**skill-factory** - AI-powered skill generator using progressive disclosure
+- Load with: `Load the skill-factory skill`
+- Creates production-ready skills from natural language descriptions
+- Includes workflow, quality checklist, patterns, and advanced topics
+
+**background-research** - Web research for temporal grounding
+- Auto-invoked by skill-factory for time-sensitive skills
+- Provides source citations and current evidence
+
+### Example Skills (`examples/`)
 
 **internal-comms** - Write internal communications (3P updates, newsletters, FAQs, status reports) with example templates for each format
 
@@ -222,15 +228,15 @@ This means you can fit far more capabilities into the same context window, or ac
 
 > **Note**: Document skills (DOCX, PDF, PPTX, XLSX) are point-in-time reference implementations from Anthropic and are not actively maintained. Use them as examples and learning resources rather than production dependencies. For production use, test thoroughly and adapt to your specific requirements.
 
+**data-interrogation** - CSV analysis patterns and templates
+
+**executive-memo** - Strategic document templates
+
+**technical-docs** - Technical markdown documentation templates
+
 ### Custom Productivity Skills
 
 **research-synthesis** - Transform research materials into executive summaries with proper citations, evidence hierarchy, and actionable insights. Progressive disclosure: Core principles in main file, output formats in `references/`.
-
-**executive-memo** - Create strategic memos, status reports, decision documents, and technical briefs using direct, pragmatic senior PM voice. Progressive disclosure: Workflows in main file, detailed templates in `references/`.
-
-**data-interrogation** - Analyze CSV/tabular data with executive-level insights, pattern detection, and actionable recommendations. Progressive disclosure: Key principles in main file, analysis formats in `references/`.
-
-**technical-docs** - Create technical markdown documentation (READMEs, API docs, changelogs, specs) with proper syntax and standard conventions. Progressive disclosure: Core conventions in main file, detailed templates in `references/`.
 
 ## Using These Skills
 
@@ -249,9 +255,6 @@ This means you can fit far more capabilities into the same context window, or ac
 mkdir -p ~/.claude/skills/
 cp -r skill-name ~/.claude/skills/
 
-# Or unzip generated skills
-unzip zips/skill-name.zip -d ~/.claude/skills/
-
 # Restart Claude Code to load the skill
 ```
 
@@ -260,9 +263,6 @@ unzip zips/skill-name.zip -d ~/.claude/skills/
 # Copy into your project (already done in this repo - see .claude/skills/example-project-skill/)
 mkdir -p .claude/skills/
 cp -r skill-name .claude/skills/
-
-# Or unzip generated skills
-unzip zips/skill-name.zip -d .claude/skills/
 
 # Commit to share with team
 git add .claude/skills/
@@ -278,18 +278,19 @@ See [Skills API Guide](https://docs.anthropic.com/en/api/skills-guide) for progr
 
 ## Creating New Skills
 
-### Quick Start
+### Quick Start (Skill Factory)
 
-Use Anthropic's initialization script:
+Load the `skill-factory` skill and describe what you need:
 
-```bash
-python skill-creator/scripts/init_skill.py my-new-skill --path ./
+```
+Load the skill-factory skill and help me create a new skill for [your use case].
 ```
 
-This creates:
-- `my-new-skill/SKILL.md` with proper frontmatter template
-- `scripts/`, `references/`, `assets/` subdirectories
-- Example files showing structure
+The factory generates:
+- Complete SKILL.md with full content
+- sample_prompt.md with test examples
+- references/ with detailed templates
+- assets/ with sample data if needed
 
 ### Skill Structure
 
@@ -317,90 +318,47 @@ Following Anthropic's best practices:
 5. **Clear triggers** - Specific use cases and keywords for discoverability
 6. **Workflows** - Step-by-step "How to use this skill" sections
 
-### Validation and Packaging
+### Example Requests
 
-Validate skill structure:
-```bash
-python skill-creator/scripts/quick_validate.py path/to/skill
-```
-
-Package for distribution:
-```bash
-python skill-creator/scripts/package_skill.py path/to/skill
-```
-
-### AI-Powered Skill Generation (Recommended)
-
-For rapid prototyping and production-ready skills, use the **Skills Factory Generator** in Claude Code/Cursor:
-
-**Quick start**:
-1. Drag `SKILLS_FACTORY_GENERATOR_PROMPT.md` into Claude Code conversation
-2. Request: `"Generate a skill for analyzing customer feedback CSV files"`
-3. Claude creates complete skill files and ZIP automatically
-4. Upload ZIP to Claude.ai → Settings → Skills
-
-**What you get**:
-- Fully populated SKILL.md (not template placeholders)
-- Complete references/ with production-ready templates
-- Functional Python scripts (when necessary)
-- Realistic test data (10-20 lines)
-- Automatic ZIP packaging
-- Zero manual work required
-
-**Comparison**:
-
-| Tool | Output | Time Required | Manual Work |
-|------|--------|---------------|-------------|
-| `init_skill.py` | Template skeleton | Instant | 2-4 hours to complete |
-| **Skills Factory** | Production-ready skill | 30 seconds | None |
-
-**Example requests**:
+Using the Skill Factory:
 - `"Generate a skill for converting meeting notes to action items"`
 - `"Create 3 skills for financial services: quarterly analysis, risk assessment, compliance docs"`
 - `"Generate an advanced skill with Python script for processing invoice PDFs"`
 
-See [docs/skills-factory-guide.md](docs/skills-factory-guide.md) for comprehensive usage guide, examples, and best practices.
+See `skill-factory/SKILL.md` for complete documentation.
 
-**Browse ready-to-generate skill ideas**: Check out [skill-ideas/](skill-ideas/) for pre-written skill requests you can generate in 30 seconds. Each file contains a complete skill specification ready for the Skills Factory Generator - just reference the file and Claude creates everything automatically.
+### Validation and Packaging
+
+For deployment to Claude.ai or Claude Desktop, package skills into ZIP files:
+
+```bash
+# Validate skill structure
+python scripts/quick_validate.py path/to/skill
+
+# Create ZIP for upload (validates first)
+python scripts/package_skill.py path/to/skill
+```
+
+Upload the resulting ZIP from `zips/` to Claude.ai → Settings → Capabilities → Skills.
 
 ### Research-Enhanced Skill Generation
 
-The Skills Factory automatically conducts web research for time-sensitive skills (frameworks, tools, best practices) to ensure currency and credibility.
+The Skill Factory automatically conducts web research for time-sensitive skills (frameworks, tools, best practices) to ensure currency and credibility.
 
 **How it works**:
-1. Factory auto-detects research need (Step 2: frameworks/tools/methodologies → invoke research)
+1. Factory auto-detects research need (frameworks/tools/methodologies)
 2. Invokes `background-research` skill with current date
 3. Receives structured findings with source citations
-4. Transfers evidence to generated skill
-
-**Research findings are integrated into**:
-- **Core Principles**: Evidence-based rules with source citations "(Source: Publication, Year)"
-- **References**: Current frameworks and methodologies from research
-- **Keywords**: Contemporary terminology discovered in research
-- **Descriptions**: Temporal context ("as of October 2025")
+4. Integrates evidence into generated skill
 
 **Control research behavior**:
 - `research_depth: skip` - No web research (fast, for evergreen skills)
 - `research_depth: standard` - 2-3 searches (default for time-sensitive)
 - `research_depth: comprehensive` - 5+ searches (deep investigation)
 
-**Example**: When generating an AEO skill, the factory automatically researches "AI Engine Optimization October 2025", finds current statistics (57% AI Overviews presence), and includes source citations (CXL, BrightEdge, Ahrefs 2025) in Core Principles.
-
 **Research persistence**:
-
-When research is conducted, the output is saved to two locations:
-
-1. **research-archive/**: Timestamped archive for audit trail and fact-checking
-   - Format: `2025-10-25-1430-ai-engine-optimization.md`
-   - Gitignored (local development only)
-   - Single source of truth for verifying claims and tracking currency
-
-2. **references/research-findings.md**: Copy included in skill ZIP
-   - Uploaded to Claude.ai with skill
-   - Available as progressive disclosure context
-   - Users can say "review your research findings" in conversation
-
-This dual approach enables both local auditability (archive) and portable context (included in ZIP).
+- **research-archive/**: Timestamped archive for audit trail and fact-checking
+- **references/research-findings.md**: Copy included in generated skill for progressive disclosure
 
 See [background-research skill](generated-skills/background-research/) for complete methodology.
 
@@ -410,46 +368,34 @@ See [background-research skill](generated-skills/background-research/) for compl
 claude_skills/
 ├── README.md                              # This file
 ├── CLAUDE.md                              # Claude Code operational guide
-├── SKILLS_FACTORY_GENERATOR_PROMPT.md    # AI-powered skill generator
 ├── .claude/skills/                        # Example project skills
 │   └── example-project-skill/             # Team-shared skill demo
 ├── docs/                                  # Reference documentation
 │   ├── skill-format-spec.md               # SKILL.md format specification
 │   ├── skill-authoring-guide.md           # Best practices for creating skills
-│   ├── skills-factory-guide.md            # AI-powered skill generation guide
 │   ├── agent_skills.md                    # Official Claude docs reference
 │   └── skill_blog.md                      # Anthropic blog insights reference
-├── skill-ideas/                           # Seed ideas for Skills Factory
-│   ├── README.md                          # How to use skill ideas
-│   └── *.md files                         # Natural language skill requests
-├── generated-skills/                      # Auto-generated skills (gitignored)
-│   └── [skill-name]/                      # Production-ready skills
-├── zips/                                  # ZIP files (gitignored)
-│   └── [skill-name].zip                   # Ready for Claude.ai upload
-├── skill-creator/                         # Validation and packaging scripts
-│   └── scripts/
-│       ├── init_skill.py                  # Initialize new skill
-│       ├── package_skill.py               # Validate and package
-│       └── quick_validate.py              # Fast validation
-├── internal-comms/                        # Anthropic's internal comms skill
-│   └── examples/                          # 3P updates, newsletters, FAQs
-├── document-skills/                       # Anthropic's production doc skills
-│   ├── docx/
-│   ├── pdf/
-│   ├── pptx/
-│   └── xlsx/
+├── scripts/                               # Utility scripts
+│   ├── quick_validate.py                  # Validate skill structure
+│   └── package_skill.py                   # Package skill into ZIP
+├── skill-factory/                         # AI-powered skill generator
+│   ├── SKILL.md                           # Core factory instructions
+│   ├── sample_prompt.md                   # Test prompts
+│   └── references/                        # Detailed workflows and patterns
+├── generated-skills/                      # Generated skills
+│   └── background-research/               # Research skill for temporal grounding
+├── zips/                                  # Packaged skills for upload
+├── research-archive/                      # Research audit trail
+├── examples/                              # Example skills from Anthropic
+│   ├── internal-comms/                    # Internal communications
+│   ├── document-skills/                   # DOCX, PDF, PPTX, XLSX
+│   ├── data-interrogation/                # Data analysis patterns
+│   ├── executive-memo/                    # Business document templates
+│   └── technical-docs/                    # Technical documentation
 ├── research-synthesis/                    # Custom: Research synthesis
 │   └── references/
 │       └── formats.md                     # Output templates
-├── executive-memo/                        # Custom: Business documents
-│   └── references/
-│       └── formats.md                     # Document templates
-├── data-interrogation/                    # Custom: Data analysis
-│   └── references/
-│       └── formats.md                     # Analysis formats
-└── technical-docs/                        # Custom: Technical documentation
-    └── references/
-        └── templates.md                   # Doc templates
+└── zz_archive/                            # Archived/deprecated content
 ```
 
 ## Reference Documentation
@@ -458,11 +404,11 @@ claude_skills/
 
 **docs/skill-authoring-guide.md** - Comprehensive best practices for creating high-quality skills with progressive disclosure, workflows, and quality checklist.
 
-**docs/skills-factory-guide.md** - Complete guide to AI-powered skill generation using the Skills Factory Generator in Claude Code/Cursor. Includes examples, patterns, customization options, and troubleshooting.
-
 **docs/agent_skills.md** - Official Claude documentation reference copy for Agent Skills in Claude Code. Synced October 2025.
 
 **docs/skill_blog.md** - Anthropic engineering blog insights on Agent Skills. Source of emphatic language patterns and progressive disclosure best practices.
+
+**skill-factory/** - AI-powered skill generation. Core instructions in SKILL.md, detailed content in references/.
 
 ## Contributing
 

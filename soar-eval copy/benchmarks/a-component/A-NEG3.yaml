@@ -1,0 +1,51 @@
+# Benchmark: A-NEG3 — Implicit/Hedged Negation Handling
+# Parent Rubric: A-NEG (Negation Handling)
+
+code: A-NEG3
+parent_rubric: A-NEG
+label: Implicit or Hedged Negation Misinterpretation
+
+concept: >
+  Implicit negation (absence implied by context) or hedged language (uncertain denials,
+  qualified negatives) are mishandled such that Medic Copilot encodes incorrect clinical
+  polarity or fails to capture the uncertainty appropriately.
+
+weight: 0.25
+threshold: 0.80
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "All implicit/hedged negations correctly interpreted"
+    0.80: "Good (80%+ correct)"
+    0.70: "Fair (70-80% correct)"
+    0.60: "Poor (60-70% correct)"
+    0.0: "Failed - implicit negations systematically mishandled"
+
+inclusion_criteria: >
+  Apply when the narrative contains implicit negation (absence inferred from context, e.g.,
+  'focused on cardiac, lungs clear' implies no respiratory complaint) or hedged language
+  (e.g., 'patient unsure if chest pain', 'possibly denies'). Flag if output encodes definitive
+  polarity conflicting with ground truth.
+
+exclusion_criteria: >
+  Do not use for explicit negation ('denies X') or clear double negatives ('not denying').
+  Use A-NEG1 for simple negation, A-NEG2 for double negatives.
+
+examples:
+  - "Text: 'patient unsure about chest pain' but output records chest_pain: false definitively."
+  - "'lungs clear bilaterally' implies no respiratory distress, but output leaves respiratory fields blank."
+  - "'possibly had some nausea earlier' encoded as nausea: true without uncertainty flag."
+  - "'only mild pain' - 'mild' hedges severity but pain is present; output must not record as no_pain."
+  - "'nothing further to report' - implicit negation of additional complaints; should not invent findings."
+  - "'just some discomfort' - hedged symptom that should be captured with appropriate uncertainty."
+  - "Partial denial: 'denies chest pain, just mild soreness' - soreness is present (partial admission); output must not encode as chest_pain: false."
+  - "Partial denial: 'no real shortness of breath, maybe a little winded' - respiratory symptom is partially present; output must capture with appropriate hedging."
+
+evaluator_type: llm_judge
+llm_prompt_file: "evaluators/llm-judge/negation_hedged_prompt.md"
+
+

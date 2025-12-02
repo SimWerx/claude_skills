@@ -1,0 +1,50 @@
+# Benchmark: A-STR2 — Last Known Well or Stroke Alert Missing
+# Parent Rubric: A-STR (Stroke Documentation)
+
+code: A-STR2
+parent_rubric: A-STR
+label: Last Known Well or Stroke Alert Missing
+
+concept: >
+  Medic Copilot output does not record the "last known well" (LKW) timestamp
+  or the hospital stroke alert notification when the narrative contained this
+  information. LKW is critical for tPA/thrombectomy eligibility decisions and
+  must be captured when stated.
+
+weight: 0.50
+threshold: 0.95
+criticality: hard_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "LKW and stroke alert fully documented"
+    0.95: "Excellent - critical timing info present"
+    0.80: "Good - LKW present but alert missing or vice versa"
+    0.0: "Failed - LKW or stroke alert omitted"
+
+inclusion_criteria: >
+  Apply when the narrative states a last known well time (e.g., "last known
+  well at 14:25 per family," "patient was fine at breakfast") or mentions
+  stroke alert activation ("stroke alert called to receiving hospital"). Flag if
+  this information is missing from the output.
+
+exclusion_criteria: >
+  Do not apply to non-stroke cases. Do not apply if the narrative itself
+  is ambiguous about LKW. When the narrative explicitly states "LKW unknown"
+  or "unknown when symptoms started," capturing this as "unknown" in the
+  output is acceptable and should not be penalized. Minor time format
+  differences are acceptable.
+
+examples:
+  - "Narrative: 'Last known well at 14:25 per family, stroke alert called' but output has no LKW time."
+  - "Narrative: 'Wife states patient was normal at 0800, stroke alert activated' but output lacks both LKW and alert mention."
+  - "ACCEPTABLE - LKW unknown: Narrative states 'patient found down, unknown when symptoms started, family unsure of last normal' - output may mark LKW as 'unknown' rather than inventing a time."
+  - "ACCEPTABLE - LKW unknown: 'Woke with symptoms, last seen normal last night around 2200' - approximate LKW is acceptable ('approximately 2200' or 'last night')."
+  - "Wake-up stroke: 'Patient woke at 0630 with left-sided weakness, went to bed normal at 2300' - LKW is 2300 (last known normal), not 0630 (symptom discovery)."
+
+evaluator_type: hybrid
+llm_prompt_file: "evaluators/llm-judge/stroke_lkw_prompt.md"
+

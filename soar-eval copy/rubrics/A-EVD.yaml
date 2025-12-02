@@ -1,0 +1,36 @@
+# Rubric: A-EVD — Evidence Attribution
+# Evaluates linkage between structured facts and source narrative
+
+code: A-EVD
+label: Evidence Attribution
+description: >
+  Measures accuracy of evidence span linkage between extracted facts and
+  source narrative. Proper attribution enables verification and builds trust.
+  Missing or incorrect evidence undermines auditability.
+
+weight: 0.125
+aggregation_method: WEIGHTED_AVERAGE
+passing_threshold: 0.80
+
+evaluation_guidelines:
+  focus_areas:
+    - "Do key facts have linked evidence spans?"
+    - "Do evidence spans actually support the claimed fact?"
+    - "Are contradictory spans flagged?"
+  acceptable_deviations:
+    - "Evidence span includes extra context words"
+    - "Multiple valid spans for same fact"
+    - "Paraphrased facts with accurate spans"
+    - "Fields with no explicit narrative mention but legitimately inferred from context"
+  critical_requirements:
+    - "Safety-critical facts must have evidence"
+    - "Evidence must actually support the claim"
+    - "Contradictory evidence must be flagged"
+  evidence_requirements: >
+    Evidence map validation showing: (1) fact-to-span linkage,
+    (2) span content verification, (3) coverage statistics.
+
+benchmarks:
+  - A-EVD1  # Evidence span presence
+  - A-EVD3  # Evidence span accuracy
+

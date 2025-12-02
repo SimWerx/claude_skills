@@ -68,8 +68,8 @@ metadata:
 No restrictions. Write clear instructions for the AI.
 
 Best practices:
-- Keep main file 30-50 lines (overview and navigation)
-- Move details to `references/` files
+- Keep main file under 500 lines for optimal performance
+- Use progressive disclosure: move detailed content to `references/` files
 - Use "How to use this skill" workflow sections
 - Include "When to use this skill" triggers
 - Add "Keywords" section for discoverability
@@ -84,7 +84,7 @@ Best practices:
 Example structure:
 ```
 skill-name/
-├── SKILL.md                    # 40 lines: overview, workflow, links
+├── SKILL.md                    # Under 500 lines: overview, workflow, links
 └── references/
     ├── formats.md              # Detailed templates
     ├── examples.md             # Usage examples

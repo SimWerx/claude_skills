@@ -1,0 +1,47 @@
+# Benchmark: A-EVD3 — Evidence Span Misalignment
+# Parent Rubric: A-EVD (Evidence Attribution)
+
+code: A-EVD3
+parent_rubric: A-EVD
+label: Evidence Span Misalignment
+
+concept: >
+  The evidence text linked to an extracted fact does not accurately support the fact, even if
+  a span is provided. In these cases, Medic Copilot's cited narrative span is incomplete,
+  tangential, or misleading relative to the output claim.
+
+weight: 0.20
+threshold: 0.90
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "All evidence spans accurately support their facts"
+    0.95: "Excellent (95%+ spans aligned)"
+    0.90: "Very good (90-95% spans aligned)"
+    0.80: "Good (80-90% spans aligned)"
+    0.0: "Failed - systematic evidence misalignment"
+
+inclusion_criteria: >
+  Apply when an output fact or value has an evidence span attached. Flag if that span either
+  fails to include the key detail of the fact or includes content that doesn't directly
+  substantiate the fact, for example if the output states a medication dose and the cited
+  span is a portion of the transcript that lacks the dose value.
+
+exclusion_criteria: >
+  Do not apply if evidence spans are simply longer than necessary but still contain the
+  relevant information (extra context is acceptable). Also exclude cases where the evidence
+  is entirely missing or clearly wrong - those are handled by A-EVD1 (unsupported/absent
+  evidence).
+
+examples:
+  - "Output documents 'Pain score 9/10' but the attached evidence span only shows 'patient reports chest pain' without the numeric severity. The evidence is present but doesn't capture the 9/10 value, failing to fully support the structured data."
+  - "Output records 'administered 0.4mg nitroglycerin' and links a span, but the span text corresponds to a different medication or dose (e.g., quotes an aspirin administration) - the span exists but is for the wrong fact."
+  - "Contradictory evidence: Output documents 'wheezing: true' but the attached evidence span says 'no wheezing noted, lungs clear bilaterally' - the evidence directly contradicts the extracted fact."
+  - "Contradictory evidence: Output records 'chest_pain: present' but linked span reads 'patient denies chest pain' - polarity mismatch between evidence and structured field."
+
+evaluator_type: hybrid
+llm_prompt_file: "evaluators/llm-judge/evidence_misalignment_prompt.md"

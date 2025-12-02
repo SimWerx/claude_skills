@@ -1,0 +1,50 @@
+# Benchmark: A-PED2 — Pediatric Assessment Completeness
+# Parent Rubric: A-PED (Pediatric Documentation)
+
+code: A-PED2
+parent_rubric: A-PED
+label: Pediatric Assessment Incomplete
+
+concept: >
+  Medic Copilot fails to include age-appropriate assessment details for
+  pediatric patients, such as documented weight, Broselow color/estimated weight,
+  or pediatric-specific exam findings (cap refill, fontanelle, developmental
+  status) that were stated in the narrative. This benchmark focuses on pediatric
+  patients where the child is the patient; newborn APGARs from field deliveries
+  are owned by A-OBS1.
+
+weight: 0.40
+threshold: 0.90
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "All pediatric-specific fields captured"
+    0.90: "Excellent - key pediatric data present"
+    0.80: "Good - minor pediatric details missing"
+    0.0: "Failed - critical pediatric data omitted"
+
+inclusion_criteria: >
+  Apply when the scenario involves a pediatric patient (child is the patient)
+  and the narrative contains age-specific information (weight in kg, Broselow
+  color, pediatric vital ranges, developmental status, pediatric-specific exam
+  findings). Flag if this information is missing from the structured output.
+
+exclusion_criteria: >
+  Do not apply to adult patients. Do not apply to newborn APGAR scores from
+  field deliveries (those are owned by A-OBS1). Do not flag information that
+  was not stated in the narrative. Minor formatting differences are acceptable
+  if clinical content is preserved.
+
+examples:
+  - "Narrative states 'Broselow yellow, estimated 18 kg' but no weight appears in output."
+  - "Broselow tape example: 'Used Broselow tape, patient is green zone, approximately 12 kg' - output must capture either green zone or 12 kg weight."
+  - "Pediatric seizure: '3-year-old, 14 kg per mom, prolonged cap refill' but output omits weight and cap refill finding."
+  - "Infant assessment: 'Fontanelle flat, cap refill 2 seconds, alert and tracking' but output lacks pediatric-specific exam findings."
+
+evaluator_type: hybrid
+llm_prompt_file: "evaluators/llm-judge/pediatric_assessment_prompt.md"
+

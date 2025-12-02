@@ -1,0 +1,36 @@
+# Rubric: A-STR — Stroke Documentation
+# Evaluates completeness of stroke-specific documentation
+
+code: A-STR
+label: Stroke Documentation
+description: >
+  Evaluates documentation of stroke-specific assessment findings including
+  stroke scale scores (LAMS, CPSS, FAST, RACE, NIHSS), last known well time,
+  and stroke alert notification. Critical because stroke is time-sensitive
+  like STEMI - LKW time defines eligibility for tPA and thrombectomy.
+
+weight: 0.125
+aggregation_method: WEIGHTED_AVERAGE
+passing_threshold: 0.90
+
+evaluation_guidelines:
+  focus_areas:
+    - "Is a stroke scale score (LAMS, CPSS, FAST, RACE) documented?"
+    - "Is last known well (LKW) time captured?"
+    - "Is stroke alert/hospital notification documented?"
+    - "Are neuro exam findings (facial droop, arm drift, speech) preserved?"
+  acceptable_deviations:
+    - "Different stroke scale names if clinical findings are equivalent"
+    - "LKW expressed as time or relative description if clear"
+  critical_requirements:
+    - "Stroke scale score MUST be documented if stated in narrative"
+    - "Last known well time MUST be captured if provided"
+    - "Stroke alert notification MUST appear if it occurred"
+  evidence_requirements: >
+    Stroke documentation check: (1) stroke scale/neuro findings,
+    (2) last known well time, (3) hospital notification.
+
+benchmarks:
+  - A-STR1  # Stroke scale omitted
+  - A-STR2  # LKW or stroke alert missing
+

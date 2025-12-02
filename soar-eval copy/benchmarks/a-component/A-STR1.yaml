@@ -1,0 +1,49 @@
+# Benchmark: A-STR1 — Stroke Scale Omitted
+# Parent Rubric: A-STR (Stroke Documentation)
+
+code: A-STR1
+parent_rubric: A-STR
+label: Stroke Scale or Neuro Findings Omitted
+
+concept: >
+  Medic Copilot fails to include a documented stroke assessment score or
+  neurological exam findings. If the narrative states "LAMS score 4" or
+  "facial droop and arm drift present, speech slurred (Cincinnati positive)"
+  and the output does not reflect these findings, that is a failure.
+
+weight: 0.50
+threshold: 0.90
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "All stroke scale/neuro findings captured"
+    0.90: "Excellent - key findings present"
+    0.80: "Good - most neuro findings documented"
+    0.0: "Failed - stroke assessment omitted"
+
+inclusion_criteria: >
+  Apply when the narrative contains stroke scale scores (LAMS, CPSS, FAST,
+  RACE, NIHSS) or describes specific neurological findings (facial droop,
+  arm drift, speech difficulty, gaze deviation) in a suspected stroke case.
+  Flag if this information is missing from the output, or if multiple stroke
+  scales are documented (e.g., both CPSS and LAMS) but not all are captured.
+
+exclusion_criteria: >
+  Do not apply to non-stroke cases. Do not flag minor wording differences
+  if the clinical content is preserved (e.g., "facial asymmetry" vs "facial
+  droop" is acceptable).
+
+examples:
+  - "Narrative: 'LAMS score 4, facial droop present' but output has no stroke scale or neuro findings."
+  - "Narrative: 'Cincinnati positive - arm drift, slurred speech' but output says only 'possible stroke.'"
+  - "Multiple scales: 'CPSS positive, LAMS 4' - both scales should be captured, not just one."
+  - "Scale with components: 'FAST positive: facial droop left side, arm drift left, speech slurred, time of onset 0830' - individual FAST components should be documented, not just 'FAST positive.'"
+  - "NIHSS documented: 'NIHSS 14 per receiving facility telestroke' - NIHSS score and source should be captured when provided."
+
+evaluator_type: hybrid
+llm_prompt_file: "evaluators/llm-judge/stroke_scale_prompt.md"
+

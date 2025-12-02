@@ -42,9 +42,9 @@ but pdfplumber is recommended because it's easy to use...
 **Structure for efficiency**:
 ```
 skill/
-├── SKILL.md              # Lean navigation (30-50 lines)
+├── SKILL.md              # Under 500 lines, concise navigation
 │   ├── When to use
-│   ├── How to use (4 steps)
+│   ├── How to use (workflow steps)
 │   ├── Core principles (3-5 bullets)
 │   └── Links to references/
 └── references/
@@ -294,11 +294,40 @@ Add login endpoint and token validation
 4. **Iterate** - Refine based on real behavior
 5. **Observe Claude** - Watch how it navigates the skill
 
+## Claude A/B Iteration Pattern
+
+For complex skills, use two Claude instances:
+
+- **Claude A** (this instance): The skill author helper that refines instructions
+- **Claude B** (fresh instance with skill loaded): Tests the skill on real tasks
+
+**Workflow**:
+1. Work through a task with Claude A using normal prompting
+2. Identify reusable patterns and context
+3. Ask Claude A to create/refine the skill
+4. Test with Claude B on related tasks
+5. If Claude B struggles, return to Claude A with specifics
+6. Repeat until skill performs reliably
+
+**Why this works**: Claude A understands how to write effective agent instructions, you provide domain expertise, and Claude B reveals gaps through real usage.
+
+## Multi-Model Testing
+
+Test skills with all models you plan to use:
+
+| Model | What to Test |
+|-------|--------------|
+| **Haiku** | Does skill provide enough guidance? May need more detail. |
+| **Sonnet** | Is skill clear and efficient? Good baseline. |
+| **Opus** | Does skill avoid over-explaining? Can handle ambiguity. |
+
+What works for Opus might need more detail for Haiku. Aim for instructions that work across all models.
+
 ## Quality Checklist
 
 Before shipping:
 - [ ] Description is specific with triggers
-- [ ] SKILL.md under 50 lines
+- [ ] SKILL.md under 500 lines (concise, with details in references/)
 - [ ] "When to use" section included
 - [ ] "How to use" workflow (4 steps)
 - [ ] Core principles (3-5 bullets)
@@ -339,9 +368,9 @@ keyword, keyword, keyword
 ```
 
 **File sizes**:
-- SKILL.md: 30-50 lines
-- References: 50-200 lines each
-- Total skill: As needed (references loaded on-demand)
+- SKILL.md: Under 500 lines (keep concise for optimal performance)
+- References: As needed (detailed content, loaded on-demand)
+- Total skill: Unlimited (references loaded only when needed)
 
 ---
 

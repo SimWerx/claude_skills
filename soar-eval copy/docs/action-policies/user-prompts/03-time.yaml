@@ -1,0 +1,21 @@
+# User Prompt: Time Ambiguity Clarification
+# Linked benchmarks: A-TMP1, A-STR2 (see benchmark-to-prompt-map.json)
+
+prompts:
+  - id: time-ambiguous-hhmm
+    
+    prompt_neutral: "'{event}' at {time} — confirm AM (0{time}) or PM (1{time}/2{time})?"
+    prompt_medic_copilot: "Medic Copilot detected time ambiguity: '{event}' at {time}. Confirm AM or PM?"
+    
+    response_type: time_hhmm
+    
+    severity: info
+    
+    placeholders:
+      event: "What happened at this time"
+      time: "Ambiguous time value (e.g., 9:00)"
+    
+    examples:
+      - "Nitro at 9:00"
+      - "arrived on scene 7:45"
+      - "medication given at 8:30"

@@ -1,0 +1,22 @@
+# User Prompt: Negation Clarification
+# Linked benchmarks: A-NEG1, A-NEG2 (see benchmark-to-prompt-map.json)
+
+prompts:
+  - id: negation-double-negative
+    
+    prompt_neutral: "You used '{phrase}'. Confirm: {symptom} present or absent?"
+    prompt_medic_copilot: "Medic Copilot detected '{phrase}'. Confirm: {symptom} present or absent?"
+    
+    response_type: select_one
+    options: [present, absent]
+    
+    severity: warn
+    
+    placeholders:
+      phrase: "Exact text from transcript (quoted)"
+      symptom: "Clinical finding being clarified"
+    
+    examples:
+      - "denies no chest pain"
+      - "patient states no history of no diabetes"
+      - "negative for no fever"

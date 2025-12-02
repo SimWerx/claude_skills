@@ -1,0 +1,21 @@
+# User Prompt: Source Attribution Clarification
+# Linked benchmarks: A-EVD1, A-FCT4 (see benchmark-to-prompt-map.json)
+
+prompts:
+  - id: source-attribution
+    
+    prompt_neutral: "Patient and bystander accounts conflict for '{detail}'. Which source is primary?"
+    prompt_medic_copilot: "Medic Copilot detected conflicting sources for '{detail}'. Which source is primary?"
+    
+    response_type: select_one
+    options: [patient, bystander, family, provider]
+    
+    severity: info
+    
+    placeholders:
+      detail: "Specific detail with conflicting accounts"
+    
+    examples:
+      - "History per neighbor contradicts patient statement"
+      - "Family says syncope, patient denies loss of consciousness"
+      - "Bystander reports seizure, patient unaware"

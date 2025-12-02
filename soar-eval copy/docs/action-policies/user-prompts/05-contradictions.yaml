@@ -1,0 +1,21 @@
+# User Prompt: Laterality/Contradiction Clarification
+# Linked benchmarks: A-FCT4 (see benchmark-to-prompt-map.json)
+
+prompts:
+  - id: contradictions-laterality
+    
+    prompt_neutral: "Left vs right documented for {procedure}. Which side is correct?"
+    prompt_medic_copilot: "Medic Copilot detected laterality conflict for {procedure}. Which side is correct?"
+    
+    response_type: select_one
+    options: [left, right, bilateral]
+    
+    severity: warn
+    
+    placeholders:
+      procedure: "Procedure or intervention with laterality conflict"
+    
+    examples:
+      - "Right chest needle decompression; later left side site described"
+      - "IV left arm; blood draw right arm noted as same site"
+      - "Left leg splint; right leg injury documented"

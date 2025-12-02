@@ -1,0 +1,39 @@
+# Rubric: A-SFT — Safety Flags
+# Evaluates detection and handling of safety-critical issues
+
+code: A-SFT
+label: Safety Flags
+description: >
+  Tests Medic Copilot's detection of safety-critical issues that ground truth marks
+  as problems: unsafe doses, contraindication conflicts, missing reassessments.
+  Failures indicate gaps in Medic Copilot's safety detection logic.
+
+weight: 0.125
+aggregation_method: MINIMUM  # Any safety failure is critical
+passing_threshold: 1.0
+
+evaluation_guidelines:
+  focus_areas:
+    - "Does Medic Copilot flag doses that ground truth marks as unsafe?"
+    - "Does Medic Copilot detect contraindications that ground truth marks as conflicts?"
+    - "Does Medic Copilot flag missing reassessments after high-risk interventions?"
+  acceptable_deviations:
+    - "Medic Copilot flags with different wording but same clinical intent"
+    - "Contraindication override documented with rationale"
+  critical_requirements:
+    - "Medic Copilot must flag known-unsafe doses in test cases"
+    - "Medic Copilot must detect known-conflict contraindications in test cases"
+    - "Medic Copilot must flag missing reassessments in test cases marked as gaps"
+  special_instructions: >
+    Safety failures should be weighted heavily. Use MINIMUM aggregation
+    so any single safety benchmark failure fails the entire rubric.
+  evidence_requirements: >
+    Safety analysis showing: (1) Medic Copilot flagged known-unsafe doses,
+    (2) Medic Copilot detected known contraindications, (3) Medic Copilot
+    flagged missing reassessments.
+
+benchmarks:
+  - A-SFT1  # Medication dose safety (includes route)
+  - A-SFT2  # Contraindication detection
+  - A-SFT4  # Post-intervention reassessment
+

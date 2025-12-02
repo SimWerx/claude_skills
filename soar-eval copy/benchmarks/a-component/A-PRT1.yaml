@@ -1,0 +1,47 @@
+# Benchmark: A-PRT1 — RSI Critical Fields
+# Parent Rubric: A-PRT (Protocol Tracking)
+# Source: rsi-critical-fields-incomplete.yaml
+
+code: A-PRT1
+parent_rubric: A-PRT
+label: RSI Critical Fields Incomplete
+
+concept: >
+  In an RSI scenario, Medic Copilot fails to document one or more critical RSI elements such
+  as indication, preoxygenation details, sedative and paralytic doses, ETT size/depth, or
+  EtCO2 confirmation. Also includes post-intubation sedation/analgesia documentation if
+  mentioned in narrative.
+
+weight: 0.50
+threshold: 0.90
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "All RSI critical fields complete"
+    0.90: "Excellent (90%+ fields present)"
+    0.80: "Good (80-90% fields present)"
+    0.70: "Fair (70-80% fields present)"
+    0.0: "Failed - RSI critical fields missing"
+
+inclusion_criteria: >
+  Apply when the trace clearly involves RSI (advanced endotracheal airway). Flag if the output
+  omits either the sedative or neuromuscular blocker (or their doses), lacks ETT size or
+  depth, fails to document a numeric EtCO2, provides fewer than two confirmation methods
+  despite a successful intubation being claimed, or omits the number of intubation attempts
+  if explicitly stated in the narrative (e.g., "2 attempts" must be captured).
+
+exclusion_criteria: >
+  Do not use for basic airway or supraglottic airways, or when all required RSI fields are
+  present but stylistically terse.
+
+examples:
+  - "RSI overlay where ketamine is documented but no paralytic or paralytic dose appears in `draatt_json`."
+  - "ETT placement recorded with 'tube in good position' but no ETT size, depth, or EtCO2 value."
+  - "RSI with '2 intubation attempts' stated in narrative but output records only successful placement without attempt count."
+
+evaluator_type: code
+

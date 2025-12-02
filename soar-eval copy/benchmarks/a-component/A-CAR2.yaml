@@ -1,0 +1,44 @@
+# Benchmark: A-CAR2 — CPR/Arrest Event Details Missing
+# Parent Rubric: A-CAR (Cardiac Arrest Documentation)
+
+code: A-CAR2
+parent_rubric: A-CAR
+label: CPR Arrest Event Details Missing
+
+concept: >
+  Medic Copilot omits key resuscitation sequence details from a cardiac arrest
+  case, such as initial rhythm, number of shocks, defibrillation times,
+  epinephrine/amiodarone administration, or airway management.
+
+weight: 0.40
+threshold: 0.85
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "All arrest details captured"
+    0.85: "Good - major details present"
+    0.70: "Fair - some details missing"
+    0.0: "Failed - arrest summarized without specifics"
+
+inclusion_criteria: >
+  Apply when the narrative describes specific resuscitation details (initial
+  rhythm, shock count, medication doses, airway placement). Flag if the output
+  provides only a vague summary like "CPR performed" without specifics.
+
+exclusion_criteria: >
+  Do not apply when the narrative itself lacks specific details. Minor
+  timestamp variations are acceptable if the sequence is correct. Traumatic
+  arrest scenarios may have fewer interventions (no defibrillation for PEA/asystole,
+  limited medications) and should not false-fail for expected omissions.
+
+examples:
+  - "Narrative: 'VFib, shocked x3, epi x2, advanced airway placed' but output says only 'Cardiac arrest, CPR performed.'"
+  - "Initial rhythm PEA stated but not captured in structured output."
+
+evaluator_type: hybrid
+llm_prompt_file: "evaluators/llm-judge/cardiac_arrest_details_prompt.md"
+

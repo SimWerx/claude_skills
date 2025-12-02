@@ -1,0 +1,20 @@
+# User Prompt: Medication Name Clarification
+# Linked benchmarks: A-SFT2 (see benchmark-to-prompt-map.json)
+
+prompts:
+  - id: meds-brand-generic
+    
+    prompt_neutral: "'{medication}' — confirm medication name (brand/generic)."
+    prompt_medic_copilot: "Medic Copilot detected medication naming ambiguity for '{medication}'. Please confirm."
+    
+    response_type: text_short
+    
+    severity: info
+    
+    placeholders:
+      medication: "Medication name that may be ambiguous"
+    
+    examples:
+      - "nitro vs nitroglycerin"
+      - "epi vs epinephrine vs adrenaline"
+      - "versed vs midazolam"

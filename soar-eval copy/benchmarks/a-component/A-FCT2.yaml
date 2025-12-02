@@ -1,0 +1,45 @@
+# Benchmark: A-FCT2 — Medication Extraction Accuracy
+# Parent Rubric: A-FCT (Fact Extraction)
+
+code: A-FCT2
+parent_rubric: A-FCT
+label: Medication Extraction Incorrect
+
+concept: >
+  One or more medications explicitly stated in the narrative (name, dose, route) are
+  extracted incorrectly or omitted from Medic Copilot's structured output compared
+  to the values present in the ASR/narrative or ground truth.
+
+weight: 0.25
+threshold: 0.90
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "All medications extracted correctly"
+    0.90: "Excellent (90%+ correct)"
+    0.80: "Good (80-90% correct)"
+    0.70: "Fair (70-80% correct)"
+    0.0: "Failed - medications systematically incorrect or omitted"
+
+inclusion_criteria: >
+  Apply when the narrative or ground truth clearly contains a medication administration.
+  Flag if the structured output omits it entirely, records a different medication name,
+  assigns an incorrect dose, or misidentifies the route.
+
+exclusion_criteria: >
+  Do not use for minor rounding differences that do not change clinical interpretation
+  (e.g., 4mg vs 4.0mg), equivalent brand/generic name substitutions (e.g., Zofran vs
+  ondansetron), or when medications are mentioned only as allergies or contraindications.
+
+examples:
+  - "Narrative: 'gave fentanyl 100 mcg IV' but output records fentanyl dose as 50 mcg."
+  - "Narrative: 'aspirin 324mg given' but output records aspirin dose as 81mg."
+  - "Narrative: 'morphine 4mg IV for pain' but output records medication as fentanyl."
+  - "Narrative: 'administered ondansetron 4mg ODT' but output leaves antiemetic field empty."
+
+evaluator_type: hybrid
+llm_prompt_file: "evaluators/llm-judge/medication_extraction_prompt.md"

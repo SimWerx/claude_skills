@@ -1,0 +1,46 @@
+# Benchmark: A-FCT3 — Procedure Extraction Accuracy
+# Parent Rubric: A-FCT (Fact Extraction)
+
+code: A-FCT3
+parent_rubric: A-FCT
+label: Procedure Extraction Incorrect
+
+concept: >
+  Non-medication procedures explicitly stated in the narrative (IV/IO access, 12-lead
+  ECG, oxygen therapy, basic airway maneuvers) are extracted incorrectly or omitted
+  from Medic Copilot's structured output compared to ground truth.
+
+weight: 0.15
+threshold: 0.85
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "All procedures extracted correctly"
+    0.90: "Excellent (90%+ correct)"
+    0.85: "Good (85-90% correct)"
+    0.75: "Fair (75-85% correct)"
+    0.0: "Failed - procedures systematically incorrect or omitted"
+
+inclusion_criteria: >
+  Apply when the narrative or ground truth clearly contains a procedure.
+  Flag if the structured output omits it entirely, records the wrong procedure type,
+  or misidentifies key details (e.g., site, size, device, flow rate).
+
+exclusion_criteria: >
+  Do not use for RSI/intubation procedures (covered by A-PRT1), trauma-specific
+  interventions like tourniquets or chest seals (covered by A-TRM2), or medication
+  administrations (covered by A-FCT2).
+
+examples:
+  - "Narrative: 'started 18 gauge IV in left AC' but output records no IV access."
+  - "Narrative: '12-lead obtained showing ST elevation' but output has no 12-lead documented."
+  - "Narrative: 'placed patient on 15L non-rebreather' but output shows nasal cannula at 2L."
+  - "Narrative: 'IO placed in right tibia' but output records IV access only."
+
+evaluator_type: hybrid
+llm_prompt_file: "evaluators/llm-judge/procedure_extraction_prompt.md"
+

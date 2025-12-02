@@ -1,0 +1,47 @@
+# Benchmark: A-EVD1 — Evidence Span Presence
+# Parent Rubric: A-EVD (Evidence Attribution)
+# Source: evidence-span-unsupported-or-missing.yaml
+
+code: A-EVD1
+parent_rubric: A-EVD
+label: Evidence Span Unsupported or Missing
+
+concept: >
+  Structured facts in Medic Copilot's output either lack any linked narrative evidence span
+  or are supported only by spans that do not actually contain or justify the claimed fact.
+
+weight: 0.50
+threshold: 0.90
+criticality: threshold_gate
+
+scoring_scale:
+  min_value: 0.0
+  max_value: 1.0
+  normalization_formula: "x"
+  descriptions:
+    1.0: "All facts have valid evidence spans"
+    0.80: "Good (80%+ facts have valid evidence)"
+    0.70: "Fair (70-80% facts have evidence)"
+    0.60: "Poor (60-70% facts have evidence)"
+    0.0: "Failed - evidence spans missing or invalid"
+
+inclusion_criteria: >
+  Apply when the trace includes an evidence map or similar structure. Flag if one or more key
+  extracted facts (vitals, meds, diagnosis, protocol branch) have no evidence span, or the
+  mapped text contradicts or fails to mention the fact it supposedly supports.
+
+exclusion_criteria: >
+  Do not use when evidence spans are present and roughly correct but differ only in length
+  (e.g., extra context words), or when the issue is a factual error despite correct evidence
+  linkage (use fact-extraction or diagnosis codes instead).
+
+examples:
+  - "Impression 'acute inferior STEMI' mapped to a span that only says 'nonspecific ST changes'."
+  - "Vitals and medications exist in DRAATT JSON but the evidence map is empty."
+  - "ACCEPTABLE: Impression 'STEMI' with evidence span 'ST elevation in leads II, III, aVF' - span directly supports the impression."
+  - "UNACCEPTABLE: Impression 'sepsis' with evidence span describing patient's anxiety symptoms - evidence does not support the stated impression."
+  - "UNACCEPTABLE: Output documents 'BP 90/60' but the evidence span linked refers to a different patient's vitals or an unrelated section of narrative."
+
+evaluator_type: hybrid
+llm_prompt_file: "evaluators/llm-judge/evidence_prompt.md"
+

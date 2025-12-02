@@ -1,0 +1,21 @@
+# User Prompt: Disposition Conflict Clarification
+# Linked benchmarks: A-REF1 (see benchmark-to-prompt-map.json)
+
+prompts:
+  - id: disposition-conflict
+    
+    # Static prompt - disposition conflict always same question
+    prompt_neutral: "Refusal noted but transport also documented. Which final disposition applies?"
+    prompt_medic_copilot: "Medic Copilot detected disposition conflict. Which final disposition applies?"
+    
+    response_type: select_one
+    options: [refusal, transported, cancelled]
+    
+    severity: warn
+    
+    placeholders: null  # Static prompt
+    
+    examples:
+      - "AMA refusal after counseling; transported to ED"
+      - "Patient initially refused, then agreed to transport"
+      - "Cancelled en route but patient contact documented"
